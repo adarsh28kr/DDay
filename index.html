@@ -1,0 +1,2211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DDay — Indian Wedding Venue Planner</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg-body: #faf9f7;
+  --bg-card: #ffffff;
+  --bg-header-from: #1e293b;
+  --bg-header-to: #334155;
+  --accent: #b8860b;
+  --accent-light: rgba(184,134,11,0.12);
+  --shadow: 0 1px 3px rgba(0,0,0,0.08);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.1);
+  --border: #e8e5e0;
+  --border-light: #f0ede8;
+  --row-even: #ffffff;
+  --row-odd: #fdfcfb;
+  --row-hover: #fef9ef;
+  --row-eliminated: #fef2f2;
+  --text: #1a1a2e;
+  --text-light: #64748b;
+  --text-muted: #94a3b8;
+  --tier1: #1d4ed8;
+  --tier2: #7c3aed;
+  --research: #0891b2;
+  --lower: #6b7280;
+  --eliminated: #dc2626;
+  --green: #16a34a;
+  --radius: 8px;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-size: 13px;
+  color: var(--text);
+  background: var(--bg-body);
+  line-height: 1.5;
+}
+
+/* HEADER */
+.header {
+  background: linear-gradient(135deg, var(--bg-header-from), var(--bg-header-to));
+  color: #fff;
+  padding: 20px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.header-left h1 {
+  font-size: 22px;
+  font-weight: 300;
+  letter-spacing: 2px;
+}
+.header-left .subtitle {
+  font-size: 13px;
+  color: #94a3b8;
+  margin-top: 2px;
+  letter-spacing: 0.5px;
+}
+.header-stats {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.stat-chip {
+  background: rgba(255,255,255,0.1);
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(255,255,255,0.15);
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  color: #e2e8f0;
+  white-space: nowrap;
+}
+.stat-chip strong {
+  color: #fbbf24;
+  font-weight: 600;
+}
+
+/* ALERT BAR */
+.alert-bar {
+  background: #fffbeb;
+  border: 1px solid #fde68a;
+  border-radius: var(--radius);
+  margin: 12px 16px 0;
+  padding: 10px 16px;
+  font-size: 12px;
+  color: #92400e;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  box-shadow: var(--shadow);
+}
+.alert-bar .alert-label {
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.alert-item {
+  background: rgba(245,158,11,0.12);
+  padding: 3px 10px;
+  border-radius: 12px;
+  white-space: nowrap;
+  font-size: 11.5px;
+}
+
+/* FILTER BAR */
+.filter-bar {
+  background: var(--bg-card);
+  padding: 10px 16px;
+  margin: 12px 16px 0;
+  border-radius: var(--radius);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  box-shadow: var(--shadow);
+}
+.filter-bar label {
+  color: var(--text-light);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+  margin-right: 4px;
+}
+.filter-btn {
+  background: var(--bg-body);
+  color: var(--text);
+  border: 1px solid var(--border);
+  padding: 5px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-weight: 500;
+}
+.filter-btn:hover { background: #f0ede8; border-color: #d4d0ca; }
+.filter-btn.active {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+.filter-btn.active:hover { background: #a07a0a; }
+.filter-sep {
+  width: 1px;
+  height: 20px;
+  background: var(--border);
+  margin: 0 4px;
+}
+.venue-count {
+  color: var(--text-muted);
+  font-size: 11px;
+  margin-left: auto;
+}
+.compare-btn {
+  background: var(--tier1);
+  color: #fff;
+  border: none;
+  padding: 5px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  display: none;
+}
+.compare-btn:hover { background: #1e40af; }
+.compare-btn.show { display: inline-block; }
+.export-import-btns {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+.ei-btn {
+  background: transparent;
+  color: var(--text-light);
+  border: 1px solid var(--border);
+  padding: 4px 12px;
+  border-radius: 16px;
+  font-size: 11px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.ei-btn:hover { background: var(--bg-body); color: var(--text); }
+#importFile { display: none; }
+
+/* TABLE CONTAINER */
+.table-container {
+  overflow-x: auto;
+  background: var(--bg-card);
+  margin: 12px 16px 0;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border-light);
+}
+
+/* TABLE */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12.5px;
+  min-width: 1400px;
+}
+thead {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+thead th {
+  background: #f8f6f3;
+  color: var(--text-light);
+  font-weight: 600;
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  padding: 10px 8px;
+  border-bottom: 2px solid var(--border);
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.2s ease;
+}
+thead th:hover { background: #f0ede8; color: var(--text); }
+thead th .sort-arrow {
+  font-size: 9px;
+  margin-left: 3px;
+  opacity: 0.3;
+}
+thead th.sorted .sort-arrow { opacity: 1; color: var(--accent); }
+
+tbody td {
+  padding: 8px 8px;
+  border-bottom: 1px solid var(--border-light);
+  vertical-align: middle;
+  white-space: nowrap;
+  min-height: 48px;
+}
+tbody tr { transition: background 0.15s ease; }
+tbody tr:nth-child(4n+1) { background: var(--row-even); }
+tbody tr:nth-child(4n+3) { background: var(--row-odd); }
+tbody tr:hover { background: var(--row-hover); }
+tbody tr.eliminated { background: var(--row-eliminated); }
+tbody tr.eliminated:hover { background: #fee2e2; }
+tbody tr.hidden { display: none; }
+tbody tr.detail-row:nth-child(4n+1),
+tbody tr.detail-row:nth-child(4n+3) { background: none; }
+
+/* VENUE THUMBNAIL */
+.photo-cell {
+  width: 80px;
+  min-width: 80px;
+  padding: 4px !important;
+}
+.venue-thumb {
+  width: 72px;
+  height: 48px;
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  text-decoration: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+}
+.venue-thumb:hover { transform: scale(1.08); box-shadow: 0 3px 8px rgba(0,0,0,0.2); }
+.venue-thumb .thumb-icon { font-size: 20px; line-height: 1; }
+.venue-thumb .thumb-initials {
+  font-size: 8px;
+  color: rgba(255,255,255,0.85);
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  margin-top: 1px;
+}
+
+/* SHORTLIST HEART */
+.shortlist-cell { text-align: center; }
+.heart-btn {
+  background: none;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  opacity: 0.3;
+  transition: all 0.2s ease;
+  padding: 2px;
+  line-height: 1;
+}
+.heart-btn:hover { opacity: 0.6; transform: scale(1.2); }
+.heart-btn.active { opacity: 1; color: #e11d48; }
+
+/* COMPARE CHECKBOX */
+.compare-cell { text-align: center; }
+.compare-cb { cursor: pointer; width: 16px; height: 16px; accent-color: var(--tier1); }
+
+/* STAR RATING (in detail row) */
+.star-rating { display: inline-flex; gap: 2px; }
+.star-rating .star {
+  font-size: 20px;
+  cursor: pointer;
+  color: #d4d0ca;
+  transition: color 0.15s ease, transform 0.15s ease;
+  line-height: 1;
+}
+.star-rating .star:hover { transform: scale(1.2); }
+.star-rating .star.filled { color: #f59e0b; }
+
+/* TIER BADGE */
+.tier-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 10px;
+  font-weight: 700;
+  color: #fff;
+  white-space: nowrap;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.15);
+}
+.tier-1 { background: var(--tier1); }
+.tier-2 { background: var(--tier2); }
+.tier-research { background: var(--research); }
+.tier-lower { background: var(--lower); }
+.tier-eliminated { background: var(--eliminated); }
+
+/* COLOR CELLS — pill style */
+.cell-green { background: #dcfce7 !important; color: #166534; font-weight: 600; border-radius: 0; }
+.cell-green-light { background: #f0fdf4 !important; color: #166534; }
+.cell-yellow { background: #fefce8 !important; color: #854d0e; }
+.cell-orange { background: #fff7ed !important; color: #9a3412; font-weight: 600; }
+.cell-red { background: #fef2f2 !important; color: #991b1b; font-weight: 600; }
+.cell-gray { background: #f8fafc !important; color: #64748b; font-style: italic; }
+
+td .pill {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.4;
+}
+.pill-green { background: #dcfce7; color: #166534; font-weight: 600; }
+.pill-green-light { background: #f0fdf4; color: #166534; }
+.pill-yellow { background: #fefce8; color: #854d0e; }
+.pill-orange { background: #fff7ed; color: #9a3412; font-weight: 600; }
+.pill-red { background: #fef2f2; color: #991b1b; font-weight: 600; }
+.pill-gray { background: #f1f5f9; color: #64748b; font-style: italic; }
+
+/* VENUE NAME */
+.venue-name {
+  font-weight: 600;
+  color: var(--tier1);
+  cursor: pointer;
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+.venue-name:hover { color: #1e40af; text-decoration: underline; }
+
+/* EXPANDABLE DETAIL ROW */
+.detail-row { display: none; }
+.detail-row.open { display: table-row; }
+.detail-row td {
+  background: #fefdfb !important;
+  padding: 16px 20px !important;
+  white-space: normal !important;
+  line-height: 1.6;
+  border-bottom: 2px solid var(--accent-light) !important;
+}
+.detail-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 16px;
+  max-width: 1100px;
+}
+.detail-content h4 {
+  font-size: 11px;
+  color: var(--accent);
+  margin-bottom: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 700;
+}
+.detail-content p {
+  font-size: 12px;
+  color: #374151;
+  margin-bottom: 6px;
+}
+.detail-content .verdict-text {
+  grid-column: 1 / -1;
+  padding: 10px 14px;
+  background: var(--accent-light);
+  border-radius: 6px;
+  font-weight: 500;
+  color: #78350f;
+  font-size: 12.5px;
+}
+.detail-notes-area {
+  grid-column: 1 / -1;
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+.detail-notes-area textarea {
+  flex: 1;
+  min-width: 250px;
+  min-height: 60px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 8px 10px;
+  font-family: inherit;
+  font-size: 12px;
+  resize: vertical;
+  transition: border-color 0.2s;
+  background: #fff;
+}
+.detail-notes-area textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px var(--accent-light);
+}
+.detail-rating-section {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.detail-rating-section label {
+  font-size: 11px;
+  color: var(--text-light);
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+/* COMPARE MODAL */
+.compare-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 1000;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 40px 20px;
+  overflow-y: auto;
+}
+.compare-overlay.open { display: flex; }
+.compare-panel {
+  background: var(--bg-card);
+  border-radius: 12px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+  width: 100%;
+  max-width: 900px;
+  padding: 24px;
+  position: relative;
+}
+.compare-panel h2 {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: var(--text);
+}
+.compare-close {
+  position: absolute;
+  top: 16px; right: 16px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: var(--text-light);
+  transition: color 0.15s;
+  line-height: 1;
+}
+.compare-close:hover { color: var(--text); }
+.compare-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12.5px;
+}
+.compare-table th {
+  text-align: left;
+  padding: 8px 10px;
+  background: #f8f6f3;
+  color: var(--text-light);
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+.compare-table td {
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--border-light);
+  vertical-align: middle;
+}
+
+/* SECTIONS */
+.sections-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 24px 16px;
+}
+
+.tab-bar {
+  display: flex;
+  gap: 0;
+  background: #f8f6f3;
+  border-radius: var(--radius) var(--radius) 0 0;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-bottom: none;
+}
+.tab-btn {
+  background: transparent;
+  color: var(--text-light);
+  border: none;
+  padding: 11px 20px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  border-bottom: 2px solid transparent;
+  position: relative;
+}
+.tab-btn:hover { color: var(--text); background: rgba(0,0,0,0.03); }
+.tab-btn.active {
+  color: var(--accent);
+  background: var(--bg-card);
+  border-bottom-color: var(--accent);
+}
+
+.tab-panel {
+  display: none;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-top: none;
+  padding: 24px;
+  border-radius: 0 0 var(--radius) var(--radius);
+  box-shadow: var(--shadow);
+}
+.tab-panel.active { display: block; }
+
+/* SECTION HEADERS */
+.section-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--accent-light);
+  color: var(--text);
+}
+
+/* BUDGET GUIDE */
+.budget-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+.budget-col h4 {
+  font-size: 13px;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+.budget-bar-group { margin-bottom: 10px; }
+.budget-bar-label {
+  font-size: 11.5px;
+  font-weight: 500;
+  margin-bottom: 3px;
+  display: flex;
+  justify-content: space-between;
+  color: var(--text);
+}
+.budget-bar-track {
+  height: 22px;
+  background: #f0ede8;
+  border-radius: 11px;
+  overflow: hidden;
+}
+.budget-bar-fill {
+  height: 100%;
+  border-radius: 11px;
+  display: flex;
+  align-items: center;
+  padding-left: 8px;
+  font-size: 10px;
+  font-weight: 600;
+  color: #fff;
+  white-space: nowrap;
+  transition: width 0.4s ease;
+}
+.budget-insight {
+  background: #fffbeb;
+  border: 1px solid #fde68a;
+  border-radius: var(--radius);
+  padding: 14px;
+  font-size: 12px;
+  color: #78350f;
+  line-height: 1.6;
+}
+
+/* QUESTIONS */
+.questions-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+.question-group { margin-bottom: 16px; }
+.question-group h4 {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 8px;
+  padding-bottom: 6px;
+  border-bottom: 2px solid var(--accent-light);
+}
+.question-list { list-style: none; counter-reset: q; }
+.question-list li {
+  counter-increment: q;
+  padding: 6px 0 6px 32px;
+  position: relative;
+  font-size: 12.5px;
+  border-bottom: 1px solid var(--border-light);
+  line-height: 1.5;
+}
+.question-list li::before {
+  content: counter(q);
+  position: absolute;
+  left: 0;
+  width: 22px;
+  height: 22px;
+  background: var(--accent-light);
+  color: var(--accent);
+  border-radius: 50%;
+  text-align: center;
+  line-height: 22px;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+/* ACTION ITEMS */
+.action-venue { margin-bottom: 16px; }
+.action-venue h4 {
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+.action-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 5px 0;
+  font-size: 12.5px;
+}
+.action-item input[type="checkbox"] {
+  margin-top: 3px;
+  cursor: pointer;
+  accent-color: var(--accent);
+  width: 15px;
+  height: 15px;
+}
+.action-item.checked label {
+  text-decoration: line-through;
+  color: var(--text-muted);
+}
+.action-item label { cursor: pointer; }
+
+/* TIMELINE TAB */
+.timeline-list { max-width: 700px; }
+.timeline-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border-light);
+  transition: background 0.15s;
+}
+.timeline-item:hover { background: rgba(184,134,11,0.04); margin: 0 -8px; padding: 10px 8px; border-radius: 6px; }
+.timeline-status {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 2px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s;
+  flex-shrink: 0;
+  background: #fff;
+}
+.timeline-status.done {
+  background: var(--green);
+  border-color: var(--green);
+  color: #fff;
+}
+.timeline-name {
+  flex: 1;
+  font-size: 13px;
+  font-weight: 500;
+}
+.timeline-name.done { text-decoration: line-through; color: var(--text-muted); }
+.timeline-date {
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 4px 8px;
+  font-size: 12px;
+  font-family: inherit;
+  color: var(--text);
+  background: #fff;
+  transition: border-color 0.2s;
+}
+.timeline-date:focus { outline: none; border-color: var(--accent); }
+
+/* VENDOR TRACKER */
+.vendor-form {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+  padding: 14px;
+  background: #f8f6f3;
+  border-radius: var(--radius);
+}
+.vendor-form input, .vendor-form select {
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-size: 12px;
+  font-family: inherit;
+  background: #fff;
+  transition: border-color 0.2s;
+}
+.vendor-form input:focus, .vendor-form select:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+.vendor-form input { flex: 1; min-width: 120px; }
+.vendor-form select { min-width: 130px; }
+.vendor-add-btn {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  padding: 6px 16px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.vendor-add-btn:hover { background: #a07a0a; }
+.vendor-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 12px;
+}
+.vendor-card {
+  background: var(--bg-body);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px;
+  position: relative;
+  transition: box-shadow 0.2s;
+}
+.vendor-card:hover { box-shadow: var(--shadow-md); }
+.vendor-card h4 {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+.vendor-card .vendor-cat {
+  display: inline-block;
+  background: var(--accent-light);
+  color: var(--accent);
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 10px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.vendor-card p {
+  font-size: 12px;
+  color: var(--text-light);
+  margin-bottom: 3px;
+}
+.vendor-card .vendor-notes {
+  font-size: 11.5px;
+  color: var(--text);
+  margin-top: 6px;
+  padding-top: 6px;
+  border-top: 1px solid var(--border-light);
+  font-style: italic;
+}
+.vendor-remove {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 16px;
+  transition: color 0.15s;
+  line-height: 1;
+}
+.vendor-remove:hover { color: var(--eliminated); }
+
+/* OUR NOTES TAB */
+.custom-notes-area {
+  width: 100%;
+  min-height: 300px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+  font-family: inherit;
+  font-size: 13px;
+  line-height: 1.7;
+  resize: vertical;
+  background: #fff;
+  color: var(--text);
+  transition: border-color 0.2s;
+}
+.custom-notes-area:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-light);
+}
+.notes-hint {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 6px;
+}
+
+/* FOOTER */
+.footer {
+  text-align: center;
+  padding: 20px 16px;
+  color: var(--text-muted);
+  font-size: 11px;
+}
+
+/* PRINT */
+@media print {
+  .header { break-inside: avoid; }
+  .filter-bar, .alert-bar { break-inside: avoid; }
+  .compare-overlay { display: none !important; }
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+  .header { padding: 14px 12px; }
+  .header-left h1 { font-size: 18px; }
+  .header-stats { gap: 6px; }
+  .stat-chip { padding: 4px 10px; font-size: 11px; }
+  .filter-bar { padding: 8px 10px; }
+  .alert-bar { margin: 8px 8px 0; }
+  .table-container { margin: 8px 8px 0; }
+  .filter-bar, .sections-container { padding-left: 8px; padding-right: 8px; }
+  .sections-container { padding: 12px 8px; }
+  .detail-content { grid-template-columns: 1fr; }
+  .budget-grid { grid-template-columns: 1fr; }
+  .questions-grid { grid-template-columns: 1fr; }
+  .compare-panel { padding: 16px; }
+  .tab-btn { padding: 9px 14px; font-size: 12px; }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-left">
+    <h1>DDay</h1>
+    <div class="subtitle">Indian Wedding Venue Planner</div>
+  </div>
+  <div class="header-stats">
+    <span class="stat-chip"><strong>$30K–$60K</strong>&ensp;Budget</span>
+    <span class="stat-chip"><strong>&lt;100</strong>&ensp;Guests</span>
+    <span class="stat-chip"><strong>NorCal</strong>&ensp;Region</span>
+    <span class="stat-chip"><strong>35</strong>&ensp;Venues Tracked</span>
+  </div>
+</div>
+
+<!-- ALERT BAR -->
+<div class="alert-bar">
+  <span class="alert-label">&#9888;&#65039; Hard Truths:</span>
+  <span class="alert-item">&#127860; Book caterer BEFORE venue</span>
+  <span class="alert-item">&#128293; Kitchen grade is #1 filter</span>
+  <span class="alert-item">&#127810; Oct-Nov = fire season overlap</span>
+  <span class="alert-item">&#128340; 10pm curfew kills Indian weddings</span>
+  <span class="alert-item">&#128167; Haldi destroys surfaces ($2K-$5K risk)</span>
+</div>
+
+<!-- FILTER BAR -->
+<div class="filter-bar">
+  <label>Filter:</label>
+  <button class="filter-btn active" data-filter="all" onclick="filterVenues('all')">All (35)</button>
+  <button class="filter-btn" data-filter="tier1" onclick="filterVenues('tier1')">Tier 1 (4)</button>
+  <button class="filter-btn" data-filter="tier2" onclick="filterVenues('tier2')">Tier 2 (4)</button>
+  <button class="filter-btn" data-filter="research" onclick="filterVenues('research')">Research (3)</button>
+  <button class="filter-btn" data-filter="lower" onclick="filterVenues('lower')">Lower (19)</button>
+  <button class="filter-btn" data-filter="eliminated" onclick="filterVenues('eliminated')">Eliminated (5)</button>
+  <div class="filter-sep"></div>
+  <button class="filter-btn" data-filter="shortlisted" onclick="filterVenues('shortlisted')">&#10084; Shortlisted</button>
+  <button class="compare-btn" id="compareBtn" onclick="openCompare()">Compare Selected</button>
+  <span class="venue-count" id="venueCount">Showing 35 venues</span>
+  <div class="export-import-btns">
+    <button class="ei-btn" onclick="exportState()">&#8595; Export</button>
+    <button class="ei-btn" onclick="document.getElementById('importFile').click()">&#8593; Import</button>
+    <input type="file" id="importFile" accept=".json" onchange="importState(event)">
+  </div>
+</div>
+
+<!-- TABLE -->
+<div class="table-container">
+  <table id="venueTable">
+    <thead>
+      <tr>
+        <th style="width:30px;cursor:default;"></th>
+        <th class="photo-cell" style="cursor:default;">Venue</th>
+        <th style="width:30px;cursor:default;">&#10084;</th>
+        <th data-col="rank" onclick="sortTable('rank')">Rank <span class="sort-arrow">&#9660;</span></th>
+        <th data-col="name" onclick="sortTable('name')">Name <span class="sort-arrow">&#9660;</span></th>
+        <th data-col="location" onclick="sortTable('location')">Location <span class="sort-arrow">&#9660;</span></th>
+        <th data-col="siteFee" onclick="sortTable('siteFee')">Site Fee <span class="sort-arrow">&#9660;</span></th>
+        <th data-col="allIn" onclick="sortTable('allIn')">All-In <span class="sort-arrow">&#9660;</span></th>
+        <th data-col="byov" onclick="sortTable('byov')">BYOV <span class="sort-arrow">&#9660;</span></th>
+        <th data-col="kitchen" onclick="sortTable('kitchen')">Kitchen <span class="sort-arrow">&#9660;</span></th>
+        <th data-col="lodging" onclick="sortTable('lodging')">Lodging <span class="sort-arrow">&#9660;</span></th>
+        <th data-col="fire" onclick="sortTable('fire')">Fire <span class="sort-arrow">&#9660;</span></th>
+        <th data-col="noise" onclick="sortTable('noise')">Noise <span class="sort-arrow">&#9660;</span></th>
+        <th data-col="baraat" onclick="sortTable('baraat')">Baraat <span class="sort-arrow">&#9660;</span></th>
+        <th data-col="haldi" onclick="sortTable('haldi')">Haldi <span class="sort-arrow">&#9660;</span></th>
+        <th data-col="access" onclick="sortTable('access')">Access <span class="sort-arrow">&#9660;</span></th>
+        <th data-col="indian" onclick="sortTable('indian')">Indian <span class="sort-arrow">&#9660;</span></th>
+        <th data-col="verdict" style="cursor:default;">Verdict</th>
+      </tr>
+    </thead>
+    <tbody id="venueBody"></tbody>
+  </table>
+</div>
+
+<!-- COMPARE OVERLAY -->
+<div class="compare-overlay" id="compareOverlay">
+  <div class="compare-panel">
+    <button class="compare-close" onclick="closeCompare()">&times;</button>
+    <h2>Compare Venues</h2>
+    <table class="compare-table" id="compareTable"></table>
+  </div>
+</div>
+
+<!-- TABBED SECTIONS -->
+<div class="sections-container">
+  <div class="tab-bar">
+    <button class="tab-btn active" data-tab="budget" onclick="switchTab('budget')">Budget Guide</button>
+    <button class="tab-btn" data-tab="questions" onclick="switchTab('questions')">25 Questions</button>
+    <button class="tab-btn" data-tab="actions" onclick="switchTab('actions')">Action Items</button>
+    <button class="tab-btn" data-tab="timeline" onclick="switchTab('timeline')">Timeline</button>
+    <button class="tab-btn" data-tab="vendors" onclick="switchTab('vendors')">Vendor Tracker</button>
+    <button class="tab-btn" data-tab="notes" onclick="switchTab('notes')">Our Notes</button>
+  </div>
+
+  <!-- BUDGET TAB -->
+  <div class="tab-panel active" id="tab-budget">
+    <h3 class="section-title">Budget Allocation &mdash; 75-100 Guest Indian Wedding in NorCal</h3>
+    <div class="budget-grid">
+      <div class="budget-col">
+        <h4 style="color:var(--tier1);">At $40K Total</h4>
+        <div id="budget40"></div>
+      </div>
+      <div class="budget-col">
+        <h4 style="color:var(--tier2);">At $50K Total</h4>
+        <div id="budget50"></div>
+      </div>
+      <div class="budget-col">
+        <h4 style="color:var(--research);">At $60K Total</h4>
+        <div id="budget60"></div>
+      </div>
+    </div>
+    <div class="budget-insight">
+      <strong>Key Insight:</strong> If your venue fee exceeds 35% of total budget, something else gets cut. Usually it's decor or contingency &mdash; both dangerous cuts for an Indian wedding where the mandap alone can cost $3K-$5K. Triple S Ranch at $32K+ means you need $80K+ total. Mountain House Estate at $5.5K gives you $54K for everything else.
+    </div>
+  </div>
+
+  <!-- QUESTIONS TAB -->
+  <div class="tab-panel" id="tab-questions">
+    <h3 class="section-title">25 Questions to Ask on Every Venue Tour</h3>
+    <div class="questions-grid">
+      <div>
+        <div class="question-group">
+          <h4>Kitchen &amp; Catering</h4>
+          <ol class="question-list">
+            <li>Can we bring our own Indian caterer with full kitchen access?</li>
+            <li>What kitchen equipment is on-site? (Gas burners, oven, ventilation, prep tables, refrigeration)</li>
+            <li>Is there space and power for a tandoor oven (requires 220V or propane)?</li>
+            <li>What are the kitchen access hours on wedding day and day before?</li>
+            <li>Is there a separate prep/staging area for caterer setup?</li>
+          </ol>
+        </div>
+        <div class="question-group">
+          <h4>Fire Ceremony</h4>
+          <ol class="question-list" style="counter-reset:q 5;">
+            <li>Has a havan/agni ceremony ever been performed here?</li>
+            <li>What is the specific fire marshal jurisdiction and permit process?</li>
+            <li>What is the fire safety officer cost for ceremony day?</li>
+            <li>Is the property in a Cal Fire high or very high severity zone?</li>
+            <li>What is the indoor backup location if fire ceremony is denied day-of?</li>
+          </ol>
+        </div>
+        <div class="question-group">
+          <h4>Noise &amp; Music</h4>
+          <ol class="question-list" style="counter-reset:q 10;">
+            <li>What is the hard-stop time for amplified music? (Need midnight minimum)</li>
+            <li>Is there an indoor space where music can continue past outdoor cutoff?</li>
+            <li>Have you ever received a noise complaint? What happened?</li>
+            <li>Are there decibel limits? Who monitors them?</li>
+          </ol>
+        </div>
+      </div>
+      <div>
+        <div class="question-group">
+          <h4>Logistics &amp; Infrastructure</h4>
+          <ol class="question-list" style="counter-reset:q 14;">
+            <li>What is the baraat processional route? (Need 8ft wide, flat, 200ft minimum)</li>
+            <li>Can a horse be on property? What are the requirements?</li>
+            <li>Where is the designated haldi area? What surface protection is needed?</li>
+            <li>What is the mandap ceiling height in the ceremony area? (Need 12ft minimum)</li>
+            <li>What is the power capacity for lighting, DJ, and catering simultaneously?</li>
+            <li>Is there ADA accessibility? Golf cart for elderly guests?</li>
+          </ol>
+        </div>
+        <div class="question-group">
+          <h4>Cultural &amp; Multi-Day</h4>
+          <ol class="question-list" style="counter-reset:q 20;">
+            <li>Have you hosted an Indian wedding before? Can we contact that couple?</li>
+            <li>Is multi-day booking available? (Mehndi Fri, Sangeet Fri night, Wedding Sat)</li>
+            <li>What is the damage deposit and what specifically triggers deductions?</li>
+            <li>Can we have a late-night after-party space?</li>
+            <li>What is NOT allowed? (Fireworks, sparklers, open flame, colored powder, animals)</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ACTIONS TAB -->
+  <div class="tab-panel" id="tab-actions">
+    <h3 class="section-title">Action Items Tracker</h3>
+    <p style="font-size:11px;color:var(--text-muted);margin-bottom:16px;">Checkbox state is saved to your browser (localStorage).</p>
+    <div id="actionItems"></div>
+  </div>
+
+  <!-- TIMELINE TAB -->
+  <div class="tab-panel" id="tab-timeline">
+    <h3 class="section-title">Wedding Planning Timeline</h3>
+    <p style="font-size:12px;color:var(--text-muted);margin-bottom:16px;">Set target dates and track milestones. All data saved locally.</p>
+    <div class="timeline-list" id="timelineList"></div>
+  </div>
+
+  <!-- VENDOR TRACKER TAB -->
+  <div class="tab-panel" id="tab-vendors">
+    <h3 class="section-title">Vendor Tracker</h3>
+    <div class="vendor-form" id="vendorForm">
+      <input type="text" id="vName" placeholder="Vendor name">
+      <select id="vCategory">
+        <option value="">Category...</option>
+        <option value="Caterer">Caterer</option>
+        <option value="Decorator">Decorator</option>
+        <option value="Photographer">Photographer</option>
+        <option value="Videographer">Videographer</option>
+        <option value="DJ / Music">DJ / Music</option>
+        <option value="MUA / Hair">MUA / Hair</option>
+        <option value="Florist">Florist</option>
+        <option value="Pandit">Pandit</option>
+        <option value="Planner">Planner</option>
+        <option value="Other">Other</option>
+      </select>
+      <input type="text" id="vPhone" placeholder="Phone">
+      <input type="email" id="vEmail" placeholder="Email">
+      <input type="text" id="vQuote" placeholder="Quote ($)">
+      <select id="vStatus">
+        <option value="Contacted">Contacted</option>
+        <option value="Quoted">Quoted</option>
+        <option value="Booked">Booked</option>
+        <option value="Declined">Declined</option>
+      </select>
+      <input type="text" id="vNotes" placeholder="Notes" style="flex:2;">
+      <button class="vendor-add-btn" onclick="addVendor()">+ Add</button>
+    </div>
+    <div class="vendor-cards" id="vendorCards"></div>
+  </div>
+
+  <!-- OUR NOTES TAB -->
+  <div class="tab-panel" id="tab-notes">
+    <h3 class="section-title">Our Notes</h3>
+    <textarea class="custom-notes-area" id="customNotes" placeholder="Write anything here &mdash; decisions made, things discussed, ideas for the wedding..."></textarea>
+    <p class="notes-hint">Auto-saved to your browser as you type.</p>
+  </div>
+</div>
+
+<div class="footer">DDay Wedding Planner &mdash; All data stored locally in your browser</div>
+
+<script>
+// ===== VENUE TYPE MAPPING =====
+const venueTypes = {
+  Ranch:  { gradient: 'linear-gradient(135deg,#92400e,#78350f)', icon: '\u{1F3E1}' },
+  Winery: { gradient: 'linear-gradient(135deg,#7f1d1d,#581c87)', icon: '\u{1F377}' },
+  Resort: { gradient: 'linear-gradient(135deg,#0c4a6e,#164e63)', icon: '\u{1F3E8}' },
+  Estate: { gradient: 'linear-gradient(135deg,#78350f,#92400e)', icon: '\u{1F3DB}' },
+  Club:   { gradient: 'linear-gradient(135deg,#14532d,#166534)', icon: '\u26F3' },
+  EventCenter: { gradient: 'linear-gradient(135deg,#7c2d12,#9a3412)', icon: '\u{1F3EA}' },
+  Retreat:{ gradient: 'linear-gradient(135deg,#064e3b,#065f46)', icon: '\u{1F332}' },
+  Beach:  { gradient: 'linear-gradient(135deg,#0e7490,#155e75)', icon: '\u{1F3D6}' }
+};
+
+// ===== VENUE DATA =====
+const venues = [
+  {
+    rank:1, name:"Triple S Ranch", location:"Calistoga", region:"Napa / Wine Country",
+    siteFee:"$32K-$39K", allIn:"$60K-$85K", capacity:"Up to 100",
+    byov:"YES", kitchen:"Commercial", lodging:"YES (60)",
+    fire:"Ask", noise:"Flexible", baraat:"Excellent",
+    haldi:"Caution", multiDay:"YES", access:"Moderate",
+    indian:"YES", link:"https://www.triplesranch.com/",
+    verdict:"TIER 1 - Best Overall Match", type:"Ranch",
+    notes:"Best overall match IF kitchen passes caterer inspection AND fire permits obtainable. Commercial-grade kitchen is #1 differentiator.",
+    actions:["Tour with caterer to inspect kitchen","Confirm fire permits for your date","Get noise cutoff in writing","Budget for golf cart shuttle ($500-$800)"],
+    tier:"tier1", siteFeeNum:32000, allInNum:60000
+  },
+  {
+    rank:2, name:"Mountain House Estate", location:"Cloverdale", region:"Wine Country (Sonoma)",
+    siteFee:"$5.5K-$21K", allIn:"$45K-$70K", capacity:"Up to 250",
+    byov:"YES", kitchen:"Prep", lodging:"YES (34)",
+    fire:"Likely", noise:"2AM", baraat:"Excellent",
+    haldi:"YES", multiDay:"YES", access:"Good",
+    indian:"Ask", link:"https://mountainhouseestate.com/",
+    verdict:"TIER 1 - Best Value BYOV", type:"Estate",
+    notes:"2am music cutoff alone makes this worth touring. Full BYOV, prep kitchen, low site fee. Most budget-realistic option for proper Indian wedding.",
+    actions:["Tour immediately","Confirm caterer prep kitchen specs","Verify 2am cutoff in writing","Check lodging overflow in Cloverdale/Healdsburg"],
+    tier:"tier1", siteFeeNum:5500, allInNum:45000
+  },
+  {
+    rank:3, name:"Saratoga Springs", location:"Saratoga", region:"South Bay",
+    siteFee:"$5K-$11K", allIn:"$40K-$60K", capacity:"Up to 500",
+    byov:"YES", kitchen:"None", lodging:"NO",
+    fire:"YES", noise:"Ask", baraat:"Good",
+    haldi:"YES", multiDay:"YES", access:"Good",
+    indian:"YES", link:"https://www.saratogasprings.com/",
+    verdict:"TIER 1 - Proven Indian Wedding Venue", type:"EventCenter",
+    notes:"Extensively documented Indian wedding track record. Mandap setups, baraat through Cathedral Grove, Jalsa partnership. No kitchen \u2014 caterer needs mobile setup.",
+    actions:["Tour immediately","Verify amplified music hours","Confirm $50/guest catering fee details","Check caterer mobile kitchen logistics"],
+    tier:"tier1", siteFeeNum:5000, allInNum:40000
+  },
+  {
+    rank:4, name:"Palm Event Center", location:"Pleasanton", region:"East Bay",
+    siteFee:"$15K-$25K+", allIn:"$45K-$65K", capacity:"300 seated",
+    byov:"YES", kitchen:"Ask", lodging:"NO",
+    fire:"Likely", noise:"Ask", baraat:"Good",
+    haldi:"Caution", multiDay:"Ask", access:"Good",
+    indian:"YES", link:"https://palmeventcenter.com/",
+    verdict:"TIER 1 - Best Indian Wedding Expertise", type:"EventCenter",
+    notes:"Staff trained in baraats, milnis, Hindu ceremonies. Listed on YourIndianWedding.com. Explicitly allows outside Indian caterers.",
+    actions:["Tour and meet staff","Verify kitchen specs for outside caterer","Confirm noise cutoff","Get fire ceremony policy in writing"],
+    tier:"tier1", siteFeeNum:15000, allInNum:45000
+  },
+  {
+    rank:5, name:"Indian Springs", location:"Calistoga", region:"Napa / Wine Country",
+    siteFee:"$8.5K-$10K", allIn:"$35K-$55K", capacity:"85-120",
+    byov:"Ask", kitchen:"Ask", lodging:"YES (resort)",
+    fire:"Ask", noise:"Ask", baraat:"Limited",
+    haldi:"Caution", multiDay:"Possible", access:"Good",
+    indian:"Ask", link:"https://www.indianspringscalistoga.com/event-space-in-calistoga/events-weddings",
+    verdict:"TIER 2 - Sleeper Pick (Confirm BYOV)", type:"Resort",
+    notes:"Everything hinges on BYOV answer. If yes, could be best value on entire list (low site fee + resort lodging + geothermal pool + spa).",
+    actions:["Call immediately: Can we bring our own Indian caterer with kitchen access?"],
+    tier:"tier2", siteFeeNum:8500, allInNum:35000
+  },
+  {
+    rank:6, name:"Meritage Resort & Spa", location:"Napa", region:"Napa / Wine Country",
+    siteFee:"~$25K total", allIn:"$60K-$100K", capacity:"Up to 300",
+    byov:"Limited", kitchen:"Prep", lodging:"YES (resort)",
+    fire:"Ask", noise:"10pm likely", baraat:"Difficult",
+    haldi:"HIGH RISK", multiDay:"YES", access:"ADA",
+    indian:"YES", link:"https://www.meritagecollection.com/meritage-resort",
+    verdict:"TIER 2 - Best for Accessibility", type:"Resort",
+    notes:"ADA compliant, flat, elevators \u2014 best for elderly. But 22-25% service charges on all F&B are the silent killer. Plan haldi off-site.",
+    actions:["Get itemized quote with ALL service charges","Confirm fire ceremony in writing","Plan haldi off-site","Confirm 10pm cutoff"],
+    tier:"tier2", siteFeeNum:25000, allInNum:60000
+  },
+  {
+    rank:7, name:"Casa Bella", location:"Sunol", region:"East Bay",
+    siteFee:"$2.5K-$4.5K", allIn:"$25K-$45K", capacity:"250 / 300",
+    byov:"YES", kitchen:"Ask", lodging:"Minimal",
+    fire:"YES", noise:"Ask", baraat:"Good",
+    haldi:"YES", multiDay:"Limited", access:"Good",
+    indian:"YES", link:"https://www.sunolscasabella.com/",
+    verdict:"TIER 2 - Budget Champion", type:"Estate",
+    notes:"Exceptional value with genuine Indian wedding expertise. Staff knows havan, baraat, milni, mandap. In-house Indian food AND DJ available.",
+    actions:["Tour and confirm kitchen specs","Verify havan/fire ceremony logistics","Check Main Street Sunol baraat route","Plan lodging at nearby hotels"],
+    tier:"tier2", siteFeeNum:2500, allInNum:25000
+  },
+  {
+    rank:8, name:"Gardener Ranch", location:"Carmel Valley", region:"Monterey / Carmel",
+    siteFee:"~$26K", allIn:"$50K-$75K", capacity:"Up to 150",
+    byov:"YES", kitchen:"Ask", lodging:"Ask",
+    fire:"Ask", noise:"Ask", baraat:"Ask",
+    haldi:"Ask", multiDay:"Ask", access:"Ask",
+    indian:"Ask", link:"https://gardenerranch.com/",
+    verdict:"TIER 2 - Full BYOV but Unknowns", type:"Ranch",
+    notes:"Full BYOV is valuable but too many unknowns. 1.5-2hrs from Bay Area may lose elderly guests.",
+    actions:["Schedule site visit with caterer","Confirm lodging, fire, noise, accessibility, baraat path in one visit"],
+    tier:"tier2", siteFeeNum:26000, allInNum:50000
+  },
+  {
+    rank:9, name:"Park Winters", location:"Winters (Davis)", region:"Sacramento Valley",
+    siteFee:"Ask", allIn:"Ask", capacity:"Ask",
+    byov:"NO", kitchen:"Ask", lodging:"Ask",
+    fire:"YES", noise:"Ask", baraat:"Ask",
+    haldi:"Ask", multiDay:"Ask", access:"Ask",
+    indian:"YES", link:"",
+    verdict:"Research - No BYOV Concern", type:"Estate",
+    notes:"Proven Indian wedding venue with documented havan. BUT no BYOV (in-house only). Worth investigating only if Indian caterer can supplement.",
+    actions:["Call: Can Indian caterer supplement in-house menu? If no, eliminate."],
+    tier:"research", siteFeeNum:99999, allInNum:99999
+  },
+  {
+    rank:10, name:"Spirit Camp Retreat", location:"Little River", region:"Mendocino Coast",
+    siteFee:"Ask", allIn:"Ask", capacity:"50+",
+    byov:"YES", kitchen:"Commercial", lodging:"YES (50+)",
+    fire:"Likely", noise:"Ask", baraat:"Ask",
+    haldi:"YES", multiDay:"Ask", access:"Ask",
+    indian:"Ask", link:"",
+    verdict:"Research - Remote but Great Kitchen", type:"Retreat",
+    notes:"Industrial cater-ready kitchen is a major draw. 27-acre redwood forest. Remote Mendocino (3+ hrs from Bay Area) may deter elderly.",
+    actions:["Contact for pricing and availability","Confirm industrial kitchen specs","Assess accessibility for elderly","Factor in 3+ hour drive for guests"],
+    tier:"research", siteFeeNum:99999, allInNum:99999
+  },
+  {
+    rank:11, name:"Deer Park Villa", location:"Fairfax (Marin)", region:"Marin County",
+    siteFee:"$7K-$16.5K", allIn:"Ask", capacity:"Ask",
+    byov:"Ask", kitchen:"Prep", lodging:"NO",
+    fire:"Likely", noise:"Flexible", baraat:"Ask",
+    haldi:"Ask", multiDay:"Ask", access:"Ask",
+    indian:"Ask", link:"",
+    verdict:"Research - Check Caterer List", type:"Estate",
+    notes:"Full kitchen for caterers, fire pits, amplified music OK outdoors, affordable. Check if Indian caterers on preferred list.",
+    actions:["Contact venue","Ask if Indian caterers can use kitchen","Confirm fire pit/ceremony policies","Verify music hours"],
+    tier:"research", siteFeeNum:7000, allInNum:99999
+  },
+  {
+    rank:12, name:"Fensalden", location:"Albion", region:"Mendocino Coast",
+    siteFee:"~$2K-3K/night", allIn:"Ask", capacity:"30+",
+    byov:"Likely", kitchen:"Ask", lodging:"YES (3 houses)",
+    fire:"Ask", noise:"Flexible", baraat:"Ask",
+    haldi:"Caution", multiDay:"YES", access:"Ask",
+    indian:"Ask", link:"",
+    verdict:"Lower Priority - Remote & Small", type:"Beach",
+    notes:"Remote (3+ hrs), dramatic ocean cliffs, affordable, very intimate. Best for under 50 guests.",
+    actions:["Research further only if considering very intimate wedding under 50 guests"],
+    tier:"lower", siteFeeNum:2000, allInNum:99999
+  },
+  {
+    rank:13, name:"Casa Real at Ruby Hill", location:"Pleasanton", region:"East Bay",
+    siteFee:"$15K-$25K", allIn:"$45K-$65K", capacity:"Up to 400",
+    byov:"Limited", kitchen:"Ask", lodging:"NO",
+    fire:"Ask", noise:"Ask", baraat:"Ask",
+    haldi:"Caution", multiDay:"Ask", access:"Ask",
+    indian:"YES", link:"https://casarealevents.com/",
+    verdict:"Lower Priority - Limited BYOV", type:"Winery",
+    notes:"Indian-friendly winery but limited BYOV and no lodging.",
+    actions:["Confirm BYOV policy for Indian caterers; if no outside caterer, eliminate"],
+    tier:"lower", siteFeeNum:15000, allInNum:45000
+  },
+  {
+    rank:14, name:"Costanoa Lodge", location:"Pescadero", region:"San Mateo Coast",
+    siteFee:"Ask", allIn:"Ask", capacity:"Ask",
+    byov:"Ask", kitchen:"Ask", lodging:"YES (lodge+glamping)",
+    fire:"Ask", noise:"Ask", baraat:"Ask",
+    haldi:"Ask", multiDay:"Ask", access:"Ask",
+    indian:"Ask", link:"https://www.costanoa.com/",
+    verdict:"Lower Priority - Needs Research", type:"Resort",
+    notes:"Unique lodge + glamping combo, coastal setting, ~1 hour from Bay Area.",
+    actions:["Contact for pricing, BYOV policy, kitchen access, Indian wedding logistics"],
+    tier:"lower", siteFeeNum:99999, allInNum:99999
+  },
+  {
+    rank:15, name:"Folktale Winery", location:"Carmel", region:"Monterey / Carmel",
+    siteFee:"$7.5K-$25K", allIn:"Ask", capacity:"Up to 200",
+    byov:"Unlikely", kitchen:"Ask", lodging:"NO",
+    fire:"Ask", noise:"Ask", baraat:"Ask",
+    haldi:"Ask", multiDay:"Ask", access:"Ask",
+    indian:"Ask", link:"https://www.folktalewinery.com/wedding-events/",
+    verdict:"Lower Priority - No BYOV", type:"Winery",
+    notes:"Beautiful Carmel Valley winery but no lodging and BYOV unlikely.",
+    actions:["Only pursue if BYOV confirmed; otherwise skip"],
+    tier:"lower", siteFeeNum:7500, allInNum:99999
+  },
+  {
+    rank:16, name:"Harvest Inn", location:"Napa", region:"Napa / Wine Country",
+    siteFee:"Ask", allIn:"Ask", capacity:"Ask",
+    byov:"Ask", kitchen:"Ask", lodging:"YES (resort)",
+    fire:"Ask", noise:"Ask", baraat:"Ask",
+    haldi:"Ask", multiDay:"Ask", access:"Ask",
+    indian:"Ask", link:"https://www.harvestinn.com/",
+    verdict:"Lower Priority - Needs Research", type:"Resort",
+    notes:"Napa resort, needs full research on pricing, lodging, BYOV, and kitchen.",
+    actions:["Research pricing, BYOV, kitchen, and Indian wedding policies"],
+    tier:"lower", siteFeeNum:99999, allInNum:99999
+  },
+  {
+    rank:17, name:"Carneros Resort", location:"Napa/Sonoma border", region:"Napa / Wine Country",
+    siteFee:"$60K+", allIn:"$80K+", capacity:"Ask",
+    byov:"Ask", kitchen:"Ask", lodging:"YES (luxury)",
+    fire:"Ask", noise:"Ask", baraat:"Ask",
+    haldi:"Caution", multiDay:"Ask", access:"Good",
+    indian:"Ask", link:"https://www.carnerosresort.com/",
+    verdict:"Lower Priority - Over Budget", type:"Resort",
+    notes:"Luxury resort, elopement packages affordable but full wedding likely exceeds $60K significantly.",
+    actions:["Only pursue if budget ceiling can stretch above $80K"],
+    tier:"lower", siteFeeNum:60000, allInNum:80000
+  },
+  {
+    rank:18, name:"Hyatt Regency Monterey", location:"Monterey", region:"Monterey / Carmel",
+    siteFee:"Ask", allIn:"Ask", capacity:"Up to 500",
+    byov:"Ask", kitchen:"Ask", lodging:"YES (hotel)",
+    fire:"Ask", noise:"Ask", baraat:"Ask",
+    haldi:"Caution", multiDay:"Ask", access:"Good",
+    indian:"YES", link:"https://www.hyatt.com/hyatt-regency/en-US/mryrm-hyatt-regency-monterey-hotel-and-spa",
+    verdict:"Lower Priority - Hotel Feel", type:"Resort",
+    notes:"Indian-friendly hotel with large capacity but hotel chain feel may not match intimate vision.",
+    actions:["Contact for Indian wedding package details and BYOV policy"],
+    tier:"lower", siteFeeNum:99999, allInNum:99999
+  },
+  {
+    rank:19, name:"B.R. Cohn Winery", location:"Sonoma", region:"Wine Country",
+    siteFee:"Ask", allIn:"Ask", capacity:"Ask",
+    byov:"Ask", kitchen:"Ask", lodging:"Ask",
+    fire:"Ask", noise:"Ask", baraat:"Ask",
+    haldi:"Ask", multiDay:"Ask", access:"Ask",
+    indian:"Ask", link:"https://www.brcohn.com/",
+    verdict:"Lower Priority - Needs Research", type:"Winery",
+    notes:"Sonoma winery, needs full research.",
+    actions:["Full research needed on all criteria"],
+    tier:"lower", siteFeeNum:99999, allInNum:99999
+  },
+  {
+    rank:20, name:"Palo Alto Country Club", location:"Palo Alto", region:"South Bay",
+    siteFee:"Ask", allIn:"Ask", capacity:"Ask",
+    byov:"YES", kitchen:"Ask", lodging:"Ask",
+    fire:"Ask", noise:"Ask", baraat:"Ask",
+    haldi:"Ask", multiDay:"Ask", access:"Ask",
+    indian:"YES", link:"",
+    verdict:"Lower Priority - Member-Oriented", type:"Club",
+    notes:"Member-oriented club, may need member sponsorship. Indian-friendly.",
+    actions:["Determine member sponsorship requirements"],
+    tier:"lower", siteFeeNum:99999, allInNum:99999
+  },
+  {
+    rank:21, name:"Bridges Golf Club", location:"San Ramon", region:"East Bay",
+    siteFee:"Ask", allIn:"Ask", capacity:"Ask",
+    byov:"Ask", kitchen:"Ask", lodging:"Ask",
+    fire:"Ask", noise:"Ask", baraat:"Ask",
+    haldi:"Ask", multiDay:"Ask", access:"Ask",
+    indian:"YES", link:"",
+    verdict:"Lower Priority - Golf Club Feel", type:"Club",
+    notes:"Golf club setting with Indian wedding experience.",
+    actions:["Contact for Indian wedding package and BYOV details"],
+    tier:"lower", siteFeeNum:99999, allInNum:99999
+  },
+  {
+    rank:22, name:"Elliston Vineyard", location:"Sunol", region:"East Bay",
+    siteFee:"Ask", allIn:"Ask", capacity:"Ask",
+    byov:"Ask", kitchen:"Ask", lodging:"Ask",
+    fire:"Ask", noise:"Ask", baraat:"Ask",
+    haldi:"Ask", multiDay:"Ask", access:"Ask",
+    indian:"Ask", link:"",
+    verdict:"Lower Priority - Needs Research", type:"Winery",
+    notes:"Historic vineyard estate in Sunol, needs full research.",
+    actions:["Full research needed"],
+    tier:"lower", siteFeeNum:99999, allInNum:99999
+  },
+  {
+    rank:23, name:"Club at Ruby Hill", location:"Pleasanton", region:"East Bay",
+    siteFee:"Ask", allIn:"Ask", capacity:"Ask",
+    byov:"Ask", kitchen:"Ask", lodging:"Ask",
+    fire:"Ask", noise:"Ask", baraat:"Ask",
+    haldi:"Ask", multiDay:"Ask", access:"Ask",
+    indian:"Ask", link:"",
+    verdict:"Lower Priority - Needs Research", type:"Club",
+    notes:"Country club in Pleasanton, needs full research.",
+    actions:["Full research needed"],
+    tier:"lower", siteFeeNum:99999, allInNum:99999
+  },
+  {
+    rank:24, name:"Nella Terra Cellars", location:"Napa", region:"Napa / Wine Country",
+    siteFee:"Ask", allIn:"Ask", capacity:"Ask",
+    byov:"Ask", kitchen:"Ask", lodging:"Ask",
+    fire:"Ask", noise:"Ask", baraat:"Ask",
+    haldi:"Ask", multiDay:"Ask", access:"Ask",
+    indian:"Ask", link:"",
+    verdict:"Lower Priority - Restrictions", type:"Winery",
+    notes:"No confetti/sparklers allowed, steep walk. Restrictions may limit Indian ceremonies.",
+    actions:["Restrictions on fire/sparklers likely make this incompatible"],
+    tier:"lower", siteFeeNum:99999, allInNum:99999
+  },
+  {
+    rank:25, name:"Canyon View Event Center", location:"\u2014", region:"Ask",
+    siteFee:"Ask", allIn:"Ask", capacity:"Ask",
+    byov:"YES", kitchen:"Ask", lodging:"Ask",
+    fire:"Ask", noise:"Ask", baraat:"Ask",
+    haldi:"Ask", multiDay:"Ask", access:"Ask",
+    indian:"Ask", link:"",
+    verdict:"Lower Priority - Needs Research", type:"EventCenter",
+    notes:"Accommodates outside vendors, need location and full details.",
+    actions:["Determine location and research all criteria"],
+    tier:"lower", siteFeeNum:99999, allInNum:99999
+  },
+  {
+    rank:26, name:"Stonebrae Country Club", location:"Hayward", region:"East Bay",
+    siteFee:"Ask", allIn:"Ask", capacity:"Ask",
+    byov:"Ask", kitchen:"Ask", lodging:"Ask",
+    fire:"Ask", noise:"Ask", baraat:"Ask",
+    haldi:"Ask", multiDay:"Ask", access:"Ask",
+    indian:"Ask", link:"",
+    verdict:"Lower Priority - Needs Research", type:"Club",
+    notes:"Country club in Hayward, needs full research.",
+    actions:["Full research needed"],
+    tier:"lower", siteFeeNum:99999, allInNum:99999
+  },
+  {
+    rank:27, name:"Club at Castlewood", location:"Pleasanton", region:"East Bay",
+    siteFee:"Ask", allIn:"Ask", capacity:"Ask",
+    byov:"Ask", kitchen:"Ask", lodging:"Ask",
+    fire:"Ask", noise:"Ask", baraat:"Ask",
+    haldi:"Ask", multiDay:"Ask", access:"Ask",
+    indian:"Ask", link:"",
+    verdict:"Lower Priority - Needs Research", type:"Club",
+    notes:"Country club in Pleasanton, needs full research.",
+    actions:["Full research needed"],
+    tier:"lower", siteFeeNum:99999, allInNum:99999
+  },
+  {
+    rank:28, name:"Ameswell", location:"Mountain View", region:"South Bay",
+    siteFee:"Ask", allIn:"Ask", capacity:"Ask",
+    byov:"Ask", kitchen:"Ask", lodging:"YES (hotel)",
+    fire:"Ask", noise:"Ask", baraat:"Ask",
+    haldi:"Ask", multiDay:"Ask", access:"Ask",
+    indian:"Ask", link:"https://www.ameswellhotel.com/",
+    verdict:"Lower Priority - Needs Research", type:"Resort",
+    notes:"Modern hotel near Google campus, needs wedding-specific research.",
+    actions:["Research wedding packages and BYOV policy"],
+    tier:"lower", siteFeeNum:99999, allInNum:99999
+  },
+  {
+    rank:29, name:"Hollins House", location:"Santa Cruz", region:"Santa Cruz",
+    siteFee:"Ask", allIn:"Ask", capacity:"Under 100",
+    byov:"Ask", kitchen:"Ask", lodging:"Ask",
+    fire:"Ask", noise:"Ask", baraat:"Ask",
+    haldi:"Ask", multiDay:"Ask", access:"Ask",
+    indian:"Ask", link:"",
+    verdict:"Lower Priority - Needs Research", type:"Estate",
+    notes:"Intimate venue in Santa Cruz, needs full research.",
+    actions:["Full research needed"],
+    tier:"lower", siteFeeNum:99999, allInNum:99999
+  },
+  {
+    rank:30, name:"Seascape Beach Resort", location:"Santa Cruz", region:"Santa Cruz",
+    siteFee:"Ask", allIn:"Ask", capacity:"Ask",
+    byov:"Ask", kitchen:"Ask", lodging:"YES (beach resort)",
+    fire:"Ask", noise:"Ask", baraat:"Ask",
+    haldi:"Ask", multiDay:"Ask", access:"Ask",
+    indian:"Ask", link:"https://www.seascaperesort.com/",
+    verdict:"Lower Priority - Needs Research", type:"Beach",
+    notes:"Beach resort setting, needs wedding-specific research.",
+    actions:["Research wedding packages, BYOV, kitchen, Indian wedding policies"],
+    tier:"lower", siteFeeNum:99999, allInNum:99999
+  },
+  {
+    rank:31, name:"Kenwood Inn & Spa", location:"Kenwood (Sonoma)", region:"Wine Country",
+    siteFee:"$10K + rooms", allIn:"Ask", capacity:"30 rooms",
+    byov:"YES (required)", kitchen:"NONE", lodging:"YES (30 rooms)",
+    fire:"High risk", noise:"Ask", baraat:"Limited",
+    haldi:"NO", multiDay:"YES", access:"Moderate",
+    indian:"Ask", link:"https://www.kenwoodinn.com/",
+    verdict:"ELIMINATED - No Kitchen", type:"Resort",
+    notes:"No kitchen whatsoever. All food transported = lukewarm Indian food. Temporary outdoor kitchen $3K-5K extra + fire risk. Room buyout consumes budget.",
+    actions:["Do not pursue. No kitchen makes Indian wedding impractical."],
+    tier:"eliminated", siteFeeNum:10000, allInNum:99999
+  },
+  {
+    rank:32, name:"Holman Ranch", location:"Carmel Valley", region:"Monterey / Carmel",
+    siteFee:"$45K-$71K", allIn:"$75K-$100K+", capacity:"Up to 150",
+    byov:"YES", kitchen:"Ask", lodging:"YES",
+    fire:"Ask", noise:"Ask", baraat:"Ask",
+    haldi:"Ask", multiDay:"YES", access:"Ask",
+    indian:"YES", link:"https://holmanranch.com/weddings/",
+    verdict:"ELIMINATED - Over Budget", type:"Ranch",
+    notes:"$45K-$71K venue fee ALONE exceeds the $60K total budget. Even at low end, only $15K left for everything else.",
+    actions:["Do not pursue unless budget ceiling increases significantly above $60K."],
+    tier:"eliminated", siteFeeNum:45000, allInNum:75000
+  },
+  {
+    rank:33, name:"Stonepine Estate", location:"Carmel Valley", region:"Monterey / Carmel",
+    siteFee:"$9K-$14K + F&B", allIn:"Ask", capacity:"Up to 300",
+    byov:"Ask", kitchen:"Residential", lodging:"YES (400 acres)",
+    fire:"Ask", noise:"Ask", baraat:"Limited",
+    haldi:"NO", multiDay:"YES", access:"Difficult",
+    indian:"Ask", link:"https://www.stonepineestate.com/weddings/",
+    verdict:"ELIMINATED - Wrong Venue Type", type:"Estate",
+    notes:"1929 historic villa = extreme turmeric/damage liability, residential kitchen, poor ADA. Beautiful. Completely wrong for Indian wedding.",
+    actions:["Do not pursue. Historic villa incompatible with Indian wedding infrastructure."],
+    tier:"eliminated", siteFeeNum:9000, allInNum:99999
+  },
+  {
+    rank:34, name:"Holly Farm", location:"Carmel", region:"Monterey / Carmel",
+    siteFee:"$28K-$57K+", allIn:"Ask", capacity:"Up to 300",
+    byov:"Limited", kitchen:"In-house only", lodging:"YES (24-28)",
+    fire:"Ask", noise:"No curfew", baraat:"Ask",
+    haldi:"Ask", multiDay:"YES", access:"Good",
+    indian:"YES", link:"https://hollyfarm.com/",
+    verdict:"ELIMINATED - No Real Indian Food", type:"Ranch",
+    notes:"Mandatory in-house caterer (La Cr\u00e8me). Indian fusion = marigolds on Western plates. Unless La Cr\u00e8me proves capable of real Indian cuisine (unlikely).",
+    actions:["Only reconsider if La Cr\u00e8me demonstrates genuine Indian cuisine capability."],
+    tier:"eliminated", siteFeeNum:28000, allInNum:99999
+  },
+  {
+    rank:35, name:"Timber Cove Resort", location:"Jenner (Sonoma Coast)", region:"Sonoma Coast",
+    siteFee:"~$19K", allIn:"Ask", capacity:"Up to 100",
+    byov:"NO", kitchen:"In-house only", lodging:"YES (46 rooms)",
+    fire:"Ask", noise:"Ask", baraat:"Ask",
+    haldi:"Ask", multiDay:"YES", access:"Moderate",
+    indian:"Ask", link:"https://www.timbercoveresort.com/",
+    verdict:"ELIMINATED - No BYOV", type:"Resort",
+    notes:"No BYOV (in-house chef only). Beautiful oceanfront cliffs but incompatible with #1 priority of bringing own Indian caterer.",
+    actions:["Do not pursue. No outside catering allowed."],
+    tier:"eliminated", siteFeeNum:19000, allInNum:99999
+  }
+];
+
+// ===== LOCALSTORAGE HELPERS =====
+function loadJSON(key, fallback) {
+  try { return JSON.parse(localStorage.getItem(key)) || fallback; }
+  catch { return fallback; }
+}
+function saveJSON(key, data) {
+  localStorage.setItem(key, JSON.stringify(data));
+}
+
+// ===== STATE =====
+let shortlisted = loadJSON('dday-shortlist', {});
+let ratings = loadJSON('dday-ratings', {});
+let venueNotes = loadJSON('dday-notes', {});
+let compareSet = new Set();
+
+// ===== PILL HELPER =====
+function pillClass(field, value) {
+  const v = value.toLowerCase().trim();
+  if (field === 'byov') {
+    if (v.startsWith('yes')) return 'pill-green';
+    if (v === 'likely' || v === 'yes (required)') return 'pill-green-light';
+    if (v === 'limited') return 'pill-yellow';
+    if (v === 'unlikely') return 'pill-orange';
+    if (v === 'no') return 'pill-red';
+    return 'pill-gray';
+  }
+  if (field === 'kitchen') {
+    if (v === 'commercial') return 'pill-green';
+    if (v === 'prep') return 'pill-green-light';
+    if (v === 'residential') return 'pill-yellow';
+    if (v === 'none' || v === 'in-house only') return 'pill-red';
+    return 'pill-gray';
+  }
+  if (field === 'lodging') {
+    if (v.startsWith('yes')) return 'pill-green';
+    if (v === 'minimal') return 'pill-yellow';
+    if (v === 'no') return 'pill-red';
+    return 'pill-gray';
+  }
+  if (field === 'fire') {
+    if (v === 'yes' || v === 'yes-confirmed') return 'pill-green';
+    if (v === 'likely') return 'pill-green-light';
+    if (v === 'ask') return 'pill-yellow';
+    if (v === 'high risk') return 'pill-orange';
+    if (v === 'no') return 'pill-red';
+    return 'pill-gray';
+  }
+  if (field === 'noise') {
+    if (v === '2am' || v === 'flexible' || v === 'no curfew') return 'pill-green';
+    if (v.includes('10pm')) return 'pill-orange';
+    if (v === 'ask') return 'pill-yellow';
+    return 'pill-gray';
+  }
+  if (field === 'baraat') {
+    if (v === 'excellent') return 'pill-green';
+    if (v === 'good') return 'pill-green-light';
+    if (v === 'limited' || v === 'difficult') return 'pill-orange';
+    if (v === 'ask') return 'pill-yellow';
+    return 'pill-gray';
+  }
+  if (field === 'haldi') {
+    if (v === 'yes') return 'pill-green';
+    if (v === 'caution') return 'pill-yellow';
+    if (v === 'high risk') return 'pill-orange';
+    if (v === 'no') return 'pill-red';
+    return 'pill-gray';
+  }
+  if (field === 'access') {
+    if (v === 'ada' || v === 'good') return 'pill-green';
+    if (v === 'moderate') return 'pill-green-light';
+    if (v === 'difficult') return 'pill-orange';
+    if (v === 'ask') return 'pill-yellow';
+    return 'pill-gray';
+  }
+  if (field === 'indian') {
+    if (v === 'yes') return 'pill-green';
+    if (v === 'ask') return 'pill-yellow';
+    if (v === 'no') return 'pill-red';
+    return 'pill-gray';
+  }
+  return '';
+}
+
+function makePill(field, value) {
+  const cls = pillClass(field, value);
+  return `<span class="pill ${cls}">${value}</span>`;
+}
+
+function tierBadge(tier) {
+  const labels = { tier1:'Tier 1', tier2:'Tier 2', research:'Research', lower:'Lower', eliminated:'Eliminated' };
+  const cls = tier === 'tier1' ? '1' : tier === 'tier2' ? '2' : tier;
+  return `<span class="tier-badge tier-${cls}">${labels[tier]||tier}</span>`;
+}
+
+function getInitials(name) {
+  return name.split(/\s+/).map(w => w[0]).join('').substring(0, 3).toUpperCase();
+}
+
+function getThumb(v) {
+  const t = venueTypes[v.type] || venueTypes.Estate;
+  const url = v.link || '#';
+  const target = v.link ? ' target="_blank" rel="noopener"' : '';
+  const onclick = v.link ? '' : ` onclick="event.preventDefault();"`;
+  return `<a href="${url}"${target}${onclick} class="venue-thumb" style="background:${t.gradient};"><span class="thumb-icon">${t.icon}</span><span class="thumb-initials">${getInitials(v.name)}</span></a>`;
+}
+
+// ===== STAR RATING HTML =====
+function starHtml(venueRank) {
+  const rating = ratings[venueRank] || 0;
+  let html = '<div class="star-rating">';
+  for (let i = 1; i <= 5; i++) {
+    html += `<span class="star ${i <= rating ? 'filled' : ''}" onclick="setRating(${venueRank},${i})">\u2605</span>`;
+  }
+  html += '</div>';
+  return html;
+}
+
+function setRating(rank, val) {
+  if (ratings[rank] === val) { delete ratings[rank]; }
+  else { ratings[rank] = val; }
+  saveJSON('dday-ratings', ratings);
+  renderTable();
+  filterVenues(activeFilter);
+}
+
+// ===== SHORTLIST =====
+function toggleShortlist(rank, e) {
+  e.stopPropagation();
+  if (shortlisted[rank]) { delete shortlisted[rank]; }
+  else { shortlisted[rank] = true; }
+  saveJSON('dday-shortlist', shortlisted);
+  renderTable();
+  filterVenues(activeFilter);
+}
+
+// ===== COMPARE =====
+function toggleCompare(rank, e) {
+  e.stopPropagation();
+  if (compareSet.has(rank)) { compareSet.delete(rank); }
+  else if (compareSet.size < 3) { compareSet.add(rank); }
+  updateCompareBtn();
+  renderTable();
+  filterVenues(activeFilter);
+}
+
+function updateCompareBtn() {
+  const btn = document.getElementById('compareBtn');
+  if (compareSet.size >= 2) {
+    btn.classList.add('show');
+    btn.textContent = `Compare (${compareSet.size})`;
+  } else {
+    btn.classList.remove('show');
+  }
+}
+
+function openCompare() {
+  const selected = venues.filter(v => compareSet.has(v.rank));
+  if (selected.length < 2) return;
+  const fields = [
+    ['Tier','tier',v=>tierBadge(v.tier)],
+    ['Location','location',v=>v.location],
+    ['Site Fee','siteFee',v=>v.siteFee],
+    ['All-In Est','allIn',v=>v.allIn],
+    ['Capacity','capacity',v=>v.capacity],
+    ['BYOV','byov',v=>makePill('byov',v.byov)],
+    ['Kitchen','kitchen',v=>makePill('kitchen',v.kitchen)],
+    ['Lodging','lodging',v=>makePill('lodging',v.lodging)],
+    ['Fire Ceremony','fire',v=>makePill('fire',v.fire)],
+    ['Noise','noise',v=>makePill('noise',v.noise)],
+    ['Baraat','baraat',v=>makePill('baraat',v.baraat)],
+    ['Haldi','haldi',v=>makePill('haldi',v.haldi)],
+    ['Access','access',v=>makePill('access',v.access)],
+    ['Indian Exp','indian',v=>makePill('indian',v.indian)],
+    ['Rating','rating',v=>starHtml(v.rank)],
+    ['Verdict','verdict',v=>`<em>${v.verdict}</em>`],
+  ];
+  const table = document.getElementById('compareTable');
+  let html = '<tr><th></th>';
+  selected.forEach(v => { html += `<th style="text-align:center;font-size:13px;color:var(--text);">${v.name}</th>`; });
+  html += '</tr>';
+  fields.forEach(([label,,fn]) => {
+    html += `<tr><td style="font-weight:600;color:var(--text-light);font-size:11px;text-transform:uppercase;">${label}</td>`;
+    selected.forEach(v => { html += `<td style="text-align:center;">${fn(v)}</td>`; });
+    html += '</tr>';
+  });
+  table.innerHTML = html;
+  document.getElementById('compareOverlay').classList.add('open');
+}
+
+function closeCompare() {
+  document.getElementById('compareOverlay').classList.remove('open');
+}
+
+// ===== VENUE NOTES =====
+function saveVenueNote(rank) {
+  const el = document.getElementById(`vnote-${rank}`);
+  if (el) {
+    if (el.value.trim()) { venueNotes[rank] = el.value; }
+    else { delete venueNotes[rank]; }
+    saveJSON('dday-notes', venueNotes);
+  }
+}
+
+// ===== RENDER TABLE =====
+function renderTable() {
+  const tbody = document.getElementById('venueBody');
+  tbody.innerHTML = '';
+  venues.forEach((v, i) => {
+    const tr = document.createElement('tr');
+    tr.className = v.tier === 'eliminated' ? 'eliminated' : '';
+    tr.dataset.tier = v.tier;
+    tr.dataset.idx = i;
+    tr.dataset.rank = v.rank;
+
+    const isShortlisted = shortlisted[v.rank];
+    const isCompared = compareSet.has(v.rank);
+
+    tr.innerHTML = `
+      <td class="compare-cell"><input type="checkbox" class="compare-cb" ${isCompared ? 'checked' : ''} onclick="toggleCompare(${v.rank},event)" title="Select to compare"></td>
+      <td class="photo-cell">${getThumb(v)}</td>
+      <td class="shortlist-cell"><button class="heart-btn ${isShortlisted ? 'active' : ''}" onclick="toggleShortlist(${v.rank},event)" title="Shortlist">\u2764</button></td>
+      <td style="text-align:center">${v.rank} ${tierBadge(v.tier)}</td>
+      <td>${v.link ? `<a class="venue-name" href="${v.link}" target="_blank" rel="noopener">${v.name}</a>` : `<span class="venue-name" onclick="toggleDetail(${i})">${v.name}</span>`}</td>
+      <td>${v.location}</td>
+      <td>${v.siteFee}</td>
+      <td>${v.allIn}</td>
+      <td>${makePill('byov', v.byov)}</td>
+      <td>${makePill('kitchen', v.kitchen)}</td>
+      <td>${makePill('lodging', v.lodging)}</td>
+      <td>${makePill('fire', v.fire)}</td>
+      <td>${makePill('noise', v.noise)}</td>
+      <td>${makePill('baraat', v.baraat)}</td>
+      <td>${makePill('haldi', v.haldi)}</td>
+      <td>${makePill('access', v.access)}</td>
+      <td>${makePill('indian', v.indian)}</td>
+      <td style="max-width:180px;white-space:normal;font-size:11px;">${v.verdict}</td>
+    `;
+    tr.addEventListener('click', function(e) {
+      if (e.target.tagName === 'A' || e.target.tagName === 'INPUT' || e.target.tagName === 'BUTTON' || e.target.closest('.heart-btn') || e.target.closest('.compare-cb')) return;
+      toggleDetail(i);
+    });
+    tbody.appendChild(tr);
+
+    // Detail row
+    const detailTr = document.createElement('tr');
+    detailTr.className = 'detail-row';
+    detailTr.id = `detail-${i}`;
+    const noteVal = venueNotes[v.rank] || '';
+    detailTr.innerHTML = `<td colspan="18">
+      <div class="detail-content">
+        <div>
+          <h4>Research Notes</h4>
+          <p>${v.notes}</p>
+          <h4>Capacity</h4>
+          <p>${v.capacity}</p>
+          <h4>Region</h4>
+          <p>${v.region}</p>
+        </div>
+        <div>
+          <h4>Action Items</h4>
+          ${v.actions.map(a => `<p>\u2022 ${a}</p>`).join('')}
+        </div>
+        <div>
+          <div class="detail-rating-section">
+            <label>Your Rating:</label>
+            ${starHtml(v.rank)}
+          </div>
+        </div>
+        <div class="detail-notes-area">
+          <div style="flex:1;min-width:250px;">
+            <h4>Your Notes</h4>
+            <textarea id="vnote-${v.rank}" placeholder="Add your thoughts about ${v.name}..." oninput="saveVenueNote(${v.rank})">${noteVal}</textarea>
+          </div>
+        </div>
+        <div class="verdict-text">${v.verdict}</div>
+      </div>
+    </td>`;
+    tbody.appendChild(detailTr);
+  });
+}
+
+function toggleDetail(idx) {
+  const el = document.getElementById(`detail-${idx}`);
+  if (el) {
+    const isOpen = el.classList.contains('open');
+    el.classList.toggle('open');
+    if (!isOpen) {
+      el.style.display = 'table-row';
+      el.style.opacity = '0';
+      requestAnimationFrame(() => {
+        el.style.transition = 'opacity 0.25s ease';
+        el.style.opacity = '1';
+      });
+    } else {
+      el.style.transition = 'none';
+      el.style.opacity = '';
+      el.style.display = '';
+    }
+  }
+}
+
+// ===== FILTERING =====
+let activeFilter = 'all';
+function filterVenues(filter) {
+  activeFilter = filter;
+  document.querySelectorAll('.filter-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.filter === filter);
+  });
+  const rows = document.querySelectorAll('#venueBody tr:not(.detail-row)');
+  let count = 0;
+  rows.forEach(row => {
+    const tier = row.dataset.tier;
+    const rank = parseInt(row.dataset.rank);
+    let show;
+    if (filter === 'all') { show = true; }
+    else if (filter === 'shortlisted') { show = !!shortlisted[rank]; }
+    else { show = tier === filter; }
+    row.classList.toggle('hidden', !show);
+    const idx = row.dataset.idx;
+    const detail = document.getElementById(`detail-${idx}`);
+    if (detail && !show) detail.classList.remove('open');
+    if (detail) detail.classList.toggle('hidden', !show);
+    if (show) count++;
+  });
+  document.getElementById('venueCount').textContent = `Showing ${count} venue${count !== 1 ? 's' : ''}`;
+}
+
+// ===== SORTING =====
+let sortCol = 'rank';
+let sortAsc = true;
+
+const sortKeys = {
+  rank: v => v.rank,
+  name: v => v.name.toLowerCase(),
+  location: v => v.location.toLowerCase(),
+  siteFee: v => v.siteFeeNum,
+  allIn: v => v.allInNum,
+  byov: v => ({ yes:0, 'yes (required)':1, likely:2, limited:3, ask:4, unlikely:5, no:6 }[v.byov.toLowerCase()] ?? 4),
+  kitchen: v => ({ commercial:0, prep:1, residential:2, ask:3, none:4, 'in-house only':5 }[v.kitchen.toLowerCase()] ?? 3),
+  lodging: v => v.lodging.toLowerCase().startsWith('yes') ? 0 : v.lodging.toLowerCase() === 'minimal' ? 1 : v.lodging.toLowerCase() === 'ask' ? 2 : 3,
+  fire: v => ({ yes:0, 'yes-confirmed':0, likely:1, ask:2, 'high risk':3, no:4 }[v.fire.toLowerCase()] ?? 2),
+  noise: v => ({ '2am':0, 'no curfew':0, flexible:1, ask:2, '10pm likely':3 }[v.noise.toLowerCase()] ?? 2),
+  baraat: v => ({ excellent:0, good:1, ask:2, limited:3, difficult:4 }[v.baraat.toLowerCase()] ?? 2),
+  haldi: v => ({ yes:0, caution:1, ask:2, 'high risk':3, no:4 }[v.haldi.toLowerCase()] ?? 2),
+  access: v => ({ ada:0, good:1, moderate:2, ask:3, difficult:4 }[v.access.toLowerCase()] ?? 3),
+  indian: v => ({ yes:0, ask:1, no:2 }[v.indian.toLowerCase()] ?? 1),
+};
+
+function sortTable(col) {
+  if (sortCol === col) { sortAsc = !sortAsc; }
+  else { sortCol = col; sortAsc = true; }
+  document.querySelectorAll('thead th').forEach(th => {
+    th.classList.remove('sorted');
+    const arrow = th.querySelector('.sort-arrow');
+    if (arrow) arrow.innerHTML = '\u25BC';
+  });
+  const activeHeader = document.querySelector(`th[data-col="${col}"]`);
+  if (activeHeader) {
+    activeHeader.classList.add('sorted');
+    const arrow = activeHeader.querySelector('.sort-arrow');
+    if (arrow) arrow.innerHTML = sortAsc ? '\u25B2' : '\u25BC';
+  }
+  const keyFn = sortKeys[col] || (v => v.rank);
+  venues.sort((a, b) => {
+    const va = keyFn(a), vb = keyFn(b);
+    if (va < vb) return sortAsc ? -1 : 1;
+    if (va > vb) return sortAsc ? 1 : -1;
+    return 0;
+  });
+  renderTable();
+  filterVenues(activeFilter);
+}
+
+// ===== BUDGET =====
+const budgetData = [
+  { label:'Venue/Site Fee', pct:[27,27,27], color:'#1d4ed8' },
+  { label:'Catering + Bar', pct:[35,35,35], color:'#059669' },
+  { label:'Decor (Mandap, Florals)', pct:[12,12,12], color:'#b8860b' },
+  { label:'Photo + Video', pct:[7,7,7], color:'#7c3aed' },
+  { label:'DJ / Music', pct:[4,4,4], color:'#db2777' },
+  { label:'Attire + MUA', pct:[6,6,6], color:'#0891b2' },
+  { label:'Lodging (if not incl.)', pct:[5,5,5], color:'#64748b' },
+  { label:'Contingency', pct:[4,4,4], color:'#ef4444' },
+];
+
+function renderBudget() {
+  [40000,50000,60000].forEach((total, ti) => {
+    const container = document.getElementById(`budget${total/1000}`);
+    if (!container) return;
+    container.innerHTML = '';
+    budgetData.forEach(cat => {
+      const pct = cat.pct[ti];
+      const amount = Math.round(total * pct / 100);
+      const div = document.createElement('div');
+      div.className = 'budget-bar-group';
+      div.innerHTML = `
+        <div class="budget-bar-label">
+          <span>${cat.label}</span>
+          <span>$${(amount/1000).toFixed(1)}K (${pct}%)</span>
+        </div>
+        <div class="budget-bar-track">
+          <div class="budget-bar-fill" style="width:${pct*2.5}%;background:${cat.color};">${pct}%</div>
+        </div>
+      `;
+      container.appendChild(div);
+    });
+  });
+}
+
+// ===== TABS =====
+function switchTab(tab) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById(`tab-${tab}`).classList.add('active');
+  document.querySelector(`.tab-btn[data-tab="${tab}"]`).classList.add('active');
+}
+
+// ===== ACTION ITEMS =====
+function renderActions() {
+  const container = document.getElementById('actionItems');
+  const saved = loadJSON('dday-actions', {});
+  container.innerHTML = '';
+
+  const catererActions = [
+    'Get quotes from 3-4 Bay Area Indian caterers BEFORE touring venues',
+    'Ask caterers: What kitchen setup do you need? What\'s a dealbreaker?',
+    'Shortlist caterers willing to do site visits with you'
+  ];
+  const catGroup = document.createElement('div');
+  catGroup.className = 'action-venue';
+  catGroup.innerHTML = `<h4 style="color:var(--eliminated);">Immediate: Caterer-First Strategy</h4>`;
+  catererActions.forEach((a, i) => {
+    const key = `caterer-${i}`;
+    const checked = saved[key] || false;
+    catGroup.innerHTML += `
+      <div class="action-item ${checked ? 'checked' : ''}">
+        <input type="checkbox" id="${key}" ${checked ? 'checked' : ''} onchange="toggleAction('${key}')">
+        <label for="${key}">${a}</label>
+      </div>
+    `;
+  });
+  container.appendChild(catGroup);
+
+  venues.filter(v => v.tier === 'tier1' || v.tier === 'tier2' || v.tier === 'research').forEach(v => {
+    const group = document.createElement('div');
+    group.className = 'action-venue';
+    group.innerHTML = `<h4>${tierBadge(v.tier)} ${v.name}</h4>`;
+    v.actions.forEach((a, i) => {
+      const key = `venue-${v.rank}-${i}`;
+      const checked = saved[key] || false;
+      group.innerHTML += `
+        <div class="action-item ${checked ? 'checked' : ''}">
+          <input type="checkbox" id="${key}" ${checked ? 'checked' : ''} onchange="toggleAction('${key}')">
+          <label for="${key}">${a}</label>
+        </div>
+      `;
+    });
+    container.appendChild(group);
+  });
+}
+
+function toggleAction(key) {
+  const saved = loadJSON('dday-actions', {});
+  saved[key] = document.getElementById(key).checked;
+  saveJSON('dday-actions', saved);
+  const item = document.getElementById(key).closest('.action-item');
+  item.classList.toggle('checked', saved[key]);
+}
+
+// ===== TIMELINE =====
+const defaultMilestones = [
+  { id:'m1', name:'Research & shortlist caterers', date:'', done:false },
+  { id:'m2', name:'Tour top 3-5 venues', date:'', done:false },
+  { id:'m3', name:'Book venue', date:'', done:false },
+  { id:'m4', name:'Book caterer', date:'', done:false },
+  { id:'m5', name:'Book photographer & videographer', date:'', done:false },
+  { id:'m6', name:'Book decorator / florist', date:'', done:false },
+  { id:'m7', name:'Book DJ / music', date:'', done:false },
+  { id:'m8', name:'Send save-the-dates', date:'', done:false },
+  { id:'m9', name:'Book pandit / officiant', date:'', done:false },
+  { id:'m10', name:'Finalize guest list', date:'', done:false },
+  { id:'m11', name:'Send wedding invitations', date:'', done:false },
+  { id:'m12', name:'Book MUA & hair', date:'', done:false },
+  { id:'m13', name:'Finalize mehndi & sangeet plans', date:'', done:false },
+  { id:'m14', name:'Menu tasting with caterer', date:'', done:false },
+  { id:'m15', name:'Finalize decor & mandap design', date:'', done:false },
+  { id:'m16', name:'Final venue walkthrough', date:'', done:false },
+  { id:'m17', name:'Confirm all vendor timelines', date:'', done:false },
+  { id:'m18', name:'Final guest count to caterer', date:'', done:false },
+];
+
+function loadTimeline() {
+  return loadJSON('dday-timeline', defaultMilestones);
+}
+
+function renderTimeline() {
+  const list = document.getElementById('timelineList');
+  const milestones = loadTimeline();
+  list.innerHTML = '';
+  milestones.forEach((m, i) => {
+    const div = document.createElement('div');
+    div.className = 'timeline-item';
+    div.innerHTML = `
+      <div class="timeline-status ${m.done ? 'done' : ''}" onclick="toggleMilestone(${i})" title="Toggle status">${m.done ? '\u2713' : ''}</div>
+      <span class="timeline-name ${m.done ? 'done' : ''}">${m.name}</span>
+      <input type="date" class="timeline-date" value="${m.date}" onchange="setMilestoneDate(${i}, this.value)">
+    `;
+    list.appendChild(div);
+  });
+}
+
+function toggleMilestone(idx) {
+  const milestones = loadTimeline();
+  milestones[idx].done = !milestones[idx].done;
+  saveJSON('dday-timeline', milestones);
+  renderTimeline();
+}
+
+function setMilestoneDate(idx, val) {
+  const milestones = loadTimeline();
+  milestones[idx].date = val;
+  saveJSON('dday-timeline', milestones);
+}
+
+// ===== VENDOR TRACKER =====
+function loadVendors() {
+  return loadJSON('dday-vendors', []);
+}
+
+function renderVendors() {
+  const container = document.getElementById('vendorCards');
+  const vendors = loadVendors();
+  container.innerHTML = '';
+  if (vendors.length === 0) {
+    container.innerHTML = '<p style="color:var(--text-muted);font-size:13px;padding:20px 0;">No vendors added yet. Use the form above to track caterers, photographers, decorators, and more.</p>';
+    return;
+  }
+  vendors.forEach((v, i) => {
+    const card = document.createElement('div');
+    card.className = 'vendor-card';
+    const statusColors = { Contacted:'#3b82f6', Quoted:'#f59e0b', Booked:'#16a34a', Declined:'#94a3b8' };
+    card.innerHTML = `
+      <button class="vendor-remove" onclick="removeVendor(${i})" title="Remove">&times;</button>
+      <h4>${v.name}</h4>
+      <span class="vendor-cat">${v.category}</span>
+      <span class="pill" style="background:${statusColors[v.status]||'#94a3b8'}22;color:${statusColors[v.status]||'#94a3b8'};font-size:10px;font-weight:700;margin-left:4px;">${v.status}</span>
+      ${v.phone ? `<p>\u{1F4DE} ${v.phone}</p>` : ''}
+      ${v.email ? `<p>\u{1F4E7} ${v.email}</p>` : ''}
+      ${v.quote ? `<p>\u{1F4B0} ${v.quote}</p>` : ''}
+      ${v.notes ? `<div class="vendor-notes">${v.notes}</div>` : ''}
+    `;
+    container.appendChild(card);
+  });
+}
+
+function addVendor() {
+  const name = document.getElementById('vName').value.trim();
+  const category = document.getElementById('vCategory').value;
+  if (!name || !category) return;
+  const vendors = loadVendors();
+  vendors.push({
+    name,
+    category,
+    phone: document.getElementById('vPhone').value.trim(),
+    email: document.getElementById('vEmail').value.trim(),
+    quote: document.getElementById('vQuote').value.trim(),
+    status: document.getElementById('vStatus').value,
+    notes: document.getElementById('vNotes').value.trim()
+  });
+  saveJSON('dday-vendors', vendors);
+  ['vName','vPhone','vEmail','vQuote','vNotes'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('vCategory').value = '';
+  document.getElementById('vStatus').value = 'Contacted';
+  renderVendors();
+}
+
+function removeVendor(idx) {
+  const vendors = loadVendors();
+  vendors.splice(idx, 1);
+  saveJSON('dday-vendors', vendors);
+  renderVendors();
+}
+
+// ===== CUSTOM NOTES =====
+function initCustomNotes() {
+  const ta = document.getElementById('customNotes');
+  ta.value = localStorage.getItem('dday-custom-notes') || '';
+  ta.addEventListener('input', () => {
+    localStorage.setItem('dday-custom-notes', ta.value);
+  });
+}
+
+// ===== EXPORT / IMPORT =====
+function exportState() {
+  const state = {};
+  ['dday-actions','dday-ratings','dday-notes','dday-shortlist','dday-timeline','dday-vendors','dday-custom-notes'].forEach(key => {
+    const val = localStorage.getItem(key);
+    if (val !== null) state[key] = val;
+  });
+  const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'dday-state.json';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function importState(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const state = JSON.parse(e.target.result);
+      Object.entries(state).forEach(([key, val]) => {
+        localStorage.setItem(key, val);
+      });
+      // Reload state
+      shortlisted = loadJSON('dday-shortlist', {});
+      ratings = loadJSON('dday-ratings', {});
+      venueNotes = loadJSON('dday-notes', {});
+      renderTable();
+      filterVenues(activeFilter);
+      renderActions();
+      renderTimeline();
+      renderVendors();
+      initCustomNotes();
+      alert('State imported successfully!');
+    } catch (err) {
+      alert('Error importing file: ' + err.message);
+    }
+  };
+  reader.readAsText(file);
+  event.target.value = '';
+}
+
+// Close compare on overlay click
+document.addEventListener('click', function(e) {
+  if (e.target === document.getElementById('compareOverlay')) {
+    closeCompare();
+  }
+});
+
+// Close compare on Escape
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeCompare();
+});
+
+// ===== INIT =====
+document.addEventListener('DOMContentLoaded', function() {
+  renderTable();
+  renderBudget();
+  renderActions();
+  renderTimeline();
+  renderVendors();
+  initCustomNotes();
+});
+</script>
+</body>
+</html>
