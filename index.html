@@ -4,22 +4,32 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>DDay — Indian Wedding Venue Planner</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --bg-body: #faf9f7;
+  --bg-body: #faf7f2;
   --bg-card: #ffffff;
-  --bg-header-from: #1e293b;
-  --bg-header-to: #334155;
+  --bg-header-from: #800020;
+  --bg-header-to: #5a0016;
   --accent: #b8860b;
   --accent-light: rgba(184,134,11,0.12);
-  --shadow: 0 1px 3px rgba(0,0,0,0.08);
-  --shadow-md: 0 4px 12px rgba(0,0,0,0.1);
-  --border: #e8e5e0;
-  --border-light: #f0ede8;
+  --accent-dark: #8a6508;
+  --burgundy: #800020;
+  --burgundy-light: rgba(128,0,32,0.08);
+  --blush: #fdf2f0;
+  --cream: #faf7f2;
+  --gold: #b8860b;
+  --shadow: 0 1px 3px rgba(0,0,0,0.06);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
+  --shadow-lg: 0 8px 30px rgba(0,0,0,0.1);
+  --border: #e8e2d9;
+  --border-light: #f0ebe4;
   --row-even: #ffffff;
-  --row-odd: #fdfcfb;
+  --row-odd: #fdfcfa;
   --row-hover: #fef9ef;
   --row-eliminated: #fef2f2;
   --text: #1a1a2e;
@@ -31,56 +41,100 @@
   --lower: #6b7280;
   --eliminated: #dc2626;
   --green: #16a34a;
-  --radius: 8px;
+  --radius: 10px;
+  --radius-lg: 16px;
+  --font-heading: 'Playfair Display', Georgia, 'Times New Roman', serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-family: var(--font-body);
   font-size: 13px;
   color: var(--text);
   background: var(--bg-body);
-  line-height: 1.5;
+  line-height: 1.6;
+}
+
+/* SCROLL ANIMATIONS */
+.fade-in-section {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+.fade-in-section.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* GOLD DIVIDER */
+.gold-divider {
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  margin: 0;
+  border: none;
+}
+.ornamental-border {
+  border: 1px solid var(--border);
+  border-image: linear-gradient(90deg, transparent 5%, var(--gold) 20%, var(--gold) 80%, transparent 95%) 1;
 }
 
 /* HEADER */
 .header {
   background: linear-gradient(135deg, var(--bg-header-from), var(--bg-header-to));
   color: #fff;
-  padding: 20px 24px;
+  padding: 40px 32px 36px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: 16px;
+  position: relative;
+  overflow: hidden;
+}
+.header::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200' viewBox='0 0 200 200'%3E%3Cpath d='M100 20 C120 40 140 40 160 20 C140 40 140 60 160 80 C140 60 120 60 100 80 C120 60 120 40 100 20Z' fill='none' stroke='%23ffffff' stroke-width='0.5' opacity='0.06'/%3E%3Cpath d='M100 120 C120 140 140 140 160 120 C140 140 140 160 160 180 C140 160 120 160 100 180 C120 160 120 140 100 120Z' fill='none' stroke='%23ffffff' stroke-width='0.5' opacity='0.06'/%3E%3Cpath d='M0 70 C20 90 40 90 60 70 C40 90 40 110 60 130 C40 110 20 110 0 130 C20 110 20 90 0 70Z' fill='none' stroke='%23ffffff' stroke-width='0.5' opacity='0.06'/%3E%3Ccircle cx='100' cy='100' r='60' fill='none' stroke='%23ffffff' stroke-width='0.3' opacity='0.04'/%3E%3Ccircle cx='100' cy='100' r='80' fill='none' stroke='%23ffffff' stroke-width='0.3' opacity='0.03'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+  pointer-events: none;
 }
 .header-left h1 {
-  font-size: 22px;
-  font-weight: 300;
-  letter-spacing: 2px;
+  font-family: var(--font-heading);
+  font-size: 36px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
 .header-left .subtitle {
-  font-size: 13px;
-  color: #94a3b8;
-  margin-top: 2px;
+  font-family: var(--font-heading);
+  font-size: 15px;
+  color: rgba(255,255,255,0.75);
+  margin-top: 4px;
   letter-spacing: 0.5px;
+  font-style: italic;
 }
 .header-stats {
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
+  position: relative;
+  z-index: 1;
 }
 .stat-chip {
-  background: rgba(255,255,255,0.1);
-  backdrop-filter: blur(4px);
-  border: 1px solid rgba(255,255,255,0.15);
-  padding: 6px 14px;
-  border-radius: 20px;
+  background: rgba(255,255,255,0.12);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.18);
+  padding: 8px 18px;
+  border-radius: 24px;
   font-size: 12px;
-  color: #e2e8f0;
+  color: #f1e8e0;
   white-space: nowrap;
+  transition: background 0.2s, transform 0.2s;
 }
+.stat-chip:hover { background: rgba(255,255,255,0.18); transform: translateY(-1px); }
 .stat-chip strong {
-  color: #fbbf24;
+  color: #f5c842;
   font-weight: 600;
 }
 
@@ -506,36 +560,49 @@ td .pill {
 .sections-container {
   max-width: 1400px;
   margin: 0 auto;
-  padding: 24px 16px;
+  padding: 32px 20px;
 }
 
 .tab-bar {
   display: flex;
-  gap: 0;
-  background: #f8f6f3;
-  border-radius: var(--radius) var(--radius) 0 0;
+  gap: 4px;
+  background: linear-gradient(135deg, #f8f5f0, #f3efe8);
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
   overflow-x: auto;
   border: 1px solid var(--border);
   border-bottom: none;
+  padding: 8px 8px 0;
 }
 .tab-btn {
   background: transparent;
   color: var(--text-light);
   border: none;
-  padding: 11px 20px;
-  font-size: 13px;
+  padding: 10px 20px;
+  font-size: 12.5px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.25s ease;
   white-space: nowrap;
-  border-bottom: 2px solid transparent;
+  border-radius: 20px 20px 0 0;
   position: relative;
+  font-family: var(--font-body);
+  letter-spacing: 0.2px;
 }
-.tab-btn:hover { color: var(--text); background: rgba(0,0,0,0.03); }
+.tab-btn:hover { color: var(--text); background: rgba(184,134,11,0.06); }
 .tab-btn.active {
-  color: var(--accent);
+  color: var(--burgundy);
   background: var(--bg-card);
-  border-bottom-color: var(--accent);
+  box-shadow: 0 -2px 8px rgba(128,0,32,0.06);
+}
+.tab-btn.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 20%;
+  right: 20%;
+  height: 3px;
+  background: linear-gradient(90deg, var(--burgundy), var(--gold));
+  border-radius: 3px 3px 0 0;
 }
 
 .tab-panel {
@@ -543,19 +610,21 @@ td .pill {
   background: var(--bg-card);
   border: 1px solid var(--border);
   border-top: none;
-  padding: 24px;
-  border-radius: 0 0 var(--radius) var(--radius);
-  box-shadow: var(--shadow);
+  padding: 28px;
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+  box-shadow: var(--shadow-md);
 }
 .tab-panel.active { display: block; }
 
 /* SECTION HEADERS */
 .section-title {
-  font-size: 16px;
+  font-family: var(--font-heading);
+  font-size: 20px;
   font-weight: 600;
-  margin-bottom: 16px;
-  padding-bottom: 8px;
-  border-bottom: 2px solid var(--accent-light);
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid transparent;
+  border-image: linear-gradient(90deg, var(--burgundy), var(--gold), transparent) 1;
   color: var(--text);
 }
 
@@ -842,12 +911,219 @@ td .pill {
   margin-top: 6px;
 }
 
+/* ===== WEDDING WEEKEND TAB ===== */
+.ww-events { display: grid; grid-template-columns: 1fr; gap: 16px; }
+.ww-card {
+  background: var(--blush);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--burgundy);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  padding: 20px 24px;
+  transition: box-shadow 0.25s, transform 0.15s;
+  position: relative;
+}
+.ww-card:hover { box-shadow: var(--shadow-md); transform: translateY(-1px); }
+.ww-card .ww-icon { font-size: 28px; position: absolute; top: 16px; right: 20px; }
+.ww-card h4 { font-family: var(--font-heading); font-size: 18px; margin-bottom: 8px; color: var(--burgundy); }
+.ww-card .ww-fields { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin: 12px 0; }
+.ww-card .ww-fields input, .ww-card .ww-fields textarea {
+  width: 100%; border: 1px solid var(--border); border-radius: 6px; padding: 7px 10px;
+  font-family: var(--font-body); font-size: 12px; background: #fff; transition: border-color 0.2s;
+}
+.ww-card .ww-fields input:focus, .ww-card .ww-fields textarea:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 2px var(--accent-light); }
+.ww-card .ww-fields textarea { grid-column: 1 / -1; min-height: 50px; resize: vertical; }
+.ww-card .ww-cost { display: flex; align-items: center; gap: 8px; margin-top: 8px; }
+.ww-card .ww-cost input { width: 120px; border: 1px solid var(--border); border-radius: 6px; padding: 6px 10px; font-size: 12px; font-family: var(--font-body); }
+.ww-card .ww-tip {
+  background: rgba(184,134,11,0.08); border-radius: 6px; padding: 10px 14px;
+  font-size: 11.5px; color: #78350f; margin-top: 10px; line-height: 1.5;
+}
+.ww-total {
+  background: linear-gradient(135deg, var(--burgundy), #5a0016);
+  color: #fff; border-radius: var(--radius); padding: 18px 24px; margin-top: 16px;
+  display: flex; justify-content: space-between; align-items: center;
+  font-family: var(--font-heading); font-size: 18px;
+}
+.ww-total span:last-child { font-size: 24px; color: #f5c842; }
+
+/* ===== GUEST LIST TAB ===== */
+.gl-form {
+  display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr auto;
+  gap: 8px; margin-bottom: 20px; padding: 16px; background: var(--blush);
+  border-radius: var(--radius); border: 1px solid var(--border);
+}
+.gl-form input, .gl-form select {
+  border: 1px solid var(--border); border-radius: 6px; padding: 8px 10px;
+  font-family: var(--font-body); font-size: 12px; background: #fff; transition: border-color 0.2s;
+}
+.gl-form input:focus, .gl-form select:focus { outline: none; border-color: var(--gold); }
+.gl-add-btn {
+  background: var(--burgundy); color: #fff; border: none; padding: 8px 18px;
+  border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; transition: background 0.2s;
+}
+.gl-add-btn:hover { background: #5a0016; }
+.gl-stats {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 10px; margin-bottom: 20px;
+}
+.gl-stat-card {
+  background: var(--bg-body); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 14px 16px; text-align: center; transition: transform 0.15s;
+}
+.gl-stat-card:hover { transform: translateY(-2px); }
+.gl-stat-card .gl-stat-num { font-family: var(--font-heading); font-size: 28px; font-weight: 700; color: var(--burgundy); }
+.gl-stat-card .gl-stat-label { font-size: 11px; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; }
+.gl-search {
+  display: flex; gap: 8px; margin-bottom: 16px; align-items: center;
+}
+.gl-search input {
+  flex: 1; max-width: 300px; border: 1px solid var(--border); border-radius: 20px;
+  padding: 8px 16px; font-family: var(--font-body); font-size: 12px; background: #fff;
+}
+.gl-search input:focus { outline: none; border-color: var(--gold); }
+.gl-search select { border: 1px solid var(--border); border-radius: 20px; padding: 7px 14px; font-size: 12px; background: #fff; }
+.gl-table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: var(--radius); }
+.gl-table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+.gl-table thead th {
+  background: #f8f5f0; padding: 10px 12px; font-size: 10.5px; text-transform: uppercase;
+  letter-spacing: 0.4px; font-weight: 600; color: var(--text-light); border-bottom: 2px solid var(--border);
+  text-align: left; white-space: nowrap;
+}
+.gl-table tbody td { padding: 9px 12px; border-bottom: 1px solid var(--border-light); vertical-align: middle; }
+.gl-table tbody tr:nth-child(even) { background: var(--row-odd); }
+.gl-table tbody tr:hover { background: var(--row-hover); }
+.gl-remove { background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 16px; transition: color 0.15s; }
+.gl-remove:hover { color: var(--eliminated); }
+.gl-rsvp-pill {
+  display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 10.5px; font-weight: 600;
+}
+.rsvp-confirmed { background: #dcfce7; color: #166534; }
+.rsvp-pending { background: #fefce8; color: #854d0e; }
+.rsvp-declined { background: #fef2f2; color: #991b1b; }
+
+/* ===== DECOR & THEME TAB ===== */
+.decor-section { margin-bottom: 32px; }
+.decor-section h4 {
+  font-family: var(--font-heading); font-size: 17px; color: var(--burgundy);
+  margin-bottom: 14px; padding-bottom: 6px;
+  border-bottom: 1px solid var(--border);
+}
+.gallery-grid {
+  column-count: 3; column-gap: 12px;
+}
+.gallery-item {
+  break-inside: avoid; margin-bottom: 12px; border-radius: var(--radius);
+  overflow: hidden; cursor: pointer; position: relative; transition: transform 0.2s, box-shadow 0.2s;
+}
+.gallery-item:hover { transform: scale(1.02); box-shadow: var(--shadow-lg); }
+.gallery-item img { width: 100%; display: block; border-radius: var(--radius); }
+.lightbox-overlay {
+  display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 2000;
+  justify-content: center; align-items: center; padding: 20px; cursor: pointer;
+}
+.lightbox-overlay.open { display: flex; }
+.lightbox-overlay img { max-width: 90vw; max-height: 85vh; border-radius: var(--radius-lg); box-shadow: 0 20px 60px rgba(0,0,0,0.4); }
+.lightbox-close {
+  position: fixed; top: 20px; right: 30px; background: none; border: none;
+  color: #fff; font-size: 36px; cursor: pointer; z-index: 2001; line-height: 1;
+}
+.lightbox-nav {
+  position: fixed; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.15);
+  border: none; color: #fff; font-size: 32px; cursor: pointer; padding: 12px 16px;
+  border-radius: 8px; z-index: 2001; transition: background 0.2s;
+}
+.lightbox-nav:hover { background: rgba(255,255,255,0.25); }
+.lightbox-prev { left: 20px; }
+.lightbox-next { right: 20px; }
+
+.palette-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px;
+}
+.palette-card {
+  border: 1px solid var(--border); border-radius: var(--radius); padding: 16px;
+  cursor: pointer; transition: all 0.2s; position: relative;
+}
+.palette-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+.palette-card.selected { border-color: var(--gold); box-shadow: 0 0 0 2px var(--accent-light); }
+.palette-card .palette-name { font-weight: 600; font-size: 13px; margin-bottom: 8px; }
+.palette-colors { display: flex; gap: 4px; margin-bottom: 8px; }
+.palette-swatch { width: 36px; height: 36px; border-radius: 50%; border: 2px solid #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.15); }
+.palette-card .palette-desc { font-size: 11px; color: var(--text-light); }
+.palette-card .fav-star { position: absolute; top: 10px; right: 12px; font-size: 18px; color: #d4d0ca; cursor: pointer; transition: color 0.15s; }
+.palette-card .fav-star.active { color: #f59e0b; }
+
+.mandap-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px;
+}
+.mandap-card {
+  background: var(--blush); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 20px; transition: box-shadow 0.2s;
+}
+.mandap-card:hover { box-shadow: var(--shadow-md); }
+.mandap-card h5 { font-family: var(--font-heading); font-size: 16px; color: var(--burgundy); margin-bottom: 6px; }
+.mandap-card .mandap-tag { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 10px; font-weight: 700; background: var(--accent-light); color: var(--accent); text-transform: uppercase; margin-bottom: 8px; }
+.mandap-card p { font-size: 12px; color: var(--text-light); line-height: 1.6; }
+
+.decor-checklist { columns: 2; column-gap: 24px; list-style: none; }
+.decor-checklist li {
+  padding: 8px 0 8px 32px; border-bottom: 1px solid var(--border-light);
+  font-size: 12.5px; position: relative; break-inside: avoid;
+}
+.decor-checklist li input[type="checkbox"] {
+  position: absolute; left: 0; top: 10px; cursor: pointer; accent-color: var(--gold); width: 15px; height: 15px;
+}
+.decor-checklist li.checked-item label { text-decoration: line-through; color: var(--text-muted); }
+.decor-checklist li label { cursor: pointer; }
+
+/* ===== CATERING GUIDE TAB ===== */
+.catering-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.menu-builder { margin-bottom: 24px; }
+.menu-category {
+  background: var(--blush); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 16px; margin-bottom: 12px;
+}
+.menu-category h5 { font-family: var(--font-heading); font-size: 15px; color: var(--burgundy); margin-bottom: 10px; }
+.menu-items { display: flex; flex-wrap: wrap; gap: 6px; }
+.menu-item-chip {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 5px 12px; border-radius: 18px; font-size: 11.5px;
+  cursor: pointer; transition: all 0.2s; border: 1px solid var(--border);
+  background: #fff; color: var(--text); user-select: none;
+}
+.menu-item-chip:hover { border-color: var(--gold); background: var(--accent-light); }
+.menu-item-chip.selected { background: var(--burgundy); color: #fff; border-color: var(--burgundy); }
+.menu-item-chip.selected:hover { background: #5a0016; }
+.menu-summary {
+  background: linear-gradient(135deg, var(--burgundy), #5a0016);
+  color: #fff; border-radius: var(--radius); padding: 18px 24px; margin-top: 16px;
+}
+.menu-summary h5 { font-family: var(--font-heading); font-size: 16px; margin-bottom: 10px; color: #f5c842; }
+.menu-summary ul { list-style: none; font-size: 12px; line-height: 1.8; }
+.catering-tip {
+  background: var(--accent-light); border-radius: var(--radius); padding: 14px 18px;
+  font-size: 12px; color: #78350f; margin-bottom: 12px; line-height: 1.6;
+}
+.catering-tip strong { color: var(--burgundy); }
+.kitchen-checklist { list-style: none; }
+.kitchen-checklist li {
+  padding: 8px 0 8px 32px; border-bottom: 1px solid var(--border-light);
+  font-size: 12.5px; position: relative;
+}
+.kitchen-checklist li input[type="checkbox"] {
+  position: absolute; left: 0; top: 10px; cursor: pointer; accent-color: var(--gold); width: 15px; height: 15px;
+}
+.kitchen-checklist li.checked-item label { text-decoration: line-through; color: var(--text-muted); }
+.kitchen-checklist li label { cursor: pointer; }
+
 /* FOOTER */
 .footer {
   text-align: center;
-  padding: 20px 16px;
+  padding: 28px 16px;
   color: var(--text-muted);
   font-size: 11px;
+  font-family: var(--font-heading);
+  font-style: italic;
+  letter-spacing: 0.3px;
 }
 
 /* PRINT */
@@ -859,20 +1135,31 @@ td .pill {
 
 /* MOBILE */
 @media (max-width: 768px) {
-  .header { padding: 14px 12px; }
-  .header-left h1 { font-size: 18px; }
+  .header { padding: 20px 14px; }
+  .header-left h1 { font-size: 24px; }
   .header-stats { gap: 6px; }
-  .stat-chip { padding: 4px 10px; font-size: 11px; }
+  .stat-chip { padding: 5px 12px; font-size: 11px; }
   .filter-bar { padding: 8px 10px; }
   .alert-bar { margin: 8px 8px 0; }
   .table-container { margin: 8px 8px 0; }
-  .filter-bar, .sections-container { padding-left: 8px; padding-right: 8px; }
-  .sections-container { padding: 12px 8px; }
+  .filter-bar, .sections-container { padding-left: 10px; padding-right: 10px; }
+  .sections-container { padding: 16px 10px; }
   .detail-content { grid-template-columns: 1fr; }
   .budget-grid { grid-template-columns: 1fr; }
   .questions-grid { grid-template-columns: 1fr; }
   .compare-panel { padding: 16px; }
-  .tab-btn { padding: 9px 14px; font-size: 12px; }
+  .tab-btn { padding: 8px 12px; font-size: 11px; }
+  .gl-form { grid-template-columns: 1fr 1fr; }
+  .ww-card .ww-fields { grid-template-columns: 1fr; }
+  .gallery-grid { column-count: 2; }
+  .catering-grid { grid-template-columns: 1fr; }
+  .decor-checklist { columns: 1; }
+  .palette-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 480px) {
+  .gallery-grid { column-count: 1; }
+  .gl-form { grid-template-columns: 1fr; }
+  .gl-stats { grid-template-columns: 1fr 1fr; }
 }
 </style>
 </head>
@@ -882,7 +1169,7 @@ td .pill {
 <div class="header">
   <div class="header-left">
     <h1>DDay</h1>
-    <div class="subtitle">Indian Wedding Venue Planner</div>
+    <div class="subtitle">Your Indian Wedding Journey, Beautifully Planned</div>
   </div>
   <div class="header-stats">
     <span class="stat-chip"><strong>$30K–$60K</strong>&ensp;Budget</span>
@@ -891,6 +1178,7 @@ td .pill {
     <span class="stat-chip"><strong>35</strong>&ensp;Venues Tracked</span>
   </div>
 </div>
+<hr class="gold-divider">
 
 <!-- ALERT BAR -->
 <div class="alert-bar">
@@ -969,6 +1257,10 @@ td .pill {
     <button class="tab-btn" data-tab="timeline" onclick="switchTab('timeline')">Timeline</button>
     <button class="tab-btn" data-tab="vendors" onclick="switchTab('vendors')">Vendor Tracker</button>
     <button class="tab-btn" data-tab="notes" onclick="switchTab('notes')">Our Notes</button>
+    <button class="tab-btn" data-tab="weekend" onclick="switchTab('weekend')">Wedding Weekend</button>
+    <button class="tab-btn" data-tab="guestlist" onclick="switchTab('guestlist')">Guest List</button>
+    <button class="tab-btn" data-tab="decor" onclick="switchTab('decor')">Decor &amp; Theme</button>
+    <button class="tab-btn" data-tab="catering" onclick="switchTab('catering')">Catering Guide</button>
   </div>
 
   <!-- BUDGET TAB -->
@@ -1107,9 +1399,118 @@ td .pill {
     <textarea class="custom-notes-area" id="customNotes" placeholder="Write anything here &mdash; decisions made, things discussed, ideas for the wedding..."></textarea>
     <p class="notes-hint">Auto-saved to your browser as you type.</p>
   </div>
+
+  <!-- WEDDING WEEKEND TAB -->
+  <div class="tab-panel" id="tab-weekend">
+    <h3 class="section-title">Wedding Weekend &mdash; Multi-Day Event Planner</h3>
+    <p style="font-size:12px;color:var(--text-light);margin-bottom:20px;">Plan each ceremony and celebration. All data auto-saved to your browser.</p>
+    <div class="ww-events" id="wwEvents"></div>
+    <div class="ww-total" id="wwTotal">
+      <span>Estimated Weekend Total</span>
+      <span>$0</span>
+    </div>
+  </div>
+
+  <!-- GUEST LIST TAB -->
+  <div class="tab-panel" id="tab-guestlist">
+    <h3 class="section-title">Guest List &amp; RSVP Manager</h3>
+    <div class="gl-stats" id="glStats"></div>
+    <div class="gl-form" id="glForm">
+      <input type="text" id="glName" placeholder="Guest name">
+      <select id="glSide"><option value="Bride">Bride's Side</option><option value="Groom">Groom's Side</option><option value="Mutual">Mutual</option></select>
+      <select id="glRsvp"><option value="Pending">Pending</option><option value="Confirmed">Confirmed</option><option value="Declined">Declined</option></select>
+      <select id="glMeal"><option value="Veg">Vegetarian</option><option value="Non-Veg">Non-Veg</option><option value="Jain">Jain</option><option value="Vegan">Vegan</option></select>
+      <input type="number" id="glPlus" placeholder="+1s" min="0" max="5" style="width:70px;">
+      <select id="glHotel"><option value="No">No Hotel</option><option value="Yes">Hotel Needed</option></select>
+      <button class="gl-add-btn" onclick="addGuest()">+ Add Guest</button>
+    </div>
+    <div class="gl-search">
+      <input type="text" id="glSearch" placeholder="Search guests..." oninput="renderGuests()">
+      <select id="glFilterRsvp" onchange="renderGuests()"><option value="All">All RSVP</option><option value="Pending">Pending</option><option value="Confirmed">Confirmed</option><option value="Declined">Declined</option></select>
+      <select id="glFilterSide" onchange="renderGuests()"><option value="All">All Sides</option><option value="Bride">Bride</option><option value="Groom">Groom</option><option value="Mutual">Mutual</option></select>
+    </div>
+    <div class="gl-table-wrap">
+      <table class="gl-table">
+        <thead><tr>
+          <th>Name</th><th>Side</th><th>RSVP</th><th>Meal</th><th>+1s</th><th>Hotel</th><th></th>
+        </tr></thead>
+        <tbody id="glBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- DECOR & THEME TAB -->
+  <div class="tab-panel" id="tab-decor">
+    <h3 class="section-title">Decor &amp; Theme Inspiration</h3>
+
+    <div class="decor-section">
+      <h4>Venue Photo Gallery</h4>
+      <div class="gallery-grid" id="galleryGrid"></div>
+    </div>
+
+    <div class="decor-section">
+      <h4>NorCal Indian Wedding Color Palettes</h4>
+      <p style="font-size:12px;color:var(--text-light);margin-bottom:12px;">Click the star to save your favorite palettes.</p>
+      <div class="palette-grid" id="paletteGrid"></div>
+    </div>
+
+    <div class="decor-section">
+      <h4>Mandap Style Guide</h4>
+      <div class="mandap-grid" id="mandapGrid"></div>
+    </div>
+
+    <div class="decor-section">
+      <h4>Decor Checklist</h4>
+      <p style="font-size:12px;color:var(--text-light);margin-bottom:12px;">Track your decor planning progress. Auto-saved.</p>
+      <ul class="decor-checklist" id="decorChecklist"></ul>
+    </div>
+  </div>
+
+  <!-- CATERING GUIDE TAB -->
+  <div class="tab-panel" id="tab-catering">
+    <h3 class="section-title">NorCal Indian Catering Guide</h3>
+    <div class="catering-grid">
+      <div>
+        <h4 style="font-family:var(--font-heading);font-size:17px;color:var(--burgundy);margin-bottom:14px;">Sample Menu Builder</h4>
+        <p style="font-size:12px;color:var(--text-light);margin-bottom:14px;">Click items to build your dream menu. Selections are saved automatically.</p>
+        <div id="menuBuilder"></div>
+        <div class="menu-summary" id="menuSummary" style="display:none;">
+          <h5>Your Selected Menu</h5>
+          <ul id="menuSummaryList"></ul>
+        </div>
+      </div>
+      <div>
+        <div class="catering-tip">
+          <strong>Bay Area Pricing:</strong> Expect $40&ndash;$80 per plate for Indian catering in NorCal. Premium caterers (Botto's, Kasa, etc.) run $65&ndash;$80. Mid-range options $40&ndash;$55. Always confirm if price includes service staff, chafing dishes, and cleanup.
+        </div>
+        <div class="catering-tip">
+          <strong>Caterer-First Strategy:</strong> Interview and shortlist your caterer BEFORE finalizing your venue. Their kitchen requirements will eliminate 50%+ of venues immediately. A caterer who needs a commercial kitchen won't work at a winery with only a prep sink.
+        </div>
+        <div class="catering-tip">
+          <strong>Dietary Accommodations:</strong><br>
+          &bull; <strong>Jain:</strong> No onion, garlic, root vegetables (potatoes OK for some). Confirm with guests individually.<br>
+          &bull; <strong>Vegan:</strong> No dairy &mdash; means no paneer, ghee, cream, raita. Surprisingly tricky for Indian menus.<br>
+          &bull; <strong>Gluten-Free:</strong> Most Indian food is naturally GF, but confirm naan/roti alternatives.<br>
+          &bull; <strong>Nut Allergies:</strong> Critical &mdash; many Indian desserts and gravies use cashew/almond paste. Alert caterer prominently.
+        </div>
+        <h4 style="font-family:var(--font-heading);font-size:15px;color:var(--burgundy);margin:20px 0 12px;">Kitchen Requirements Checklist</h4>
+        <p style="font-size:12px;color:var(--text-light);margin-bottom:12px;">Verify these at every venue tour with your caterer.</p>
+        <ul class="kitchen-checklist" id="kitchenChecklist"></ul>
+      </div>
+    </div>
+  </div>
 </div>
 
-<div class="footer">DDay Wedding Planner &mdash; All data stored locally in your browser</div>
+<hr class="gold-divider">
+<div class="footer">DDay Wedding Planner &mdash; All data stored locally in your browser &mdash; Made with love</div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox-overlay" id="lightboxOverlay" onclick="closeLightbox(event)">
+  <button class="lightbox-close" onclick="closeLightbox(event)">&times;</button>
+  <button class="lightbox-nav lightbox-prev" onclick="navLightbox(-1,event)">&#8249;</button>
+  <img id="lightboxImg" src="" alt="Gallery photo">
+  <button class="lightbox-nav lightbox-next" onclick="navLightbox(1,event)">&#8250;</button>
+</div>
 
 <script>
 // ===== VENUE TYPE MAPPING =====
@@ -2140,10 +2541,381 @@ function initCustomNotes() {
   });
 }
 
+// ===== WEDDING WEEKEND =====
+const defaultWWEvents = [
+  { id:'mehndi', name:'Mehndi', icon:'\u{270B}', datetime:'', location:'', description:'', cost:'',
+    tip:'Usually held 1-2 days before the wedding. In NorCal, consider hosting at a private home or small venue. Budget $2K-$5K for a mehndi artist for 20-40 guests. Tip: Book 2 artists for 40+ guests to avoid 6+ hour sessions.' },
+  { id:'sangeet', name:'Sangeet & Garba', icon:'\u{1F3B6}', datetime:'', location:'', description:'', cost:'',
+    tip:'Friday evening is traditional. Needs a dance floor, sound system, and ideally midnight+ music cutoff. Many NorCal venues restrict music to 10pm \u2014 verify this. Budget $3K-$8K including DJ, decor, and food.' },
+  { id:'haldi', name:'Haldi Ceremony', icon:'\u{1F31F}', datetime:'', location:'', description:'', cost:'',
+    tip:'CRITICAL: Turmeric stains EVERYTHING. Never do haldi on a venue\'s nice surfaces. Use tarps, outdoor grass, or a designated area. Budget $500-$1K. Many NorCal venues charge $2K-$5K damage deposit specifically for haldi.' },
+  { id:'ceremony', name:'Wedding Ceremony', icon:'\u{1F54C}', datetime:'', location:'', description:'', cost:'',
+    tip:'Hindu ceremonies need: mandap (12ft+ ceiling), fire permit for havan, 8ft wide baraat path, power for sound. Morning ceremonies (9-11am) are traditional. Budget the mandap alone at $3K-$5K in the Bay Area.' },
+  { id:'reception', name:'Reception', icon:'\u{1F37E}', datetime:'', location:'', description:'', cost:'',
+    tip:'Saturday evening. This is usually the most expensive single event. In NorCal, plan for $60-$100/person including food, bar, DJ, and decor. Confirm the venue\'s hard-stop time \u2014 you need midnight minimum.' },
+  { id:'brunch', name:'Farewell Brunch', icon:'\u2615', datetime:'', location:'', description:'', cost:'',
+    tip:'Sunday morning, 10am-12pm. Keep it simple: coffee, chai, pastries, light Indian breakfast. A restaurant private room or hotel breakfast works great. Budget $15-$25/person. Great for out-of-town guests before departure.' }
+];
+
+function loadWWEvents() { return loadJSON('dday-ww-events', defaultWWEvents); }
+
+function renderWeddingWeekend() {
+  const container = document.getElementById('wwEvents');
+  const events = loadWWEvents();
+  container.innerHTML = '';
+  events.forEach((evt, i) => {
+    const card = document.createElement('div');
+    card.className = 'ww-card';
+    card.innerHTML = `
+      <span class="ww-icon">${evt.icon}</span>
+      <h4>${evt.name}</h4>
+      <div class="ww-fields">
+        <input type="datetime-local" value="${evt.datetime || ''}" onchange="updateWWField(${i},'datetime',this.value)" title="Date & Time">
+        <input type="text" value="${evt.location || ''}" placeholder="Location / venue" oninput="updateWWField(${i},'location',this.value)">
+        <div class="ww-cost">
+          <span style="font-size:12px;color:var(--text-light);font-weight:600;">Est. Cost: $</span>
+          <input type="number" value="${evt.cost || ''}" placeholder="0" oninput="updateWWField(${i},'cost',this.value)">
+        </div>
+        <textarea placeholder="Notes & details..." oninput="updateWWField(${i},'description',this.value)">${evt.description || ''}</textarea>
+      </div>
+      <div class="ww-tip">${evt.tip}</div>
+    `;
+    container.appendChild(card);
+  });
+  updateWWTotal();
+}
+
+function updateWWField(idx, field, value) {
+  const events = loadWWEvents();
+  events[idx][field] = value;
+  saveJSON('dday-ww-events', events);
+  if (field === 'cost') updateWWTotal();
+}
+
+function updateWWTotal() {
+  const events = loadWWEvents();
+  const total = events.reduce((sum, e) => sum + (parseFloat(e.cost) || 0), 0);
+  const el = document.getElementById('wwTotal');
+  el.innerHTML = `<span>Estimated Weekend Total</span><span>$${total.toLocaleString()}</span>`;
+}
+
+// ===== GUEST LIST =====
+function loadGuests() { return loadJSON('dday-guests', []); }
+
+function renderGuestStats() {
+  const guests = loadGuests();
+  const total = guests.length;
+  const totalWithPlus = guests.reduce((s, g) => s + 1 + (parseInt(g.plus) || 0), 0);
+  const confirmed = guests.filter(g => g.rsvp === 'Confirmed').length;
+  const declined = guests.filter(g => g.rsvp === 'Declined').length;
+  const pending = guests.filter(g => g.rsvp === 'Pending').length;
+  const veg = guests.filter(g => g.meal === 'Veg' || g.meal === 'Jain').length;
+  const nonveg = guests.filter(g => g.meal === 'Non-Veg').length;
+  const hotel = guests.filter(g => g.hotel === 'Yes').length;
+  const container = document.getElementById('glStats');
+  container.innerHTML = `
+    <div class="gl-stat-card"><div class="gl-stat-num">${total}</div><div class="gl-stat-label">Invited</div></div>
+    <div class="gl-stat-card"><div class="gl-stat-num">${totalWithPlus}</div><div class="gl-stat-label">Total w/ +1s</div></div>
+    <div class="gl-stat-card"><div class="gl-stat-num" style="color:var(--green)">${confirmed}</div><div class="gl-stat-label">Confirmed</div></div>
+    <div class="gl-stat-card"><div class="gl-stat-num" style="color:#854d0e">${pending}</div><div class="gl-stat-label">Pending</div></div>
+    <div class="gl-stat-card"><div class="gl-stat-num" style="color:var(--eliminated)">${declined}</div><div class="gl-stat-label">Declined</div></div>
+    <div class="gl-stat-card"><div class="gl-stat-num" style="color:var(--green)">${veg}</div><div class="gl-stat-label">Veg / Jain</div></div>
+    <div class="gl-stat-card"><div class="gl-stat-num" style="color:var(--research)">${nonveg}</div><div class="gl-stat-label">Non-Veg</div></div>
+    <div class="gl-stat-card"><div class="gl-stat-num" style="color:var(--tier2)">${hotel}</div><div class="gl-stat-label">Hotel Needed</div></div>
+  `;
+}
+
+function renderGuests() {
+  renderGuestStats();
+  const guests = loadGuests();
+  const search = (document.getElementById('glSearch')?.value || '').toLowerCase();
+  const filterRsvp = document.getElementById('glFilterRsvp')?.value || 'All';
+  const filterSide = document.getElementById('glFilterSide')?.value || 'All';
+  const tbody = document.getElementById('glBody');
+  tbody.innerHTML = '';
+  const filtered = guests.filter((g, i) => {
+    g._idx = i;
+    if (search && !g.name.toLowerCase().includes(search)) return false;
+    if (filterRsvp !== 'All' && g.rsvp !== filterRsvp) return false;
+    if (filterSide !== 'All' && g.side !== filterSide) return false;
+    return true;
+  });
+  if (filtered.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--text-muted);padding:24px;">No guests found. Add guests using the form above.</td></tr>';
+    return;
+  }
+  filtered.forEach(g => {
+    const rsvpCls = g.rsvp === 'Confirmed' ? 'rsvp-confirmed' : g.rsvp === 'Declined' ? 'rsvp-declined' : 'rsvp-pending';
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td style="font-weight:500;">${g.name}</td>
+      <td>${g.side}</td>
+      <td><span class="gl-rsvp-pill ${rsvpCls}">${g.rsvp}</span></td>
+      <td>${g.meal}</td>
+      <td>${g.plus || 0}</td>
+      <td>${g.hotel === 'Yes' ? '\u{1F3E8} Yes' : 'No'}</td>
+      <td><button class="gl-remove" onclick="removeGuest(${g._idx})" title="Remove">&times;</button></td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+function addGuest() {
+  const name = document.getElementById('glName').value.trim();
+  if (!name) return;
+  const guests = loadGuests();
+  guests.push({
+    name,
+    side: document.getElementById('glSide').value,
+    rsvp: document.getElementById('glRsvp').value,
+    meal: document.getElementById('glMeal').value,
+    plus: document.getElementById('glPlus').value || '0',
+    hotel: document.getElementById('glHotel').value
+  });
+  saveJSON('dday-guests', guests);
+  document.getElementById('glName').value = '';
+  document.getElementById('glPlus').value = '';
+  renderGuests();
+}
+
+function removeGuest(idx) {
+  const guests = loadGuests();
+  guests.splice(idx, 1);
+  saveJSON('dday-guests', guests);
+  renderGuests();
+}
+
+// ===== GALLERY & LIGHTBOX =====
+const galleryImages = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,21,22,30,32,34,35];
+let lightboxIdx = 0;
+
+function renderGallery() {
+  const grid = document.getElementById('galleryGrid');
+  grid.innerHTML = '';
+  galleryImages.forEach((num, i) => {
+    const div = document.createElement('div');
+    div.className = 'gallery-item';
+    div.innerHTML = `<img src="images/${num}.jpg" alt="Venue photo ${num}" loading="lazy" onclick="openLightbox(${i})">`;
+    grid.appendChild(div);
+  });
+}
+
+function openLightbox(idx) {
+  lightboxIdx = idx;
+  document.getElementById('lightboxImg').src = `images/${galleryImages[idx]}.jpg`;
+  document.getElementById('lightboxOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeLightbox(e) {
+  if (e && e.target.tagName === 'IMG') return;
+  document.getElementById('lightboxOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function navLightbox(dir, e) {
+  e.stopPropagation();
+  lightboxIdx = (lightboxIdx + dir + galleryImages.length) % galleryImages.length;
+  document.getElementById('lightboxImg').src = `images/${galleryImages[lightboxIdx]}.jpg`;
+}
+
+// ===== COLOR PALETTES =====
+const colorPalettes = [
+  { name:'Royal Burgundy & Gold', colors:['#800020','#b8860b','#faf7f2','#2c1810'], desc:'Classic Indian wedding — deep burgundy paired with rich gold on cream. Timeless and elegant.' },
+  { name:'Blush Garden', colors:['#e8a0bf','#f5e6cc','#a8d5ba','#5c4033'], desc:'Soft pink, warm cream, sage green — perfect for outdoor NorCal garden ceremonies.' },
+  { name:'Marigold Sunset', colors:['#ff9933','#ffcc00','#8b0000','#2d5016'], desc:'Vibrant orange and yellow marigolds with deep red. Traditional and festive.' },
+  { name:'Jewel Tones', colors:['#1a237e','#4a148c','#b71c1c','#e65100'], desc:'Deep sapphire, amethyst, ruby, and amber. Opulent and dramatic for evening receptions.' },
+  { name:'Sage & Terracotta', colors:['#87a878','#c67c4e','#f5f0e8','#3d2b1f'], desc:'Earthy and modern. Works beautifully with NorCal wine country and ranch venues.' },
+  { name:'Ivory & Champagne', colors:['#fffff0','#f7e7ce','#c4a35a','#5c5040'], desc:'Minimalist elegance. Clean ivory with champagne accents. Modern Indian fusion aesthetic.' },
+  { name:'Peacock Fantasy', colors:['#006d6f','#4b0082','#ffd700','#1a3c34'], desc:'Teal, deep purple, and gold. Inspired by peacock feathers — a beloved Indian motif.' },
+  { name:'Desert Rose', colors:['#c97b84','#a23b72','#f18f01','#2b2d42'], desc:'Dusty rose, magenta, saffron, and charcoal. Warm and romantic for intimate celebrations.' },
+];
+
+function renderPalettes() {
+  const grid = document.getElementById('paletteGrid');
+  const favs = loadJSON('dday-fav-palettes', {});
+  grid.innerHTML = '';
+  colorPalettes.forEach((p, i) => {
+    const card = document.createElement('div');
+    card.className = `palette-card${favs[i] ? ' selected' : ''}`;
+    card.innerHTML = `
+      <span class="fav-star ${favs[i] ? 'active' : ''}" onclick="togglePaletteFav(${i},event)">\u2605</span>
+      <div class="palette-name">${p.name}</div>
+      <div class="palette-colors">${p.colors.map(c => `<div class="palette-swatch" style="background:${c};" title="${c}"></div>`).join('')}</div>
+      <div class="palette-desc">${p.desc}</div>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+function togglePaletteFav(idx, e) {
+  e.stopPropagation();
+  const favs = loadJSON('dday-fav-palettes', {});
+  if (favs[idx]) delete favs[idx]; else favs[idx] = true;
+  saveJSON('dday-fav-palettes', favs);
+  renderPalettes();
+}
+
+// ===== MANDAP GUIDE =====
+function renderMandapGuide() {
+  const grid = document.getElementById('mandapGrid');
+  const mandaps = [
+    { style:'Traditional', tag:'Classic', desc:'Four-pillar wooden or brass mandap with rich red/gold draping, heavy florals (marigolds, roses, jasmine), and a raised platform. Requires 12ft+ ceiling height. The quintessential Indian wedding mandap \u2014 ornate, colorful, and unmistakably ceremonial. Budget: $4K-$8K in the Bay Area.' },
+    { style:'Modern Minimalist', tag:'Contemporary', desc:'Clean lines with a simple canopy structure. Lighter fabrics (white, ivory, blush), greenery-focused with minimal flowers. Open frame designs allow better photography. Works well with wine country and modern venue aesthetics. Budget: $2.5K-$5K.' },
+    { style:'Fusion', tag:'East meets West', desc:'Combines Indian ceremonial elements with Western floral design. Think: a classic structure with cascading wisteria, or a chuppah-inspired open canopy with marigold garlands. Perfect for mixed-culture weddings. Budget: $3K-$6K.' },
+    { style:'Garden Canopy', tag:'Outdoor', desc:'A natural canopy using trees, arches, or bamboo structures as the mandap frame. Draped with sheer fabrics and climbing flowers. Best for outdoor NorCal venues with beautiful natural backdrops. Budget: $2K-$4K plus venue greenery.' },
+  ];
+  grid.innerHTML = '';
+  mandaps.forEach(m => {
+    const card = document.createElement('div');
+    card.className = 'mandap-card';
+    card.innerHTML = `<h5>${m.style}</h5><span class="mandap-tag">${m.tag}</span><p>${m.desc}</p>`;
+    grid.appendChild(card);
+  });
+}
+
+// ===== DECOR CHECKLIST =====
+const decorItems = [
+  'Mandap structure & draping','Mandap florals','Ceremony aisle decor','Entrance archway / gate',
+  'Stage / sweetheart table','Centerpieces for guest tables','Table linens & runners','Chair covers / sashes',
+  'Uplighting / string lights / fairy lights','Hanging installations (florals / lanterns)','Photo booth setup & props',
+  'Mehndi area decor','Sangeet stage decor','Haldi area setup (tarps, seating)','Welcome signage & easels',
+  'Bar area decor','Cake / dessert table styling','Guest book table','Gift / card box table',
+  'Parking / pathway lighting','Restroom amenities basket'
+];
+
+function renderDecorChecklist() {
+  const list = document.getElementById('decorChecklist');
+  const checks = loadJSON('dday-decor-checks', {});
+  list.innerHTML = '';
+  decorItems.forEach((item, i) => {
+    const li = document.createElement('li');
+    li.className = checks[i] ? 'checked-item' : '';
+    li.innerHTML = `<input type="checkbox" id="dc-${i}" ${checks[i] ? 'checked' : ''} onchange="toggleDecorCheck(${i})"><label for="dc-${i}">${item}</label>`;
+    list.appendChild(li);
+  });
+}
+
+function toggleDecorCheck(idx) {
+  const checks = loadJSON('dday-decor-checks', {});
+  checks[idx] = document.getElementById(`dc-${idx}`).checked;
+  if (!checks[idx]) delete checks[idx];
+  saveJSON('dday-decor-checks', checks);
+  const li = document.getElementById(`dc-${idx}`).closest('li');
+  li.classList.toggle('checked-item', !!checks[idx]);
+}
+
+// ===== MENU BUILDER =====
+const menuCategories = [
+  { name:'Appetizers', items:['Samosa','Paneer Tikka','Aloo Tikki Chaat','Pani Puri','Dahi Puri','Gobi Manchurian','Chicken Tikka','Seekh Kebab','Fish Amritsari','Spring Rolls','Papdi Chaat','Hara Bhara Kebab'] },
+  { name:'Main Course (Veg)', items:['Paneer Butter Masala','Dal Makhani','Chana Masala','Baingan Bharta','Malai Kofta','Palak Paneer','Aloo Gobi','Mixed Veg Korma','Navratan Korma','Kadai Paneer'] },
+  { name:'Main Course (Non-Veg)', items:['Butter Chicken','Lamb Rogan Josh','Chicken Biryani','Goat Curry','Fish Tikka Masala','Chicken Korma','Lamb Biryani','Prawn Masala'] },
+  { name:'Breads & Rice', items:['Garlic Naan','Butter Naan','Tandoori Roti','Jeera Rice','Saffron Pulao','Peshawari Naan','Laccha Paratha','Kashmiri Naan'] },
+  { name:'Desserts', items:['Gulab Jamun','Ras Malai','Kheer','Gajar Ka Halwa','Jalebi','Kulfi','Mango Mousse','Barfi Assortment','Laddu','Ice Cream Station'] },
+  { name:'Drinks', items:['Mango Lassi','Masala Chai Station','Rose Sharbat','Thandai','Nimbu Pani','Signature Cocktails','Open Bar Package','Mocktail Station'] },
+];
+
+function renderMenuBuilder() {
+  const container = document.getElementById('menuBuilder');
+  const selections = loadJSON('dday-menu-selections', {});
+  container.innerHTML = '';
+  menuCategories.forEach((cat, ci) => {
+    const div = document.createElement('div');
+    div.className = 'menu-category';
+    div.innerHTML = `<h5>${cat.name}</h5><div class="menu-items">${
+      cat.items.map((item, ii) => {
+        const key = `${ci}-${ii}`;
+        return `<span class="menu-item-chip ${selections[key] ? 'selected' : ''}" onclick="toggleMenuItem('${key}',this)">${item}</span>`;
+      }).join('')
+    }</div>`;
+    container.appendChild(div);
+  });
+  updateMenuSummary();
+}
+
+function toggleMenuItem(key, el) {
+  const selections = loadJSON('dday-menu-selections', {});
+  if (selections[key]) delete selections[key]; else selections[key] = true;
+  saveJSON('dday-menu-selections', selections);
+  el.classList.toggle('selected');
+  updateMenuSummary();
+}
+
+function updateMenuSummary() {
+  const selections = loadJSON('dday-menu-selections', {});
+  const keys = Object.keys(selections);
+  const summaryDiv = document.getElementById('menuSummary');
+  const listEl = document.getElementById('menuSummaryList');
+  if (keys.length === 0) { summaryDiv.style.display = 'none'; return; }
+  summaryDiv.style.display = 'block';
+  let html = '';
+  menuCategories.forEach((cat, ci) => {
+    const selected = cat.items.filter((_, ii) => selections[`${ci}-${ii}`]);
+    if (selected.length > 0) {
+      html += `<li><strong>${cat.name}:</strong> ${selected.join(', ')}</li>`;
+    }
+  });
+  listEl.innerHTML = html;
+}
+
+// ===== KITCHEN CHECKLIST =====
+const kitchenItems = [
+  'Commercial-grade gas burners (minimum 4 burners)',
+  'Ventilation hood / exhaust system',
+  'Tandoor oven space (needs 220V or propane hookup)',
+  'Adequate counter / prep space (minimum 8ft)',
+  'Commercial refrigeration (walk-in or multiple units)',
+  'Hot & cold running water with deep sink',
+  'Grease trap installed and up to code',
+  'Adequate electrical capacity (50+ amp circuits)',
+  'Loading dock or ground-level kitchen access',
+  'Separate hand-washing station',
+  'Fire suppression system in kitchen area',
+  'Caterer vehicle parking near kitchen entrance',
+  'Trash / waste disposal available day-of',
+  'Kitchen access time: minimum 4 hours before service'
+];
+
+function renderKitchenChecklist() {
+  const list = document.getElementById('kitchenChecklist');
+  const checks = loadJSON('dday-kitchen-checks', {});
+  list.innerHTML = '';
+  kitchenItems.forEach((item, i) => {
+    const li = document.createElement('li');
+    li.className = checks[i] ? 'checked-item' : '';
+    li.innerHTML = `<input type="checkbox" id="kc-${i}" ${checks[i] ? 'checked' : ''} onchange="toggleKitchenCheck(${i})"><label for="kc-${i}">${item}</label>`;
+    list.appendChild(li);
+  });
+}
+
+function toggleKitchenCheck(idx) {
+  const checks = loadJSON('dday-kitchen-checks', {});
+  checks[idx] = document.getElementById(`kc-${idx}`).checked;
+  if (!checks[idx]) delete checks[idx];
+  saveJSON('dday-kitchen-checks', checks);
+  const li = document.getElementById(`kc-${idx}`).closest('li');
+  li.classList.toggle('checked-item', !!checks[idx]);
+}
+
+// ===== SCROLL ANIMATIONS =====
+function initScrollAnimations() {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.sections-container, .table-container, .alert-bar, .filter-bar').forEach(el => {
+    el.classList.add('fade-in-section');
+    observer.observe(el);
+  });
+}
+
 // ===== EXPORT / IMPORT =====
 function exportState() {
   const state = {};
-  ['dday-actions','dday-ratings','dday-notes','dday-shortlist','dday-timeline','dday-vendors','dday-custom-notes'].forEach(key => {
+  ['dday-actions','dday-ratings','dday-notes','dday-shortlist','dday-timeline','dday-vendors','dday-custom-notes','dday-ww-events','dday-guests','dday-fav-palettes','dday-decor-checks','dday-kitchen-checks','dday-menu-selections'].forEach(key => {
     const val = localStorage.getItem(key);
     if (val !== null) state[key] = val;
   });
@@ -2176,6 +2948,14 @@ function importState(event) {
       renderTimeline();
       renderVendors();
       initCustomNotes();
+      renderWeddingWeekend();
+      renderGuests();
+      renderGallery();
+      renderPalettes();
+      renderMandapGuide();
+      renderDecorChecklist();
+      renderMenuBuilder();
+      renderKitchenChecklist();
       alert('State imported successfully!');
     } catch (err) {
       alert('Error importing file: ' + err.message);
@@ -2192,9 +2972,13 @@ document.addEventListener('click', function(e) {
   }
 });
 
-// Close compare on Escape
+// Close compare/lightbox on Escape, arrow keys for lightbox
 document.addEventListener('keydown', function(e) {
-  if (e.key === 'Escape') closeCompare();
+  if (e.key === 'Escape') { closeCompare(); closeLightbox(e); }
+  if (document.getElementById('lightboxOverlay').classList.contains('open')) {
+    if (e.key === 'ArrowLeft') navLightbox(-1, e);
+    if (e.key === 'ArrowRight') navLightbox(1, e);
+  }
 });
 
 // ===== INIT =====
@@ -2205,6 +2989,15 @@ document.addEventListener('DOMContentLoaded', function() {
   renderTimeline();
   renderVendors();
   initCustomNotes();
+  renderWeddingWeekend();
+  renderGuests();
+  renderGallery();
+  renderPalettes();
+  renderMandapGuide();
+  renderDecorChecklist();
+  renderMenuBuilder();
+  renderKitchenChecklist();
+  initScrollAnimations();
 });
 </script>
 </body>
