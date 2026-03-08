@@ -1183,7 +1183,7 @@ td .pill {
     <span class="stat-chip"><strong>$30K–$60K</strong>&ensp;Budget</span>
     <span class="stat-chip"><strong>&lt;100</strong>&ensp;Guests</span>
     <span class="stat-chip"><strong>NorCal</strong>&ensp;Region</span>
-    <span class="stat-chip"><strong>35</strong>&ensp;Venues Tracked</span>
+    <span class="stat-chip"><strong>55</strong>&ensp;Venues Tracked</span>
   </div>
 </div>
 <hr class="gold-divider">
@@ -1201,10 +1201,10 @@ td .pill {
 <!-- FILTER BAR -->
 <div class="filter-bar">
   <label>Filter:</label>
-  <button class="filter-btn active" data-filter="all" onclick="filterVenues('all')">All (35)</button>
+  <button class="filter-btn active" data-filter="all" onclick="filterVenues('all')">All (55)</button>
   <button class="filter-btn" data-filter="tier1" onclick="filterVenues('tier1')">Tier 1 (4)</button>
-  <button class="filter-btn" data-filter="tier2" onclick="filterVenues('tier2')">Tier 2 (4)</button>
-  <button class="filter-btn" data-filter="research" onclick="filterVenues('research')">Research (3)</button>
+  <button class="filter-btn" data-filter="tier2" onclick="filterVenues('tier2')">Tier 2 (11)</button>
+  <button class="filter-btn" data-filter="research" onclick="filterVenues('research')">Research (16)</button>
   <button class="filter-btn" data-filter="lower" onclick="filterVenues('lower')">Lower (19)</button>
   <button class="filter-btn" data-filter="eliminated" onclick="filterVenues('eliminated')">Eliminated (5)</button>
   <div class="filter-sep"></div>
@@ -1954,6 +1954,247 @@ const venues = [
     notes:"No BYOV (in-house chef only). Beautiful oceanfront cliffs but incompatible with #1 priority of bringing own Indian caterer.",
     actions:["Do not pursue. No outside catering allowed."],
     tier:"eliminated", siteFeeNum:19000, allInNum:99999
+  },
+  // ===== NEW FINDS: Deep Research (Reddit, Blogs, Private Estates) =====
+  {
+    rank:36, name:"Leonard Lake Reserve", location:"Redwood Valley", region:"Mendocino County",
+    siteFee:"$23K+", allIn:"$40K-$60K", capacity:"61 lodging",
+    byov:"YES", kitchen:"In houses", lodging:"YES (61 in 6 houses)",
+    fire:"Likely", noise:"Flexible", baraat:"Excellent",
+    haldi:"YES", multiDay:"YES", access:"Ask",
+    indian:"Ask", link:"https://leonardlakereserve.com/",
+    verdict:"TIER 2 - 4,000 Acres Ultimate Privacy", type:"Retreat",
+    notes:"4,000 PRIVATE acres \u2014 largest natural lake in Mendocino County. 6 houses sleeping 61. Camping/glamping overflow. Total freedom: fire ceremony, fireworks, 2am music, anything. Old growth redwoods + private lake. BYOV. Found via deep research, not on any typical wedding directory.",
+    actions:["Contact for availability and Indian wedding logistics","Confirm kitchen capabilities in rental houses","Ask about fire ceremony policy (likely no issue on 4,000 acres)","Plan guest transport (remote Mendocino)"],
+    tier:"tier2", siteFeeNum:23000, allInNum:40000
+  },
+  {
+    rank:37, name:"Black Oak Mountain Vineyards", location:"Cool (Gold Country)", region:"Gold Country / Foothills",
+    siteFee:"$9K-$32K", allIn:"$35K-$55K", capacity:"50-200",
+    byov:"YES", kitchen:"Available", lodging:"YES (villa)",
+    fire:"Ask", noise:"Flexible", baraat:"Good",
+    haldi:"Ask", multiDay:"YES", access:"Ask",
+    indian:"YES", link:"https://www.blackoak.cool/the-indian-wedding-at-black-oak",
+    verdict:"TIER 2 - Has Indian Wedding Page", type:"Winery",
+    notes:"Has a DEDICATED Indian wedding page on their website \u2014 actively courts Indian couples. 150 acres on remote hilltop with 'edge of world' views. Full BYOV/BYOB with no corkage. On-site luxury lodging. 10-hour or 3-day packages. Note: NO sparklers/fireworks \u2014 confirm havan policy directly.",
+    actions:["Tour with caterer \u2014 they explicitly welcome Indian weddings","Confirm fire ceremony (havan) policy \u2014 no sparklers noted","Check architect-designed villa lodging capacity","Compare Mountain Modern Barn ($9K/9hrs) vs Estate ($32K/3-day)"],
+    tier:"tier2", siteFeeNum:9000, allInNum:35000
+  },
+  {
+    rank:38, name:"Camp Navarro", location:"Navarro", region:"Mendocino County",
+    siteFee:"$25K", allIn:"$37K-$55K", capacity:"Up to 300",
+    byov:"YES", kitchen:"Industrial", lodging:"YES (300+)",
+    fire:"Likely", noise:"Flexible", baraat:"Good",
+    haldi:"Ask", multiDay:"YES", access:"Ask",
+    indian:"Ask", link:"https://www.campnavarro.com/",
+    verdict:"TIER 2 - Industrial Kitchen + 300 Lodging", type:"Retreat",
+    notes:"200 private acres. Industrial kitchen, outdoor pizza oven, BBQ \u2014 ideal for large-scale Indian cooking. Lodging for ALL 300 guests on property (extremely rare). Evening bonfires standard. Activities (archery, climbing, movies) keep guests entertained across multi-day celebration. $12-14K catering minimum on top of $25K site.",
+    actions:["Contact about Indian wedding logistics and fire ceremony","Confirm industrial kitchen specs with your caterer","Ask about music/noise cutoff on 200-acre property","Calculate total: $25K site + $14K catering min = $39K before other vendors"],
+    tier:"tier2", siteFeeNum:25000, allInNum:37000
+  },
+  {
+    rank:39, name:"Campovida", location:"Hopland", region:"Mendocino County",
+    siteFee:"~$6.5K+", allIn:"$30K-$50K", capacity:"Up to 200",
+    byov:"Ask", kitchen:"Ask", lodging:"Ask",
+    fire:"Ask", noise:"Ask", baraat:"Ask",
+    haldi:"Ask", multiDay:"Ask", access:"Ask",
+    indian:"YES", link:"https://www.campovida.com/",
+    verdict:"TIER 2 - Documented South Asian Wedding", type:"Winery",
+    notes:"Estate winery with 500-year-old Valley Oak and restored 1890 hop barn. Has hosted a documented Pakistani-American multi-day wedding (henna party + blended ceremony) \u2014 filmed by Jay & Mack Films. Trellised grape arbor, world-renowned gardens. Often called a 'hidden gem.' <2hrs from SF.",
+    actions:["Contact re: BYOV policy and kitchen access","Ask about fire ceremony under the 500-year-old oak","Request South Asian wedding reference from previous couple","Check lodging options in Hopland/Ukiah area"],
+    tier:"tier2", siteFeeNum:6500, allInNum:30000
+  },
+  {
+    rank:40, name:"Camp Nauvoo", location:"Placerville (Gold Country)", region:"Gold Country / Foothills",
+    siteFee:"$5K+", allIn:"$25K-$40K", capacity:"125-150",
+    byov:"YES", kitchen:"Commercial", lodging:"YES (lodge)",
+    fire:"Likely", noise:"Flexible", baraat:"Ask",
+    haldi:"Ask", multiDay:"YES", access:"Ask",
+    indian:"Ask", link:"https://campnauvooplacerville.com/",
+    verdict:"Research - Commercial Kitchen + $5K Start", type:"Retreat",
+    notes:"86.5 secluded acres with creek and 'Tahoe-like environment.' 1,200 sqft lodge with COMMERCIAL KITCHEN including walk-in refrigerator \u2014 perfect for Indian caterers prepping large meals. Full BYOV. Extremely affordable starting price. Just 1hr from Sacramento's Indian community. Meadow + creek setting.",
+    actions:["Schedule tour and caterer kitchen inspection","Confirm fire ceremony policy on 86 secluded acres","Check lodge lodging capacity and nearby hotel overflow","Verify access road conditions for elderly guests"],
+    tier:"research", siteFeeNum:5000, allInNum:25000
+  },
+  {
+    rank:41, name:"Lassen Meadows Ranch", location:"Chester (Cascade Mtns)", region:"Northern Sierras",
+    siteFee:"Ask", allIn:"Ask", capacity:"Ask",
+    byov:"YES", kitchen:"Commercial", lodging:"YES (cabins+camping)",
+    fire:"Likely", noise:"Flexible", baraat:"Ask",
+    haldi:"Ask", multiDay:"YES", access:"Ask",
+    indian:"Ask", link:"https://www.lassenmeadows.com/weddings/",
+    verdict:"Research - 160 Acres + Commercial Kitchen (Remote)", type:"Ranch",
+    notes:"160-acre private ranch near Lake Almanor. Kitchen pavilion with commercial refrigerator, ice maker, stove, sinks \u2014 designed for outside caterers. Two cabins, bathhouse, barn for dance floor, three lawns. Full BYOV. Weekend-exclusive rental. Very remote (3+ hrs from Bay Area) but Cascade Mountains setting is stunning.",
+    actions:["Contact for pricing and Indian wedding feasibility","Confirm commercial kitchen can handle large-scale Indian cooking","Assess guest travel logistics (3+ hrs from Bay Area)","Check seasonal availability (snow in winter)"],
+    tier:"research", siteFeeNum:99999, allInNum:99999
+  },
+  {
+    rank:42, name:"Beltane Ranch", location:"Glen Ellen", region:"Sonoma Valley",
+    siteFee:"~$27.5K peak", allIn:"$45K-$65K", capacity:"Up to 225",
+    byov:"Ask", kitchen:"Ask", lodging:"YES (12-16)",
+    fire:"Likely", noise:"Ask", baraat:"Good",
+    haldi:"Ask", multiDay:"YES", access:"Ask",
+    indian:"Ask", link:"https://beltaneranch.com/events/weddings/",
+    verdict:"Research - Exclusive Weekend Vineyard Estate", type:"Ranch",
+    notes:"Family-owned vineyard in the heart of Sonoma Valley. EXCLUSIVE USE Friday through Sunday \u2014 perfect for multi-day Indian celebration. Fire pit lounge for evening ceremonies. Vineyard + ancient oaks backdrop. Lodging for 12-16 in ranch house + cottage suite. Catering from preferred list (check BYOV flexibility). $12.5K for \u226475 guests.",
+    actions:["Confirm BYOV or check if preferred caterers do Indian food","Ask about fire ceremony near fire pit lounge","Tour the baraat route through vineyard","Check $12.5K off-peak pricing for smaller guest count"],
+    tier:"research", siteFeeNum:27500, allInNum:45000
+  },
+  {
+    rank:43, name:"Switzer Farm", location:"Westport (Mendocino)", region:"Mendocino Coast",
+    siteFee:"$20K-$25K/3 days", allIn:"$35K-$50K", capacity:"Up to 99",
+    byov:"YES", kitchen:"Outdoor prep area", lodging:"YES (27)",
+    fire:"Likely", noise:"Flexible", baraat:"Ask",
+    haldi:"Ask", multiDay:"YES", access:"Ask",
+    indian:"Ask", link:"https://switzerfarm.com/",
+    verdict:"Research - Oceanfront BYOV with Catering Infrastructure", type:"Ranch",
+    notes:"22 private oceanfront acres, 20 min north of Fort Bragg. Has a DEDICATED outdoor catering prep area with double sink, electricity, and plumbing \u2014 built specifically for outside caterers. Victorian farmhouse sleeps 27. Historic barns + ocean bluffs. Complete BYO. 3-day rental format perfect for Indian wedding weekend.",
+    actions:["Contact about Indian wedding feasibility","Tour outdoor catering area with your caterer","Confirm fire ceremony policy (22 private oceanfront acres)","Plan guest lodging overflow in Fort Bragg"],
+    tier:"research", siteFeeNum:20000, allInNum:35000
+  },
+  {
+    rank:44, name:"Brownstone Gardens", location:"Oakley", region:"East Bay",
+    siteFee:"~$3K+", allIn:"$20K-$35K", capacity:"250-300",
+    byov:"BYOB", kitchen:"Ask", lodging:"NO",
+    fire:"Ask", noise:"Ask", baraat:"Good",
+    haldi:"Ask", multiDay:"Ask", access:"Good",
+    indian:"YES", link:"https://www.brownstonegardens.com/",
+    verdict:"TIER 2 - Indian-Owned + Mandap Structure", type:"EventCenter",
+    notes:"INDIAN-OWNED by Raman & Raveen Bains with 10+ years of Indian wedding coordination experience. Grand courtyard has a TEMPLE STRUCTURE usable as mandap. Supports baraat, mehendi, haldi. BYOB policy. Affordable starting price (~$3K+ for 5 hrs). ~1hr from most Bay Area cities. Found via personal blogs, not SEO directories.",
+    actions:["Tour and meet the Bains family","Confirm full catering flexibility and kitchen access","Ask about fire ceremony in courtyard","Check music/noise cutoff hours"],
+    tier:"tier2", siteFeeNum:3000, allInNum:20000
+  },
+  {
+    rank:45, name:"Little Hills Events", location:"San Ramon", region:"East Bay",
+    siteFee:"Ask", allIn:"Ask", capacity:"Ask",
+    byov:"Ask", kitchen:"Ask", lodging:"NO",
+    fire:"Ask", noise:"Likely flexible", baraat:"Ask",
+    haldi:"Ask", multiDay:"Ask", access:"Ask",
+    indian:"Ask", link:"https://www.littlehillsevents.com/",
+    verdict:"Research - 25 Secluded Acres Near Bay Area", type:"Estate",
+    notes:"25 private acres tucked into Las Trampas Regional Wilderness in San Ramon. Surrounded by redwoods and oaks. Secluded but easy drive from Bay Area (unlike Mendocino venues). Al fresco dining. The seclusion means noise-friendly. Found via deep research.",
+    actions:["Contact for pricing, capacity, and BYOV policy","Confirm fire ceremony feasibility","Check if kitchen facilities exist for caterer","Tour the grounds for baraat route potential"],
+    tier:"research", siteFeeNum:99999, allInNum:99999
+  },
+  {
+    rank:46, name:"Mendocino Stone Ranch", location:"Anchor Bay", region:"Mendocino Coast",
+    siteFee:"$2.5K-$10K", allIn:"$20K-$35K", capacity:"Up to 130",
+    byov:"Ask", kitchen:"In houses", lodging:"YES (26)",
+    fire:"Likely", noise:"Flexible", baraat:"Ask",
+    haldi:"Ask", multiDay:"Ask", access:"Ask",
+    indian:"Ask", link:"https://www.stoneranchmendo.com/",
+    verdict:"Research - Dramatic Art + $2.5K Start", type:"Retreat",
+    notes:"50 acres of redwood forest with 30+ large-scale hand-built STONE ART INSTALLATIONS \u2014 unlike any other venue. Two luxury houses + off-grid yurt (26 guests). Extremely affordable ($2.5K-$10K site fee). The stone installations create extraordinary, one-of-a-kind mandap/ceremony backdrops. Very remote Mendocino coast.",
+    actions:["Contact re: vendor policies and Indian wedding feasibility","Plan guest logistics (very remote location)","Tour stone installations for ceremony spot selection","Confirm fire ceremony among redwoods (Cal Fire zone check)"],
+    tier:"research", siteFeeNum:2500, allInNum:20000
+  },
+  {
+    rank:47, name:"Oak Ridge Estate", location:"Mendocino County", region:"Mendocino County",
+    siteFee:"$6K-$10K", allIn:"$25K-$40K", capacity:"Up to 200",
+    byov:"YES", kitchen:"Ask", lodging:"YES (main house)",
+    fire:"Ask", noise:"Ask", baraat:"Ask",
+    haldi:"Ask", multiDay:"Ask", access:"Ask",
+    indian:"Ask", link:"https://www.oakridgeevent.com/",
+    verdict:"Research - Affordable Vineyard Hilltop", type:"Estate",
+    notes:"Rolling vineyard hills in Mendocino County. Renovated barn with 360-degree views. OUTSIDE CATERERS ACCOMMODATED (staff provided for coordination/trash). Main house included with rental. $10K weekend for up to 200 guests or $6K micro-wedding (up to 60). Very affordable for the quality.",
+    actions:["Contact for full details and Indian wedding policies","Tour renovated barn and ceremony sites","Confirm fire ceremony and noise policies","Check guest transport/lodging in Mendocino area"],
+    tier:"research", siteFeeNum:6000, allInNum:25000
+  },
+  {
+    rank:48, name:"Spring Ranch", location:"Little River", region:"Mendocino Coast",
+    siteFee:"$19K-$50K+", allIn:"$35K-$65K", capacity:"200 outdoor / 150 indoor",
+    byov:"YES", kitchen:"In mansion+barn", lodging:"YES (23)",
+    fire:"Likely", noise:"Ask", baraat:"Ask",
+    haldi:"Ask", multiDay:"YES", access:"Ask",
+    indian:"Ask", link:"https://spring-ranch.com/destination-wedding",
+    verdict:"Research - 3-Night Exclusive Coastal BYOV", type:"Ranch",
+    notes:"Mendocino coast, minutes from Mendocino village. 3-NIGHT EXCLUSIVE USE included \u2014 perfect for sangeet Friday, ceremony Saturday, brunch Sunday. BYO food and alcohol. Grand Victorian mansion + event barn + ocean bluffs = variety of dramatic settings. Cypress groves and meadow ideal for fire ceremony. 23 overnight guests in mansion + barn loft.",
+    actions:["Contact for current pricing and availability","Confirm fire ceremony in ocean bluff meadow","Tour Victorian mansion kitchen for caterer feasibility","Plan guest lodging in Mendocino village (~$150-250/night)"],
+    tier:"research", siteFeeNum:19000, allInNum:35000
+  },
+  {
+    rank:49, name:"Bar 717 Ranch", location:"Hayfork (Trinity County)", region:"Trinity County / Far North",
+    siteFee:"Ask", allIn:"$15K-$30K", capacity:"200+ outdoor",
+    byov:"YES", kitchen:"Available", lodging:"YES (150 included)",
+    fire:"Likely", noise:"Flexible", baraat:"Excellent",
+    haldi:"Ask", multiDay:"YES", access:"Difficult",
+    indian:"Ask", link:"https://bar717.com/weddings",
+    verdict:"Research - 450 Acres + 150 Lodging Included (Remote)", type:"Ranch",
+    notes:"450 acres in remote Trinity County. Wedding package INCLUDES 2-night accommodations for 150 guests. BYO catering option. Campfires standard. Meals as low as $10-20/person. Indoor space for 30 + covered platforms for 200. EXTREMELY remote (4+ hrs from Bay Area). Available April-June and late August-November. The freedom on 450 acres is unmatched.",
+    actions:["Contact for pricing and Indian wedding feasibility","Factor in 4+ hour guest drive \u2014 must be destination wedding mindset","Confirm kitchen for caterer and fire ceremony policy","Check seasonal fire restrictions in Trinity County"],
+    tier:"research", siteFeeNum:99999, allInNum:15000
+  },
+  {
+    rank:50, name:"River Highlands Ranch", location:"Smartsville (Gold Country)", region:"Gold Country / Foothills",
+    siteFee:"$6.9K-$19.5K", allIn:"$25K-$45K", capacity:"Up to 250",
+    byov:"Ask", kitchen:"Prep kitchen", lodging:"Minimal (bridal suite)",
+    fire:"Likely", noise:"Flexible", baraat:"Good",
+    haldi:"Ask", multiDay:"Ask", access:"Ask",
+    indian:"Ask", link:"https://www.riverhighlandsranch.com/",
+    verdict:"Research - 400 Acres + 7,500sqft Barn", type:"Ranch",
+    notes:"400 private acres in Gold Country foothills, 15 miles from Grass Valley. 7,500 sqft climate-controlled barn with 250-person capacity. Prep kitchen on-site for caterers. String lights, chandeliers, farmhouse tables included. Very affordable ($6.9K off-peak to $19.5K Fri-Sun peak). Hidden gem location. 400 acres = no noise concerns.",
+    actions:["Tour barn and prep kitchen with caterer","Confirm fire ceremony policy on 400-acre property","Plan guest lodging in Grass Valley/Auburn area","Check road access for elderly guests"],
+    tier:"research", siteFeeNum:6900, allInNum:25000
+  },
+  {
+    rank:51, name:"Signia by Hilton San Jose", location:"San Jose", region:"South Bay",
+    siteFee:"Ask", allIn:"$40K-$70K", capacity:"Up to 1,200",
+    byov:"YES", kitchen:"Hotel", lodging:"YES (hotel)",
+    fire:"YES", noise:"Ask", baraat:"Good",
+    haldi:"Caution", multiDay:"YES", access:"ADA",
+    indian:"YES", link:"",
+    verdict:"TIER 2 - Havan Explicitly Permitted", type:"Resort",
+    notes:"Formerly Fairmont San Jose. Silicon Valley's largest hotel ballroom. HAVAN (fire ceremony) EXPLICITLY PERMITTED \u2014 one of very few hotels to confirm this. Outside catering allowed. BYO wine with $40/bottle corkage. Staff understands baraat logistics through the plaza. ADA compliant. Downtown San Jose = heart of Indian community.",
+    actions:["Get quote for <100 guest Indian wedding package","Confirm havan policy IN WRITING","Ask about outside Indian caterer logistics","Compare against hotels \u2014 this is the gold standard for fire ceremony"],
+    tier:"tier2", siteFeeNum:99999, allInNum:40000
+  },
+  {
+    rank:52, name:"Ritz-Carlton Half Moon Bay", location:"Half Moon Bay", region:"San Mateo Coast",
+    siteFee:"Ask", allIn:"$60K+", capacity:"Ask",
+    byov:"YES", kitchen:"Hotel", lodging:"YES (resort)",
+    fire:"YES", noise:"Ask", baraat:"Good",
+    haldi:"Ask", multiDay:"YES", access:"ADA",
+    indian:"YES", link:"",
+    verdict:"TIER 2 - Fire + Outside Indian Catering Confirmed", type:"Resort",
+    notes:"OUTSIDE INDIAN CATERING explicitly allowed AND outdoor FIRE CEREMONY standard (indoor by special approval). Sweeping ocean cliff setting. Full resort lodging for guests. Baraat-friendly with direct outdoor access. Oceanfront haldi and sunset receptions possible. Premium pricing but confirmed Indian-wedding-friendly policies are rare at this luxury level.",
+    actions:["Get quote \u2014 likely at top of budget range","Confirm all Indian wedding policies in writing","Tour cliff-side ceremony area for mandap setup","Plan for premium pricing: may exceed $60K budget"],
+    tier:"tier2", siteFeeNum:99999, allInNum:60000
+  },
+  {
+    rank:53, name:"Hayes Mansion", location:"San Jose", region:"South Bay",
+    siteFee:"Ask", allIn:"$35K-$55K", capacity:"400-450",
+    byov:"YES (ethnic cuisine)", kitchen:"Hotel", lodging:"YES (hotel)",
+    fire:"Likely", noise:"Ask", baraat:"Good",
+    haldi:"Ask", multiDay:"Ask", access:"Good",
+    indian:"YES", link:"https://www.hayesmansion.com/san-jose-weddings/",
+    verdict:"Research - Outside Indian Catering OK", type:"Estate",
+    notes:"Historic estate-hotel in San Jose. OUTSIDE CATERING ALLOWED specifically for ethnic cuisine through approved vendors. East Lawn available for religious ceremonies (fire ceremony likely). On-site hotel rooms. Documented extravagant Indian wedding featured on Junebug Weddings. 400-450 guest capacity.",
+    actions:["Contact re: approved Indian caterer list","Confirm fire ceremony on East Lawn","Get pricing for <100 guest Indian wedding","Tour East Lawn and indoor ballroom"],
+    tier:"research", siteFeeNum:99999, allInNum:35000
+  },
+  {
+    rank:54, name:"Shubham Halls", location:"Sunnyvale", region:"South Bay",
+    siteFee:"$36/person all-in", allIn:"$3.6K (100 guests)", capacity:"Up to 400",
+    byov:"In-house Indian", kitchen:"Indian kitchen", lodging:"NO",
+    fire:"Ask", noise:"Ask", baraat:"Ask",
+    haldi:"Ask", multiDay:"Ask", access:"Good",
+    indian:"YES", link:"https://www.shubhamhalls.com/",
+    verdict:"Research - Indian-Owned, $36/pp All-Inclusive", type:"EventCenter",
+    notes:"INDIAN-OWNED and built specifically for Indian celebrations. Grand Hall seats 400. Pavilion (40-60) for pre-wedding poojas. ALL-INCLUSIVE Indian catering with vegetarian, non-vegetarian, and JAIN SPECIALTY menus. $36/person includes venue, catering, bar, lighting, sound, and 8K streaming. 19-foot digital LED wall. Located in Sunnyvale.",
+    actions:["Tour Grand Hall and Pavilion","Ask about fire ceremony (havan) policy","Sample all-inclusive Indian menu","Compare $36/pp all-in vs typical venue+caterer combo"],
+    tier:"research", siteFeeNum:3600, allInNum:3600
+  },
+  {
+    rank:55, name:"Grand Island Mansion", location:"Walnut Grove (Delta)", region:"Sacramento Delta",
+    siteFee:"$3K + tent $4K", allIn:"$25K-$45K", capacity:"Up to 500",
+    byov:"Ask", kitchen:"Ask", lodging:"Minimal (bridal cottage)",
+    fire:"Ask", noise:"Ask", baraat:"Good",
+    haldi:"Ask", multiDay:"Ask", access:"Ask",
+    indian:"Ask", link:"https://grandislandmansion.com/",
+    verdict:"Research - 500 Cap Historic Mansion on Delta Island", type:"Estate",
+    notes:"Historic mansion on a private Sacramento River Delta island. Massive 500-person capacity at relatively affordable pricing (mansion $3K + tent $4K + $8K F&B minimum). Secluded delta location. Tables, chairs, linens included. Worth investigating BYOV and fire ceremony policies. The private island setting is unique.",
+    actions:["Contact re: BYOV policy for Indian caterers","Ask about fire ceremony on delta island property","Get full pricing breakdown for <100 guest wedding","Check guest access logistics to delta island"],
+    tier:"research", siteFeeNum:3000, allInNum:25000
   }
 ];
 
@@ -2056,7 +2297,7 @@ function getInitials(name) {
 }
 
 // Venues with local images (rank numbers that have images/N.jpg)
-const hasLocalImage = new Set([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,30,31,32,33,34,35]);
+const hasLocalImage = new Set([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,30,31,32,33,34,35,36,38,39,40,41,42,43,44,46,47,48,49,50,53,54,55]);
 
 function getThumb(v) {
   const t = venueTypes[v.type] || venueTypes.Estate;
