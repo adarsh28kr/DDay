@@ -1199,7 +1199,7 @@ td .pill {
     <span class="stat-chip"><strong>$30K–$60K</strong>&ensp;Budget</span>
     <span class="stat-chip"><strong>&lt;100</strong>&ensp;Guests</span>
     <span class="stat-chip"><strong>NorCal</strong>&ensp;Region</span>
-    <span class="stat-chip"><strong>55</strong>&ensp;Venues Tracked</span>
+    <span class="stat-chip"><strong>85</strong>&ensp;Venues Tracked</span>
   </div>
 </div>
 <hr class="gold-divider">
@@ -1217,10 +1217,10 @@ td .pill {
 <!-- FILTER BAR -->
 <div class="filter-bar">
   <label>Filter:</label>
-  <button class="filter-btn active" data-filter="all" onclick="filterVenues('all')">All (55)</button>
+  <button class="filter-btn active" data-filter="all" onclick="filterVenues('all')">All (85)</button>
   <button class="filter-btn" data-filter="tier1" onclick="filterVenues('tier1')">Tier 1 (4)</button>
-  <button class="filter-btn" data-filter="tier2" onclick="filterVenues('tier2')">Tier 2 (11)</button>
-  <button class="filter-btn" data-filter="research" onclick="filterVenues('research')">Research (16)</button>
+  <button class="filter-btn" data-filter="tier2" onclick="filterVenues('tier2')">Tier 2 (13)</button>
+  <button class="filter-btn" data-filter="research" onclick="filterVenues('research')">Research (44)</button>
   <button class="filter-btn" data-filter="lower" onclick="filterVenues('lower')">Lower (19)</button>
   <button class="filter-btn" data-filter="eliminated" onclick="filterVenues('eliminated')">Eliminated (5)</button>
   <div class="filter-sep"></div>
@@ -1547,6 +1547,7 @@ const venueTypes = {
   Club:   { gradient: 'linear-gradient(135deg,#14532d,#166534)', icon: '\u26F3' },
   EventCenter: { gradient: 'linear-gradient(135deg,#7c2d12,#9a3412)', icon: '\u{1F3EA}' },
   Retreat:{ gradient: 'linear-gradient(135deg,#064e3b,#065f46)', icon: '\u{1F332}' },
+  Farm:   { gradient: 'linear-gradient(135deg,#3f6212,#4d7c0f)', icon: '\u{1F33E}' },
   Beach:  { gradient: 'linear-gradient(135deg,#0e7490,#155e75)', icon: '\u{1F3D6}' }
 };
 
@@ -2212,6 +2213,370 @@ const venues = [
     notes:"Historic mansion on a private Sacramento River Delta island. Massive 500-person capacity at relatively affordable pricing (mansion $3K + tent $4K + $8K F&B minimum). Secluded delta location. Tables, chairs, linens included. Worth investigating BYOV and fire ceremony policies. The private island setting is unique.",
     actions:["Contact re: BYOV policy for Indian caterers","Ask about fire ceremony on delta island property","Get full pricing breakdown for <100 guest wedding","Check guest access logistics to delta island"],
     tier:"research", siteFeeNum:3000, allInNum:25000
+  },
+  // ===== PRIVATE ESTATE & RANCH VENUES (56-85) =====
+  // --- Northern California ---
+  {
+    rank:56, name:"Stemple Creek Ranch", location:"Tomales", region:"Marin County",
+    siteFee:"$12.9K-$17.2K", allIn:"$30K-$50K", capacity:"150",
+    byov:"YES", kitchen:"Full (barn)", lodging:"Minimal (cabins)",
+    fire:"Ask", noise:"Ask", baraat:"Ask",
+    haldi:"Ask", multiDay:"Ask", access:"Ask",
+    indian:"Ask", link:"https://stemplecreek.com/",
+    verdict:"TIER 2 - BYOV Confirmed + Full Kitchen in Barn", type:"Ranch",
+    notes:"Organic cattle ranch in Tomales with restored barn venue. BYOV confirmed with outside alcohol allowed. Fully equipped kitchen in barn for caterer use. 150-person capacity. Stunning coastal Marin County setting. Worth confirming fire ceremony and Indian wedding policies.",
+    actions:["Confirm fire ceremony policy on ranch","Ask about Indian wedding experience","Tour barn kitchen for caterer suitability","Get weekend availability and pricing"],
+    tier:"tier2", siteFeeNum:12900, allInNum:30000
+  },
+  {
+    rank:57, name:"Straus Home Ranch", location:"Marshall", region:"Marin County",
+    siteFee:"$8.5K-$19K", allIn:"$30K-$55K", capacity:"160",
+    byov:"Ask", kitchen:"Ask", lodging:"YES (8)",
+    fire:"Ask", noise:"Ask", baraat:"Ask",
+    haldi:"Ask", multiDay:"YES", access:"Ask",
+    indian:"Ask", link:"https://www.straushomeranch.com/",
+    verdict:"Research - 166-Acre Tomales Bay Ranch", type:"Ranch",
+    notes:"166-acre ranch on Tomales Bay with 160-year-old renovated barn. Weekend rental format supports multi-day celebrations. Lodging for 8 guests on-site. Stunning coastal views. Need to confirm BYOV, kitchen, and fire ceremony policies.",
+    actions:["Contact re: BYOV and outside caterer policy","Ask about fire ceremony on property","Tour renovated barn venue","Get weekend rental pricing and availability"],
+    tier:"research", siteFeeNum:8500, allInNum:30000
+  },
+  {
+    rank:58, name:"The Haven at Tomales", location:"Tomales", region:"Marin County",
+    siteFee:"$16.5K+", allIn:"$40K-$60K", capacity:"200",
+    byov:"Ask", kitchen:"Ask", lodging:"Ask",
+    fire:"Ask", noise:"Ask", baraat:"Ask",
+    haldi:"Ask", multiDay:"Ask", access:"Ask",
+    indian:"Ask", link:"https://www.tomaleshaven.com/",
+    verdict:"Research - 1,000 Coastal Acres, Historic Barn", type:"Farm",
+    notes:"1,000 coastal acres with 150+ year old Historic Barn and terraced garden ceremony site. 200-person capacity. Premium coastal Marin location. Need to confirm all policies including BYOV, kitchen, lodging, and fire ceremony.",
+    actions:["Contact re: all wedding policies","Ask about BYOV and caterer options","Tour Historic Barn and terraced garden","Get full pricing and package details"],
+    tier:"research", siteFeeNum:16500, allInNum:40000
+  },
+  {
+    rank:59, name:"The Highlands Estate", location:"Cloverdale", region:"Wine Country (Sonoma)",
+    siteFee:"$9.5K-$15.5K", allIn:"$30K-$50K", capacity:"200",
+    byov:"Ask", kitchen:"YES", lodging:"YES (22)",
+    fire:"Ask", noise:"Ask", baraat:"Ask",
+    haldi:"Ask", multiDay:"Ask", access:"Ask",
+    indian:"Ask", link:"https://www.thehighlandsestate.com/",
+    verdict:"Research - Climate-Controlled Barn + Vineyard Views", type:"Estate",
+    notes:"21+ acre estate in Cloverdale with climate-controlled barn venue. Kitchen on-site. Lodging for 22 guests. Vineyard views and Sonoma wine country setting. 200-person capacity at reasonable pricing.",
+    actions:["Contact re: BYOV and outside caterer policy","Ask about fire ceremony on property","Tour climate-controlled barn","Get lodging details and multi-day options"],
+    tier:"research", siteFeeNum:9500, allInNum:30000
+  },
+  {
+    rank:60, name:"Yokayo Ranch", location:"Ukiah", region:"Mendocino County",
+    siteFee:"$19.8K", allIn:"$35K-$55K", capacity:"50",
+    byov:"Ask", kitchen:"YES (2 kitchens)", lodging:"YES (29)",
+    fire:"Ask", noise:"Ask", baraat:"Ask",
+    haldi:"Ask", multiDay:"YES", access:"Ask",
+    indian:"Ask", link:"https://www.yokayoranch.com/",
+    verdict:"Research - Intimate 40-Acre Organic Farm, 2 Kitchens", type:"Ranch",
+    notes:"40-acre organic farm in Ukiah with 2 full kitchens. Lodging for 29 guests. Includes coordinator. Small capacity (50 indoor) ideal for intimate celebrations. Multi-day capable. Mendocino County setting.",
+    actions:["Contact re: BYOV caterer policy","Ask about fire ceremony on organic farm","Confirm 50-person capacity limits","Get coordinator and package details"],
+    tier:"research", siteFeeNum:19800, allInNum:35000
+  },
+  {
+    rank:61, name:"Lost Coast Estate", location:"Ferndale", region:"Humboldt County",
+    siteFee:"Ask", allIn:"$40K-$70K", capacity:"300+",
+    byov:"Ask", kitchen:"Ask", lodging:"YES (17 BR)",
+    fire:"Ask", noise:"Ask", baraat:"Good",
+    haldi:"Ask", multiDay:"YES", access:"Ask",
+    indian:"Ask", link:"https://lostcoastestate.com/",
+    verdict:"Research - Ocean Views, 17 Bedrooms, 300+ Cap", type:"Estate",
+    notes:"Large estate near Ferndale with ocean views. 17 bedrooms for overnight guests. 300+ person capacity suitable for large celebrations. All-inclusive package available. Near Victorian village of Ferndale. Remote Humboldt County location.",
+    actions:["Contact re: all-inclusive package details","Ask about BYOV and fire ceremony","Tour ocean-view ceremony areas","Check guest travel logistics to Ferndale"],
+    tier:"research", siteFeeNum:99999, allInNum:40000
+  },
+  {
+    rank:62, name:"Nestldown", location:"Los Gatos", region:"Santa Cruz Mountains",
+    siteFee:"Ask (high-end)", allIn:"$50K-$80K", capacity:"200",
+    byov:"Limited", kitchen:"Ask", lodging:"NO",
+    fire:"Ask", noise:"Ask", baraat:"Ask",
+    haldi:"Ask", multiDay:"Ask", access:"Ask",
+    indian:"Ask", link:"https://www.nestldown.com/",
+    verdict:"Research - 180-Acre Redwood Estate, High-End", type:"Estate",
+    notes:"180-acre private estate in Los Gatos with majestic redwoods. Features a 20-passenger train. High-end venue with 200-person capacity. Limited BYOV (approved list). No on-site lodging. Premium pricing. Santa Cruz Mountains setting near Bay Area.",
+    actions:["Contact re: approved caterer list and Indian options","Ask about fire ceremony in redwood setting","Tour estate and 20-passenger train","Get pricing tiers and availability"],
+    tier:"research", siteFeeNum:99999, allInNum:50000
+  },
+  {
+    rank:63, name:"Waterfall Lodge & Retreat", location:"Ben Lomond", region:"Santa Cruz Mountains",
+    siteFee:"$9.8K-$32.8K", allIn:"$25K-$55K", capacity:"150",
+    byov:"Ask", kitchen:"Ask", lodging:"YES (86)",
+    fire:"Ask", noise:"Ask", baraat:"Ask",
+    haldi:"Ask", multiDay:"YES", access:"Ask",
+    indian:"Ask", link:"https://www.waterfallsantacruz.com/",
+    verdict:"Research - 80 Acres, Waterfall, Lodging for 86", type:"Retreat",
+    notes:"80-acre retreat in Ben Lomond with ancient redwoods and waterfall. 32 cabins lodging 86 overnight guests. 150-person capacity. Wide pricing range ($9.8K-$32.8K site fee). Multi-day celebrations supported by extensive lodging. Santa Cruz Mountains setting.",
+    actions:["Contact re: BYOV and caterer options","Ask about fire ceremony near redwoods","Tour waterfall ceremony area","Get cabin lodging details and multi-day pricing"],
+    tier:"research", siteFeeNum:9800, allInNum:25000
+  },
+  {
+    rank:64, name:"Rancho Victoria Vineyards", location:"Plymouth", region:"Gold Country / Foothills",
+    siteFee:"$4K-$20K", allIn:"$20K-$45K", capacity:"300",
+    byov:"Ask", kitchen:"Ask", lodging:"Ask",
+    fire:"Ask", noise:"Ask", baraat:"Good",
+    haldi:"Ask", multiDay:"Ask", access:"Ask",
+    indian:"Ask", link:"https://www.ranchovictoriaweddingsandevents.com/",
+    verdict:"Research - 640-Acre Ranch, 300 Cap, Affordable", type:"Ranch",
+    notes:"640-acre ranch in Plymouth with 120 acres of vineyards. 200-year-old oak tree. 300-person capacity. Shenandoah Valley wine region in Gold Country. Wide pricing range ($4K-$20K) makes it potentially affordable.",
+    actions:["Contact re: BYOV and outside caterer policy","Ask about fire ceremony on ranch","Tour vineyard and oak tree ceremony area","Get pricing for <100 guest wedding"],
+    tier:"research", siteFeeNum:4000, allInNum:20000
+  },
+  {
+    rank:65, name:"The Ranch at Stoney Creek", location:"Somerset", region:"Gold Country / Foothills",
+    siteFee:"$11.9K+", allIn:"$25K-$45K", capacity:"200",
+    byov:"YES", kitchen:"Ask", lodging:"YES (lodge+camp)",
+    fire:"Ask", noise:"No curfew", baraat:"Ask",
+    haldi:"Ask", multiDay:"YES", access:"Ask",
+    indian:"Ask", link:"https://www.theranchatstoneycreek.com/",
+    verdict:"Research - BYOV + No Curfew + Multi-Day", type:"Ranch",
+    notes:"67 private acres in Somerset. BYOV confirmed. No curfew ('no lights out' policy). 1915 lodge plus camping for overnight guests. Historic Pony Express stop. 200-person capacity. Multi-day celebrations welcome. Gold Country setting.",
+    actions:["Contact re: fire ceremony policy","Ask about Indian wedding experience","Tour 1915 lodge and grounds","Get full pricing and lodging details"],
+    tier:"research", siteFeeNum:11900, allInNum:25000
+  },
+  {
+    rank:66, name:"Lotus View Ranch", location:"Pilot Hill", region:"Gold Country / Foothills",
+    siteFee:"$15.5K", allIn:"$30K-$50K", capacity:"240",
+    byov:"YES", kitchen:"Ask", lodging:"Ask",
+    fire:"Ask", noise:"Ask", baraat:"Ask",
+    haldi:"Ask", multiDay:"Ask", access:"Ask",
+    indian:"Ask", link:"https://www.lotusviewranch.com/",
+    verdict:"Research - BYOV Confirmed, 240 Outdoor Cap", type:"Ranch",
+    notes:"Ranch in Pilot Hill near Auburn/Folsom. BYOV confirmed. 100 indoor / 240 outdoor capacity. Gold Country foothills setting. $15.5K site fee. Near Sacramento for guest convenience.",
+    actions:["Contact re: fire ceremony policy","Ask about kitchen facilities for caterers","Tour indoor and outdoor spaces","Get availability and full pricing"],
+    tier:"research", siteFeeNum:15500, allInNum:30000
+  },
+  {
+    rank:67, name:"Estate Farms", location:"Sacramento", region:"Sacramento Valley",
+    siteFee:"$5K-$9K", allIn:"$20K-$35K", capacity:"200+",
+    byov:"YES", kitchen:"Commercial (1,800sqft)", lodging:"YES",
+    fire:"Ask", noise:"Ask", baraat:"Ask",
+    haldi:"Ask", multiDay:"Ask", access:"Ask",
+    indian:"Ask", link:"https://www.estatesfarms.com/",
+    verdict:"Research - BYOV + 1,800sqft Commercial Kitchen", type:"Farm",
+    notes:"10-acre farm in Sacramento. BYOV confirmed with massive 1,800 sq ft commercial kitchen — ideal for Indian caterers. On-site lodging available. 200+ capacity at very affordable pricing ($5K-$9K site fee). Sacramento location convenient for Bay Area guests.",
+    actions:["Contact re: fire ceremony on farm property","Tour 1,800sqft commercial kitchen","Ask about Indian wedding experience","Get lodging details and multi-day options"],
+    tier:"research", siteFeeNum:5000, allInNum:20000
+  },
+  // --- Central Coast ---
+  {
+    rank:68, name:"Higuera Ranch", location:"San Luis Obispo", region:"Central Coast (SLO)",
+    siteFee:"$10K-$33.8K", allIn:"$30K-$60K", capacity:"200",
+    byov:"YES", kitchen:"Gourmet", lodging:"YES (24)",
+    fire:"Ask", noise:"Ask", baraat:"Ask",
+    haldi:"Ask", multiDay:"YES", access:"Ask",
+    indian:"Ask", link:"https://www.higueraranch.com/",
+    verdict:"Research - BYOV + Gourmet Kitchen + 3 Nights", type:"Ranch",
+    notes:"80-acre luxury estate in SLO. BYOV confirmed. Gourmet kitchen with 4 refrigerators and 1 freezer — excellent for Indian caterers. Lodging for 24. 3 nights included in rental. 200-person capacity. Central Coast destination.",
+    actions:["Contact re: fire ceremony on ranch","Ask about Indian wedding experience","Tour gourmet kitchen facilities","Get 3-night package pricing details"],
+    tier:"research", siteFeeNum:10000, allInNum:30000
+  },
+  {
+    rank:69, name:"La Lomita Ranch", location:"San Luis Obispo", region:"Central Coast (SLO)",
+    siteFee:"$8.5K-$43.8K", allIn:"$30K-$65K", capacity:"400",
+    byov:"Ask", kitchen:"Full (hacienda)", lodging:"YES (24)",
+    fire:"Ask", noise:"Ask", baraat:"Good",
+    haldi:"Ask", multiDay:"YES", access:"Ask",
+    indian:"Ask", link:"https://lalomitaranch.com/",
+    verdict:"Research - 400 Cap, Hacienda Kitchen, 8 Suites", type:"Ranch",
+    notes:"Ranch in SLO with Mexican-inspired hacienda design. Full kitchen in hacienda. 8 luxury suites lodging 24 guests. 400-person capacity for large celebrations. Wide pricing range. Central Coast setting.",
+    actions:["Contact re: BYOV and outside caterer policy","Ask about fire ceremony on property","Tour hacienda and luxury suites","Get pricing for <100 guest wedding"],
+    tier:"research", siteFeeNum:8500, allInNum:30000
+  },
+  {
+    rank:70, name:"Flying Caballos Ranch", location:"San Luis Obispo", region:"Central Coast (SLO)",
+    siteFee:"$12K-$24K", allIn:"$30K-$55K", capacity:"200-400",
+    byov:"Ask", kitchen:"Chef's kitchen", lodging:"YES (24)",
+    fire:"Ask", noise:"Ask", baraat:"Ask",
+    haldi:"Ask", multiDay:"YES", access:"Ask",
+    indian:"Ask", link:"https://flyingcaballos.com/",
+    verdict:"Research - Chef's Kitchen + 4 Vacation Rentals", type:"Ranch",
+    notes:"SLO ranch in Edna Valley with chef's kitchen. 4 vacation rentals lodging 24 guests. Historic 1905 Farmhouse. 200-400 person capacity. Multi-day celebrations supported. Central Coast wine country setting.",
+    actions:["Contact re: BYOV and caterer policy","Ask about fire ceremony on ranch","Tour chef's kitchen and 1905 Farmhouse","Get vacation rental and multi-day pricing"],
+    tier:"research", siteFeeNum:12000, allInNum:30000
+  },
+  {
+    rank:71, name:"Greengate Ranch & Vineyard", location:"San Luis Obispo", region:"Central Coast (SLO)",
+    siteFee:"$29.7K+", allIn:"$50K-$75K", capacity:"30-600",
+    byov:"Limited", kitchen:"Ask", lodging:"YES (26)",
+    fire:"Ask", noise:"Ask", baraat:"Good",
+    haldi:"Ask", multiDay:"YES", access:"Ask",
+    indian:"Ask", link:"https://greengateweddings.com/",
+    verdict:"Research - Up to 600 Cap, Vintage Barn", type:"Ranch",
+    notes:"SLO ranch in Edna Valley with vintage barn and stables. Approved catering list (limited BYOV). 4 vacation homes lodging 26 guests. Flexible 30-600 person capacity. Premium pricing ($29.7K+ site fee). Multi-day celebrations supported.",
+    actions:["Contact re: approved caterer list — Indian options?","Ask about fire ceremony on vineyard","Tour vintage barn and stables","Get pricing for intimate <100 guest wedding"],
+    tier:"research", siteFeeNum:29700, allInNum:50000
+  },
+  {
+    rank:72, name:"Bella Terra Vineyard Estate", location:"Paso Robles", region:"Central Coast (Paso)",
+    siteFee:"$3K-$8K", allIn:"$15K-$30K", capacity:"175-200",
+    byov:"YES", kitchen:"BBQ/buffet area", lodging:"YES (5 BR)",
+    fire:"Ask", noise:"Ask", baraat:"Ask",
+    haldi:"Ask", multiDay:"YES", access:"Ask",
+    indian:"Ask", link:"https://bellaterraevents.com/",
+    verdict:"Research - BYOV + Very Affordable ($3K-$8K)", type:"Estate",
+    notes:"Vineyard estate in Paso Robles. BYOV confirmed (bring your own vendors). BBQ/buffet prep area. 5-bedroom farmhouse manor for lodging. 175-200 person capacity. Very affordable pricing ($3K-$8K site fee). Paso Robles wine country.",
+    actions:["Contact re: fire ceremony on vineyard","Tour BBQ area for caterer suitability","Ask about Indian wedding experience","Get farmhouse lodging and multi-day options"],
+    tier:"research", siteFeeNum:3000, allInNum:15000
+  },
+  {
+    rank:73, name:"Almond Springs", location:"Paso Robles", region:"Central Coast (Paso)",
+    siteFee:"Ask", allIn:"$25K-$50K", capacity:"400",
+    byov:"Ask", kitchen:"Walk-in fridge", lodging:"Minimal",
+    fire:"Ask", noise:"No curfew", baraat:"Good",
+    haldi:"Ask", multiDay:"Ask", access:"Ask",
+    indian:"Ask", link:"https://www.almondsprings.com/",
+    verdict:"Research - 400 Cap, No Noise Restrictions", type:"Ranch",
+    notes:"Paso Robles ranch with 400-person capacity. Walk-in fridge for catering. NO noise restrictions — ideal for DJ/music. Fire pit on property. Minimal cabin lodging. Large capacity suitable for big celebrations.",
+    actions:["Contact re: BYOV and caterer policy","Ask about fire ceremony (fire pit exists)","Tour walk-in fridge kitchen area","Get pricing and availability"],
+    tier:"research", siteFeeNum:99999, allInNum:25000
+  },
+  {
+    rank:74, name:"Circle Bar B Ranch", location:"Goleta", region:"Santa Barbara",
+    siteFee:"$1K-$10K", allIn:"$15K-$35K", capacity:"150",
+    byov:"Ask", kitchen:"Ask", lodging:"YES (65-70)",
+    fire:"Ask", noise:"Ask", baraat:"Ask",
+    haldi:"Ask", multiDay:"YES", access:"Ask",
+    indian:"Ask", link:"https://www.circlebarbwedding.com/",
+    verdict:"Research - Guest Ranch Since 1930s, 17 Cabins", type:"Ranch",
+    notes:"Historic guest ranch since 1930s in Refugio Canyon, Goleta. 17 cabins lodging 65-70 overnight guests. 150-person capacity. Very affordable pricing ($1K-$10K site fee). Multi-day celebrations supported by extensive lodging. Santa Barbara area.",
+    actions:["Contact re: BYOV and caterer policy","Ask about fire ceremony on ranch","Tour cabins and ceremony areas","Get pricing for wedding weekend package"],
+    tier:"research", siteFeeNum:1000, allInNum:15000
+  },
+  {
+    rank:75, name:"Whispering Rose Ranch", location:"Solvang", region:"Santa Barbara",
+    siteFee:"$15K-$21K", allIn:"$35K-$55K", capacity:"500+",
+    byov:"YES", kitchen:"None (BYO)", lodging:"NO",
+    fire:"Ask", noise:"Ask", baraat:"Good",
+    haldi:"Ask", multiDay:"Ask", access:"Ask",
+    indian:"Ask", link:"https://www.whisperingroseranchwedding.com/",
+    verdict:"Research - BYOV Blank Canvas, 500+ Cap", type:"Ranch",
+    notes:"Blank canvas venue in Solvang with 8 private event spaces. BYOV confirmed (bring all vendors). No kitchen — caterer brings everything. No lodging. 500+ person capacity for large celebrations. Santa Barbara wine country. Blank canvas means full flexibility for Indian wedding setup.",
+    actions:["Contact re: fire ceremony on ranch","Ask about Indian wedding experience","Tour 8 event spaces for mandap setup","Check nearby hotels for guest lodging"],
+    tier:"research", siteFeeNum:15000, allInNum:35000
+  },
+  {
+    rank:76, name:"Foxen Canyon Ranch", location:"Los Olivos", region:"Santa Barbara",
+    siteFee:"$14K-$17K", allIn:"$30K-$50K", capacity:"150",
+    byov:"Ask", kitchen:"Ask", lodging:"Minimal",
+    fire:"Ask", noise:"Ask", baraat:"Ask",
+    haldi:"Ask", multiDay:"YES", access:"Ask",
+    indian:"Ask", link:"https://www.foxencanyonranch.com/",
+    verdict:"Research - 200-Acre Working Cattle Ranch", type:"Ranch",
+    notes:"200+ acre working cattle ranch in Los Olivos. White barn venue. Century-old oaks. 150-person capacity. Weekend access for multi-day celebrations. Minimal on-site lodging. Santa Barbara wine country setting.",
+    actions:["Contact re: BYOV and caterer policy","Ask about fire ceremony on cattle ranch","Tour white barn and oak ceremony areas","Get weekend rental pricing details"],
+    tier:"research", siteFeeNum:14000, allInNum:30000
+  },
+  {
+    rank:77, name:"Alisal Ranch", location:"Solvang", region:"Santa Barbara",
+    siteFee:"Ask (premium)", allIn:"$50K-$80K", capacity:"250",
+    byov:"Ask", kitchen:"On-site", lodging:"YES (73 houses)",
+    fire:"Ask", noise:"Ask", baraat:"Good",
+    haldi:"Ask", multiDay:"YES", access:"Good",
+    indian:"Ask", link:"https://www.alisalranch.com/",
+    verdict:"Research - 10,000-Acre Resort Ranch, 73 Houses", type:"Ranch",
+    notes:"10,000-acre working cattle ranch and destination resort in Solvang. 73 renovated houses/suites for guest lodging. On-site kitchen and dining. 250-person capacity. Premium pricing. Multi-day destination wedding ideal. Full resort amenities.",
+    actions:["Contact re: BYOV and outside caterer options","Ask about fire ceremony on resort ranch","Tour event spaces and guest houses","Get destination wedding package pricing"],
+    tier:"research", siteFeeNum:99999, allInNum:50000
+  },
+  // --- Southern California ---
+  {
+    rank:78, name:"Hummingbird Nest Ranch", location:"Simi Valley", region:"Ventura County",
+    siteFee:"$15K-$19K", allIn:"$35K-$55K", capacity:"300-1000",
+    byov:"YES", kitchen:"Ask", lodging:"NO",
+    fire:"Ask", noise:"Ask", baraat:"Good",
+    haldi:"Ask", multiDay:"Ask", access:"Ask",
+    indian:"YES", link:"https://www.hummingbirdnestranch.com/",
+    verdict:"TIER 2 - Documented Indian Weddings + BYOV + BYOB", type:"Ranch",
+    notes:"Documented Indian wedding venue in Simi Valley. BYOV and BYOB confirmed with no corkage fee. 7 ceremony areas. 300-1000 person capacity. No on-site lodging. Multiple documented Indian weddings including baraat and mandap setups. Popular SoCal Indian wedding venue.",
+    actions:["Tour 7 ceremony areas for mandap placement","Confirm fire ceremony policy","Ask about Indian caterer logistics","Check nearby hotels for guest accommodations"],
+    tier:"tier2", siteFeeNum:15000, allInNum:35000
+  },
+  {
+    rank:79, name:"Saddlerock Ranch", location:"Malibu", region:"Los Angeles / Malibu",
+    siteFee:"$7.5K-$12K", allIn:"$25K-$45K", capacity:"100-500",
+    byov:"YES", kitchen:"Ask", lodging:"NO",
+    fire:"Ask", noise:"Ask", baraat:"Good",
+    haldi:"Ask", multiDay:"Ask", access:"Ask",
+    indian:"Ask", link:"https://www.saddlerock-ranch.com/",
+    verdict:"Research - BYOV, 1,000-Acre Malibu Ranch", type:"Ranch",
+    notes:"1,000-acre working ranch in Malibu. BYOV confirmed (with insurance requirement). 100-500 person capacity. No on-site lodging. Stunning Malibu mountain setting. Moderate site fee ($7.5K-$12K) for a Malibu venue.",
+    actions:["Contact re: fire ceremony on ranch","Ask about Indian wedding experience","Tour ceremony areas and ranch grounds","Check insurance requirements for BYOV caterers"],
+    tier:"research", siteFeeNum:7500, allInNum:25000
+  },
+  {
+    rank:80, name:"Calamigos Ranch", location:"Malibu", region:"Los Angeles / Malibu",
+    siteFee:"$28K+", allIn:"$50K-$80K", capacity:"500",
+    byov:"NO", kitchen:"In-house", lodging:"YES (52 rooms)",
+    fire:"Ask", noise:"Ask", baraat:"Good",
+    haldi:"Ask", multiDay:"YES", access:"Good",
+    indian:"Ask", link:"https://www.calamigosevents.com/",
+    verdict:"Research - All-Inclusive 300-Acre Resort Ranch", type:"Ranch",
+    notes:"300-acre guest ranch resort in Malibu. All-inclusive only — NO BYOV. In-house catering only. 52-room guest ranch with spa. 500-person capacity. Premium pricing ($28K+ site fee). Multi-day destination wedding possible. Need to confirm if Indian cuisine available through in-house catering.",
+    actions:["Contact re: Indian cuisine through in-house catering","Ask about fire ceremony policy","Tour 52-room guest ranch","Get all-inclusive pricing for <100 guest wedding"],
+    tier:"research", siteFeeNum:28000, allInNum:50000
+  },
+  {
+    rank:81, name:"McCormick Home Ranch", location:"Camarillo", region:"Ventura County",
+    siteFee:"$7K-$9K", allIn:"$20K-$35K", capacity:"250",
+    byov:"YES", kitchen:"Ask", lodging:"NO",
+    fire:"Ask", noise:"Ask", baraat:"Ask",
+    haldi:"Ask", multiDay:"Ask", access:"Ask",
+    indian:"Ask", link:"https://www.mccormickhomeranch.com/",
+    verdict:"Research - BYOV + Affordable Ranch", type:"Ranch",
+    notes:"Ranch in Camarillo. BYOV confirmed (licensed/insured caterer required). 250-person capacity. No on-site lodging. March-November availability. Affordable pricing ($7K-$9K site fee). Ventura County location.",
+    actions:["Contact re: fire ceremony policy","Ask about Indian wedding experience","Tour ceremony and reception areas","Check caterer insurance requirements"],
+    tier:"research", siteFeeNum:7000, allInNum:20000
+  },
+  {
+    rank:82, name:"Rancho Las Lomas", location:"Silverado Canyon", region:"Orange County",
+    siteFee:"$5.5K-$11.5K", allIn:"$25K-$45K", capacity:"500",
+    byov:"Limited", kitchen:"Commercial", lodging:"NO",
+    fire:"Ask", noise:"Ask", baraat:"Good",
+    haldi:"Ask", multiDay:"Ask", access:"Ask",
+    indian:"Ask", link:"https://www.rancholaslomas.com/",
+    verdict:"Research - Outside Caterer OK for Ethnic/Cultural Cuisine", type:"Estate",
+    notes:"Estate in Silverado Canyon, OC. Outside caterer possible for ethnic/cultural cuisine (by approval) — promising for Indian weddings. Commercial kitchen via 24 Carrots catering. 500-person capacity. No on-site lodging. Exotic animal exhibits on property.",
+    actions:["Contact re: Indian caterer approval process","Ask about fire ceremony in canyon setting","Tour commercial kitchen facilities","Get ethnic cuisine caterer approval details"],
+    tier:"research", siteFeeNum:5500, allInNum:25000
+  },
+  {
+    rank:83, name:"Randhawa Ranch", location:"Temecula", region:"Temecula Wine Country",
+    siteFee:"$13K+", allIn:"$30K-$50K", capacity:"200",
+    byov:"YES", kitchen:"Ask", lodging:"YES",
+    fire:"Ask", noise:"Ask", baraat:"Ask",
+    haldi:"Ask", multiDay:"Ask", access:"Ask",
+    indian:"Ask", link:"https://www.randhawaranch.com/",
+    verdict:"Research - BYOV Blank Canvas, 97 Acres", type:"Ranch",
+    notes:"97-acre ranch in Temecula. BYOV confirmed (blank canvas venue). 3,000 avocado trees and 4 vineyards on property. 200-person capacity. On-site lodging available. Temecula wine country setting. Blank canvas means full flexibility for Indian wedding setup.",
+    actions:["Contact re: fire ceremony on ranch","Ask about Indian wedding experience","Tour vineyard and avocado grove ceremony areas","Get lodging and multi-day package details"],
+    tier:"research", siteFeeNum:13000, allInNum:30000
+  },
+  {
+    rank:84, name:"Sacred Mountain Julian", location:"Julian", region:"San Diego County",
+    siteFee:"$3.5K-$28K", allIn:"$15K-$45K", capacity:"60",
+    byov:"Ask", kitchen:"Ask", lodging:"YES (60)",
+    fire:"Ask", noise:"Ask", baraat:"Limited",
+    haldi:"Ask", multiDay:"YES", access:"Ask",
+    indian:"Ask", link:"https://www.sacredmountainjulian.com/",
+    verdict:"Research - Intimate 61-Acre Mountain Retreat", type:"Estate",
+    notes:"61-acre mountain retreat in Julian. 360-degree views. 5 residences plus 12-room lodge lodging up to 60 guests. Small 60-person capacity ideal for intimate celebrations. 3-day packages available. Wide pricing range ($3.5K-$28K). San Diego backcountry setting.",
+    actions:["Contact re: BYOV and caterer policy","Ask about fire ceremony on mountain property","Tour residences and lodge","Get 3-day package pricing details"],
+    tier:"research", siteFeeNum:3500, allInNum:15000
+  },
+  {
+    rank:85, name:"Hawk Ranch", location:"Murrieta", region:"Temecula Wine Country",
+    siteFee:"$15K+", allIn:"$30K-$50K", capacity:"300",
+    byov:"Ask", kitchen:"Ask", lodging:"YES (4 homes)",
+    fire:"Ask", noise:"Ask", baraat:"Good",
+    haldi:"Ask", multiDay:"YES", access:"Ask",
+    indian:"Ask", link:"https://www.hawkranch.co/",
+    verdict:"Research - 40 Acres, 4 Homes, Pond", type:"Ranch",
+    notes:"40-acre ranch in Murrieta with 4 homes on property for lodging. Pond and mountain backdrop. 300-person capacity. Multi-day celebrations supported. Temecula wine country area. Need to confirm BYOV, kitchen, and fire ceremony policies.",
+    actions:["Contact re: BYOV and caterer policy","Ask about fire ceremony on ranch","Tour 4 homes and pond ceremony area","Get pricing and availability details"],
+    tier:"research", siteFeeNum:15000, allInNum:30000
   }
 ];
 
@@ -2314,7 +2679,7 @@ function getInitials(name) {
 }
 
 // Venues with local images (rank numbers that have images/N.jpg)
-const hasLocalImage = new Set([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55]);
+const hasLocalImage = new Set([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85]);
 
 function getThumb(v) {
   const t = venueTypes[v.type] || venueTypes.Estate;
