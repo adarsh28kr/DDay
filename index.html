@@ -1178,6 +1178,7 @@ td .pill {
   <div class="header-left">
     <h1>DDay</h1>
     <div class="subtitle">Your Indian Wedding Journey, Beautifully Planned</div>
+    <a href="planner-insights.html" style="display:inline-block;margin-top:8px;padding:5px 14px;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.18);border-radius:20px;color:#f1e8e0;font-size:11px;text-decoration:none;transition:background 0.2s;font-weight:500;" onmouseover="this.style.background='rgba(255,255,255,0.22)'" onmouseout="this.style.background='rgba(255,255,255,0.12)'">Planner Insights &#8594;</a>
   </div>
   <div class="header-stats">
     <span class="stat-chip"><strong>$30K–$60K</strong>&ensp;Budget</span>
@@ -1510,7 +1511,7 @@ td .pill {
 </div>
 
 <hr class="gold-divider">
-<div class="footer">DDay Wedding Planner &mdash; All data stored locally in your browser &mdash; Made with love</div>
+<div class="footer"><a href="planner-insights.html" style="color:var(--accent);text-decoration:none;font-style:normal;font-family:var(--font-body);font-size:12px;">Read Planner Insights &rarr;</a><br>DDay Wedding Planner &mdash; All data stored locally in your browser &mdash; Made with love</div>
 
 <!-- LIGHTBOX -->
 <div class="lightbox-overlay" id="lightboxOverlay" onclick="closeLightbox(event)">
@@ -3170,7 +3171,7 @@ function initScrollAnimations() {
 // ===== EXPORT / IMPORT =====
 function exportState() {
   const state = {};
-  ['dday-actions','dday-ratings','dday-notes','dday-shortlist','dday-timeline','dday-vendors','dday-custom-notes','dday-ww-events','dday-guests','dday-fav-palettes','dday-decor-checks','dday-kitchen-checks','dday-menu-selections'].forEach(key => {
+  ['dday-actions','dday-ratings','dday-notes','dday-shortlist','dday-timeline','dday-vendors','dday-custom-notes','dday-ww-events','dday-guests','dday-fav-palettes','dday-decor-checks','dday-kitchen-checks','dday-menu-selections','dday-infra-checks'].forEach(key => {
     const val = localStorage.getItem(key);
     if (val !== null) state[key] = val;
   });

@@ -1,0 +1,1236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DDay — Planner Insights</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* SHARED DESIGN SYSTEM — keep in sync with index.html */
+:root {
+  --bg-body: #faf7f2;
+  --bg-card: #ffffff;
+  --bg-header-from: #800020;
+  --bg-header-to: #5a0016;
+  --accent: #b8860b;
+  --accent-light: rgba(184,134,11,0.12);
+  --accent-dark: #8a6508;
+  --burgundy: #800020;
+  --burgundy-light: rgba(128,0,32,0.08);
+  --blush: #fdf2f0;
+  --cream: #faf7f2;
+  --gold: #b8860b;
+  --shadow: 0 1px 3px rgba(0,0,0,0.06);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
+  --shadow-lg: 0 8px 30px rgba(0,0,0,0.1);
+  --border: #e8e2d9;
+  --border-light: #f0ebe4;
+  --text: #1a1a2e;
+  --text-light: #64748b;
+  --text-muted: #94a3b8;
+  --tier1: #1d4ed8;
+  --tier2: #7c3aed;
+  --research: #0891b2;
+  --lower: #6b7280;
+  --eliminated: #dc2626;
+  --green: #16a34a;
+  --radius: 10px;
+  --radius-lg: 16px;
+  --font-heading: 'Playfair Display', Georgia, 'Times New Roman', serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+body {
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: var(--text);
+  background: var(--bg-body);
+  line-height: 1.6;
+}
+
+/* SCROLL ANIMATIONS */
+.fade-in-section {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+.fade-in-section.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* GOLD DIVIDER */
+.gold-divider {
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  margin: 0;
+  border: none;
+}
+
+/* HEADER */
+.header {
+  background: linear-gradient(135deg, var(--bg-header-from), var(--bg-header-to));
+  color: #fff;
+  padding: 40px 32px 36px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  position: relative;
+  overflow: hidden;
+}
+.header::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200' viewBox='0 0 200 200'%3E%3Cpath d='M100 20 C120 40 140 40 160 20 C140 40 140 60 160 80 C140 60 120 60 100 80 C120 60 120 40 100 20Z' fill='none' stroke='%23ffffff' stroke-width='0.5' opacity='0.06'/%3E%3Cpath d='M100 120 C120 140 140 140 160 120 C140 140 140 160 160 180 C140 160 120 160 100 180 C120 160 120 140 100 120Z' fill='none' stroke='%23ffffff' stroke-width='0.5' opacity='0.06'/%3E%3Cpath d='M0 70 C20 90 40 90 60 70 C40 90 40 110 60 130 C40 110 20 110 0 130 C20 110 20 90 0 70Z' fill='none' stroke='%23ffffff' stroke-width='0.5' opacity='0.06'/%3E%3Ccircle cx='100' cy='100' r='60' fill='none' stroke='%23ffffff' stroke-width='0.3' opacity='0.04'/%3E%3Ccircle cx='100' cy='100' r='80' fill='none' stroke='%23ffffff' stroke-width='0.3' opacity='0.03'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+  pointer-events: none;
+}
+.header-left { position: relative; z-index: 1; }
+.header-left h1 {
+  font-family: var(--font-heading);
+  font-size: 36px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+.header-left .subtitle {
+  font-family: var(--font-heading);
+  font-size: 15px;
+  color: rgba(255,255,255,0.75);
+  margin-top: 4px;
+  letter-spacing: 0.5px;
+  font-style: italic;
+}
+.back-link {
+  display: inline-block;
+  color: rgba(255,255,255,0.7);
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 500;
+  margin-bottom: 6px;
+  transition: color 0.2s;
+  letter-spacing: 0.3px;
+  font-family: var(--font-body);
+}
+.back-link:hover { color: #fff; }
+.header-stats {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  position: relative;
+  z-index: 1;
+}
+.stat-chip {
+  background: rgba(255,255,255,0.12);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.18);
+  padding: 8px 18px;
+  border-radius: 24px;
+  font-size: 12px;
+  color: #f1e8e0;
+  white-space: nowrap;
+  transition: background 0.2s, transform 0.2s;
+}
+.stat-chip:hover { background: rgba(255,255,255,0.18); transform: translateY(-1px); }
+.stat-chip strong { color: #f5c842; font-weight: 600; }
+
+/* SECTION HEADERS */
+.section-title {
+  font-family: var(--font-heading);
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid transparent;
+  border-image: linear-gradient(90deg, var(--burgundy), var(--gold), transparent) 1;
+  color: var(--text);
+}
+
+/* FOOTER */
+.footer {
+  text-align: center;
+  padding: 28px 16px;
+  color: var(--text-muted);
+  font-size: 11px;
+  font-family: var(--font-heading);
+  font-style: italic;
+  letter-spacing: 0.3px;
+}
+.footer a {
+  color: var(--accent);
+  text-decoration: none;
+  font-style: normal;
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+.footer a:hover { color: var(--accent-dark); }
+
+/* ===== PAGE-SPECIFIC STYLES ===== */
+
+/* Container */
+.insights-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 32px 20px;
+}
+
+/* Page Sections */
+.page-section {
+  margin-bottom: 48px;
+}
+.section-subtitle {
+  font-size: 14px;
+  color: var(--text-light);
+  margin-top: -12px;
+  margin-bottom: 24px;
+  line-height: 1.7;
+  max-width: 700px;
+}
+
+/* Section 1: Playbook Grid */
+.playbook-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.insight-card {
+  display: flex;
+  gap: 14px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--burgundy);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  padding: 18px 20px;
+  transition: box-shadow 0.25s, transform 0.15s;
+}
+.insight-card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
+}
+.insight-number {
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  background: var(--burgundy);
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+  margin-top: 2px;
+}
+.insight-body {}
+.insight-title {
+  font-family: var(--font-heading);
+  font-size: 15px;
+  color: var(--burgundy);
+  margin-bottom: 6px;
+}
+.insight-card p {
+  font-size: 12.5px;
+  color: var(--text);
+  line-height: 1.65;
+}
+.insight-tag {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 2px 10px;
+  border-radius: 12px;
+  font-size: 10px;
+  font-weight: 700;
+  background: var(--accent-light);
+  color: var(--accent-dark);
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+/* Section 2: Planner Cards */
+.planners-list {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.planner-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+.planner-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 20px 24px;
+  background: var(--blush);
+  border-bottom: 1px solid var(--border);
+}
+.planner-avatar {
+  width: 48px;
+  height: 48px;
+  min-width: 48px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--burgundy), #5a0016);
+  color: #f5c842;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 16px;
+  font-family: var(--font-heading);
+}
+.planner-info h4 {
+  font-family: var(--font-heading);
+  font-size: 17px;
+  color: var(--burgundy);
+}
+.planner-name {
+  display: block;
+  font-size: 12px;
+  color: var(--text);
+  font-weight: 500;
+}
+.planner-specialty {
+  display: block;
+  font-size: 11px;
+  color: var(--text-light);
+  font-style: italic;
+  margin-top: 2px;
+}
+.planner-venues {
+  padding: 16px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.endorsed-venue {
+  padding: 14px 16px;
+  background: var(--bg-body);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius);
+  transition: box-shadow 0.2s;
+}
+.endorsed-venue:hover { box-shadow: var(--shadow); }
+.endorsed-venue-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 6px;
+  flex-wrap: wrap;
+}
+.endorsed-venue h5 {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+}
+.tracker-badge {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 12px;
+  font-size: 10px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.tracker-badge.in-tracker { background: #dcfce7; color: #166534; }
+.tracker-badge.not-in-tracker { background: #fefce8; color: #854d0e; }
+.endorsement-reason {
+  font-size: 12.5px;
+  color: var(--text);
+  line-height: 1.6;
+}
+.planner-note {
+  margin-top: 12px;
+  padding: 10px 14px;
+  background: var(--accent-light);
+  border-radius: 6px;
+  font-size: 11.5px;
+  color: #78350f;
+  line-height: 1.5;
+  font-style: italic;
+}
+
+/* Section 3: Red Flags */
+.red-flags-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.red-flag-card {
+  display: flex;
+  gap: 14px;
+  background: var(--bg-card);
+  border: 1px solid #fecaca;
+  border-left: 4px solid var(--eliminated);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  padding: 16px 20px;
+  transition: box-shadow 0.2s;
+}
+.red-flag-card:hover { box-shadow: var(--shadow-md); }
+.red-flag-icon {
+  font-size: 22px;
+  line-height: 1;
+  min-width: 28px;
+  margin-top: 2px;
+}
+.red-flag-body h4 {
+  font-size: 14px;
+  font-weight: 700;
+  color: #991b1b;
+  margin-bottom: 4px;
+}
+.red-flag-body p {
+  font-size: 12.5px;
+  color: var(--text);
+  line-height: 1.6;
+}
+.severity-badge {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 2px 10px;
+  border-radius: 12px;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+.severity-badge.severe { background: #fef2f2; color: #991b1b; }
+.severity-badge.warning { background: #fefce8; color: #854d0e; }
+
+/* Section 4: Infrastructure Checklist */
+.infra-checklist {
+  columns: 2;
+  column-gap: 32px;
+  list-style: none;
+}
+.checklist-category {
+  break-inside: avoid;
+  margin-bottom: 20px;
+}
+.checklist-category h4 {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--accent-light);
+}
+.infra-checklist li.check-item {
+  padding: 7px 0 7px 28px;
+  border-bottom: 1px solid var(--border-light);
+  font-size: 12.5px;
+  position: relative;
+  break-inside: avoid;
+  line-height: 1.5;
+}
+.infra-checklist li.check-item input[type="checkbox"] {
+  position: absolute;
+  left: 0;
+  top: 9px;
+  cursor: pointer;
+  accent-color: var(--gold);
+  width: 15px;
+  height: 15px;
+}
+.infra-checklist li.checked-item label {
+  text-decoration: line-through;
+  color: var(--text-muted);
+}
+.infra-checklist li label { cursor: pointer; }
+
+/* Section 5: Venue Type Matchmaker */
+.matchmaker-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+.type-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  transition: box-shadow 0.2s, transform 0.15s;
+}
+.type-card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+.type-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  margin-bottom: 12px;
+}
+.type-card h4 {
+  font-family: var(--font-heading);
+  font-size: 18px;
+  color: var(--text);
+  margin-bottom: 14px;
+}
+.type-best-for, .type-budget {
+  background: var(--accent-light);
+  border-radius: 6px;
+  padding: 10px 14px;
+  font-size: 12px;
+  color: #78350f;
+  line-height: 1.5;
+  margin-bottom: 14px;
+}
+.type-label {
+  display: block;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--accent-dark);
+  margin-bottom: 4px;
+}
+.type-pros h5, .type-cons h5 {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 6px;
+}
+.type-pros h5 { color: var(--green); }
+.type-cons h5 { color: var(--eliminated); }
+.type-pros ul, .type-cons ul {
+  list-style: none;
+  margin-bottom: 12px;
+}
+.type-pros li, .type-cons li {
+  font-size: 12px;
+  line-height: 1.6;
+  padding: 3px 0 3px 18px;
+  position: relative;
+}
+.type-pros li::before {
+  content: '+';
+  position: absolute;
+  left: 0;
+  color: var(--green);
+  font-weight: 700;
+}
+.type-cons li::before {
+  content: '\2013';
+  position: absolute;
+  left: 2px;
+  color: var(--eliminated);
+  font-weight: 700;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .header { padding: 20px 14px; }
+  .header-left h1 { font-size: 24px; }
+  .header-stats { gap: 6px; }
+  .stat-chip { padding: 5px 12px; font-size: 11px; }
+  .insights-container { padding: 16px 10px; }
+  .playbook-grid { grid-template-columns: 1fr; }
+  .matchmaker-grid { grid-template-columns: 1fr; }
+  .infra-checklist { columns: 1; }
+  .endorsed-venue-header { flex-direction: column; align-items: flex-start; }
+  .planner-venues { padding: 12px 14px; }
+}
+@media (max-width: 480px) {
+  .planner-header { flex-direction: column; text-align: center; }
+  .section-title { font-size: 18px; }
+}
+
+/* PRINT */
+@media print {
+  .header { break-inside: avoid; padding: 20px; }
+  .back-link, .footer a { display: none; }
+  body { font-size: 11px; }
+  .page-section { break-inside: avoid; }
+  .insight-card, .red-flag-card, .planner-card, .type-card {
+    break-inside: avoid;
+    box-shadow: none !important;
+    border: 1px solid #ccc;
+  }
+  .insight-card:hover, .red-flag-card:hover, .type-card:hover {
+    transform: none;
+    box-shadow: none;
+  }
+  .infra-checklist { columns: 2; }
+  .fade-in-section { opacity: 1; transform: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-left">
+    <a href="index.html" class="back-link">&#8592; Back to Venue Tracker</a>
+    <h1>DDay</h1>
+    <div class="subtitle">Insights from California's Top Indian Wedding Planners</div>
+  </div>
+  <div class="header-stats">
+    <span class="stat-chip"><strong>5</strong>&ensp;Expert Planners</span>
+    <span class="stat-chip"><strong>12</strong>&ensp;Hidden Insights</span>
+    <span class="stat-chip"><strong>7</strong>&ensp;Red Flags</span>
+    <span class="stat-chip"><strong>NorCal</strong>&ensp;Focus</span>
+  </div>
+</div>
+<hr class="gold-divider">
+
+<div class="insights-container">
+
+<!-- ===== SECTION 1: THE PLANNER'S PLAYBOOK ===== -->
+<section class="page-section fade-in-section">
+  <h2 class="section-title">The Planner's Playbook</h2>
+  <p class="section-subtitle">12 second-order insights that only veteran Indian wedding planners know. These are the non-obvious lessons learned from hundreds of celebrations across California.</p>
+
+  <div class="playbook-grid">
+
+    <div class="insight-card">
+      <div class="insight-number">1</div>
+      <div class="insight-body">
+        <h4 class="insight-title">Kitchen Distance = Cold Food</h4>
+        <p>Kitchen-to-serving distance matters more than menu choice. If the kitchen is more than 100 feet from the serving area, buffet service becomes mandatory &mdash; plated Indian food arrives lukewarm. Planners measure this on every site visit before signing.</p>
+        <div class="insight-tag">Catering</div>
+      </div>
+    </div>
+
+    <div class="insight-card">
+      <div class="insight-number">2</div>
+      <div class="insight-body">
+        <h4 class="insight-title">Generator Capacity is 2x What You Think</h4>
+        <p>Outdoor weddings need 20,000W+, not the 7,500&ndash;10,000W couples assume. Heaters alone draw 1,500&ndash;4,000W each. Work backwards from your DJ, caterer, lighting, and tent vendor specs. Budget this at venue-selection stage, not after booking.</p>
+        <div class="insight-tag">Infrastructure</div>
+      </div>
+    </div>
+
+    <div class="insight-card">
+      <div class="insight-number">3</div>
+      <div class="insight-body">
+        <h4 class="insight-title">Baraat Route &#8800; Pretty Entrance</h4>
+        <p>Venues with gorgeous front entrances often can&rsquo;t handle actual baraat logistics: narrow parking lot entries create bottlenecks, insufficient width for horse and dancers, no marshal placement space. Planners require written baraat route commitments including parade float accommodation.</p>
+        <div class="insight-tag">Logistics</div>
+      </div>
+    </div>
+
+    <div class="insight-card">
+      <div class="insight-number">4</div>
+      <div class="insight-body">
+        <h4 class="insight-title">Fire Ceremony = Regulatory Minefield</h4>
+        <p>Phera/havan aren&rsquo;t just ceremony elements &mdash; they&rsquo;re fire code issues. CA Fire Code prohibits open flames near tents (must be 20ft+ from structures). Planners work with Fire Marshals 3&ndash;4 months ahead &mdash; jurisdiction varies by county. Start in July for a December wedding.</p>
+        <div class="insight-tag">Regulatory</div>
+      </div>
+    </div>
+
+    <div class="insight-card">
+      <div class="insight-number">5</div>
+      <div class="insight-body">
+        <h4 class="insight-title">Catering Restriction = Automatic Screen-Out</h4>
+        <p>&ldquo;In-house catering only&rdquo; venues universally produce poor Indian food outcomes. In-house chefs struggle with spice profiles, heat retention, and authentic preparation. Every experienced planner we researched treats this as an instant dealbreaker.</p>
+        <div class="insight-tag">Catering</div>
+      </div>
+    </div>
+
+    <div class="insight-card">
+      <div class="insight-number">6</div>
+      <div class="insight-body">
+        <h4 class="insight-title">Staff Turnover = Quality Proxy</h4>
+        <p>Venue coordinator changes predict execution quality better than venue prestige. If 3+ coordinators changed in 2 years, expect operational chaos. Couples plan 6&ndash;9 months with one coordinator, then meet a stranger the week of. Check Yelp reviews for coordinator name consistency.</p>
+        <div class="insight-tag">Venue Quality</div>
+      </div>
+    </div>
+
+    <div class="insight-card">
+      <div class="insight-number">7</div>
+      <div class="insight-body">
+        <h4 class="insight-title">Noise Ordinance Varies by CITY, Not County</h4>
+        <p>San Francisco vs. Oakland vs. Mill Valley have completely different rules. A venue 5 miles away in a different jurisdiction might have a 2-hour earlier sound cutoff. Planners verify the specific city&rsquo;s ordinance and decibel limits in writing &mdash; not just the venue&rsquo;s verbal assurance.</p>
+        <div class="insight-tag">Noise / Legal</div>
+      </div>
+    </div>
+
+    <div class="insight-card">
+      <div class="insight-number">8</div>
+      <div class="insight-body">
+        <h4 class="insight-title">Haldi Turmeric = Contractual Liability</h4>
+        <p>Turmeric creates near-permanent stains on venue carpets and fabrics. Most venues don&rsquo;t anticipate this and charge damage fees post-wedding. Smart planners negotiate floor protection requirements and damage waivers at the initial proposal stage. Light-colored carpets are a major red flag.</p>
+        <div class="insight-tag">Contracts</div>
+      </div>
+    </div>
+
+    <div class="insight-card">
+      <div class="insight-number">9</div>
+      <div class="insight-body">
+        <h4 class="insight-title">Multiple Venues Same Day = Timeline Failure</h4>
+        <p>Shuttle logistics add 20&ndash;40 minutes per move between venues. If the ceremony runs late (standard for Indian weddings), caterers must reheat, quality drops, and the cascade worsens. Planners limit to 1&ndash;2 venues per day max and build 2-hour buffer windows between ceremonies.</p>
+        <div class="insight-tag">Logistics</div>
+      </div>
+    </div>
+
+    <div class="insight-card">
+      <div class="insight-number">10</div>
+      <div class="insight-body">
+        <h4 class="insight-title">Bathroom Capacity Scales Non-Linearly</h4>
+        <p>Indian weddings generate 2&ndash;3x normal bathroom traffic: haldi/mehendi touch-ups, sari and lehenga changes, and longer 6&ndash;8 hour events. Venues assume 4&ndash;6 stalls for 200 guests. Planners require 10&ndash;12 stalls for 300+, or negotiate portable restroom rental.</p>
+        <div class="insight-tag">Infrastructure</div>
+      </div>
+    </div>
+
+    <div class="insight-card">
+      <div class="insight-number">11</div>
+      <div class="insight-body">
+        <h4 class="insight-title">Tax Cascading on Service Charges</h4>
+        <p>In California, 24% service charges PLUS 8.625% sales tax apply &mdash; and tax applies to the service charge itself. On a $50,000 catering bill, this adds ~$17,000 unexpectedly. Planners budget 20&ndash;25% padding above quoted food costs. Always ask for the &ldquo;all-in&rdquo; number.</p>
+        <div class="insight-tag">Catering</div>
+      </div>
+    </div>
+
+    <div class="insight-card">
+      <div class="insight-number">12</div>
+      <div class="insight-body">
+        <h4 class="insight-title">Communication Speed = Venue Quality Signal</h4>
+        <p>If a venue takes 7+ days to respond or sends only template replies without addressing your specific questions, planners walk away. Responsive venues (24&ndash;48 hour turnaround with personalized answers) consistently correlate with smooth execution on the day.</p>
+        <div class="insight-tag">Venue Quality</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<hr class="gold-divider">
+
+<!-- ===== SECTION 2: PLANNER-APPROVED VENUES ===== -->
+<section class="page-section fade-in-section">
+  <h2 class="section-title">Planner-Approved Venues</h2>
+  <p class="section-subtitle">Named endorsements from California&rsquo;s top Indian wedding planners, cross-referenced with our 55-venue DDay tracker. These are the venues that working professionals actually recommend.</p>
+
+  <div class="planners-list">
+
+    <!-- Anais Events -->
+    <div class="planner-card">
+      <div class="planner-header">
+        <div class="planner-avatar">AE</div>
+        <div class="planner-info">
+          <h4>Anais Events</h4>
+          <span class="planner-name">Amrit Dhillon-Bains</span>
+          <span class="planner-specialty">Full-service South Asian wedding planning &middot; 20+ years &middot; SF Bay Area</span>
+        </div>
+      </div>
+      <div class="planner-venues">
+        <div class="endorsed-venue">
+          <div class="endorsed-venue-header">
+            <h5>Signia by Hilton San Jose</h5>
+            <span class="tracker-badge in-tracker">In DDay Tracker #51</span>
+          </div>
+          <p class="endorsement-reason">Formerly Fairmont San Jose. One of the only NorCal hotels that explicitly permits havan (fire ceremony). Staff specializes in Indian/Persian weddings. Imperial Ballroom accommodates ~1,100 for ceremony and ~1,000 for reception with dance floor. Outside catering and baraats both allowed.</p>
+        </div>
+        <div class="endorsed-venue">
+          <div class="endorsed-venue-header">
+            <h5>Mountain Winery, Saratoga</h5>
+            <span class="tracker-badge not-in-tracker">Not in Tracker</span>
+          </div>
+          <p class="endorsement-reason">Hilltop venue overlooking the South Bay. Described as &ldquo;the local Indian &amp; South Asian wedding leader in elegance and sophistication.&rdquo; Chateau Deck seats 300 for ceremony; Grand Hall seats 250 for reception. Personal wedding planner from venue&rsquo;s team helps plan baraat-specific needs. Multi-day event capable.</p>
+        </div>
+        <div class="endorsed-venue">
+          <div class="endorsed-venue-header">
+            <h5>Meritage Resort &amp; Spa, Napa</h5>
+            <span class="tracker-badge in-tracker">In DDay Tracker #6</span>
+          </div>
+          <p class="endorsement-reason">&ldquo;Maharani-certified&rdquo; team experienced with Indian wedding intricacies. Two Italian-inspired ballrooms plus unique Estate Cave (carved into hillside). Preferred catering partners: Jalsa Catering or Amber India for authentic cuisine. Requires a &ldquo;day of&rdquo; wedding planner for all events.</p>
+        </div>
+      </div>
+      <div class="planner-note">Featured in Vogue, Harper&rsquo;s Bazaar, Brides, Cond&eacute; Nast Traveler, and NY Times. Known for creating &ldquo;magical ceremony and reception spaces.&rdquo;</div>
+    </div>
+
+    <!-- Tiffany Kay Events -->
+    <div class="planner-card">
+      <div class="planner-header">
+        <div class="planner-avatar">TK</div>
+        <div class="planner-info">
+          <h4>Tiffany Kay Events by Design</h4>
+          <span class="planner-name">Tiffany Foronda</span>
+          <span class="planner-specialty">Asian &amp; woman-owned &middot; Bay Area, SoCal, destination &middot; Fusion specialists</span>
+        </div>
+      </div>
+      <div class="planner-venues">
+        <div class="endorsed-venue">
+          <div class="endorsed-venue-header">
+            <h5>Hayes Mansion, San Jose</h5>
+            <span class="tracker-badge in-tracker">In DDay Tracker #53</span>
+          </div>
+          <p class="endorsement-reason">East Lawn works well for havan ceremonies. Outside catering permitted for ethnic cuisine. Hotel lodging on-site. Documented Indian weddings (featured on Junebug Weddings). Good value compared to Fairmont/Ritz tier pricing.</p>
+        </div>
+        <div class="endorsed-venue">
+          <div class="endorsed-venue-header">
+            <h5>Hakone Estate &amp; Gardens, Saratoga</h5>
+            <span class="tracker-badge not-in-tracker">Not in Tracker</span>
+          </div>
+          <p class="endorsement-reason">Oldest Asian estate and gardens in the Western Hemisphere. Cascading waterfalls and koi ponds create stunning ceremony backdrops. Capacity 180 guests. Works with outside caterers and florists. Wedding fees $300&ndash;$9,000 depending on area and season.</p>
+        </div>
+        <div class="endorsed-venue">
+          <div class="endorsed-venue-header">
+            <h5>Villa Montalvo Arts Center, Saratoga</h5>
+            <span class="tracker-badge not-in-tracker">Not in Tracker</span>
+          </div>
+          <p class="endorsement-reason">Arts center with expansive scenic grounds in the Saratoga hills. Beautiful for outdoor ceremonies with architectural interest. Well-suited for fusion events that blend Indian and Western traditions.</p>
+        </div>
+        <div class="endorsed-venue">
+          <div class="endorsed-venue-header">
+            <h5>Mountain Winery, Saratoga</h5>
+            <span class="tracker-badge not-in-tracker">Not in Tracker</span>
+          </div>
+          <p class="endorsement-reason">Also recommended by Tiffany Kay &mdash; outdoor amphitheater setting with panoramic Bay Area views. Works well for larger Indian weddings. Verify noise restrictions for late-night dancing/music.</p>
+        </div>
+      </div>
+      <div class="planner-note">Rich hospitality background. Collaborates with clients to bring unique visions to life, particularly for stunning fusion events blending cultural traditions.</div>
+    </div>
+
+    <!-- Brownstone Gardens (venue-planner hybrid) -->
+    <div class="planner-card">
+      <div class="planner-header">
+        <div class="planner-avatar">BG</div>
+        <div class="planner-info">
+          <h4>Brownstone Gardens</h4>
+          <span class="planner-name">Raman &amp; Raveen Bains</span>
+          <span class="planner-specialty">Indian-owned venue &amp; coordinators &middot; Oakley, East Bay &middot; 10+ years Indian weddings</span>
+        </div>
+      </div>
+      <div class="planner-venues">
+        <div class="endorsed-venue">
+          <div class="endorsed-venue-header">
+            <h5>Brownstone Gardens, Oakley</h5>
+            <span class="tracker-badge in-tracker">In DDay Tracker #44</span>
+          </div>
+          <p class="endorsement-reason">Rare example of venue owners who ARE the Indian wedding experts. Temple structure serves as a natural mandap. Staff handles many coordinator duties themselves &mdash; they understand the full event flow without explanation. BYOB allowed. Starting ~$3K+. Planners actively recommend because venue staff reduces their coordination burden.</p>
+        </div>
+      </div>
+      <div class="planner-note">Multiple planners note that Brownstone Gardens doesn&rsquo;t &ldquo;nickel-and-dime vendors&rdquo; &mdash; a rare quality that experienced coordinators value highly.</div>
+    </div>
+
+    <!-- Piovra Group -->
+    <div class="planner-card">
+      <div class="planner-header">
+        <div class="planner-avatar">PG</div>
+        <div class="planner-info">
+          <h4>Piovra Group</h4>
+          <span class="planner-name">&mdash;</span>
+          <span class="planner-specialty">Bay Area venue selection specialists &middot; Cultural accommodations focus</span>
+        </div>
+      </div>
+      <div class="planner-venues">
+        <div class="endorsed-venue">
+          <div class="endorsed-venue-header">
+            <h5>Grand Bay Hotel San Francisco, Redwood City</h5>
+            <span class="tracker-badge not-in-tracker">Not in Tracker</span>
+          </div>
+          <p class="endorsement-reason">&ldquo;Stunning outdoor wedding venue&rdquo; with an experienced wedding team that &ldquo;understands unique traditions and intricacies of Indian weddings.&rdquo; Accommodates up to 400 guests. Staff is proactive about cultural requirements including prayer rooms, vegetarian kitchen options, and mandap setups.</p>
+        </div>
+      </div>
+      <div class="planner-note">Their venue selection checklist emphasizes: space requirements for Sangeet/Mehendi, decoration flexibility for mandap and lighting, A/V capabilities for traditional music, and prayer room availability.</div>
+    </div>
+
+    <!-- Behl Events -->
+    <div class="planner-card">
+      <div class="planner-header">
+        <div class="planner-avatar">BE</div>
+        <div class="planner-info">
+          <h4>Behl Events</h4>
+          <span class="planner-name">Nupur &amp; Anjali</span>
+          <span class="planner-specialty">SF Bay Area &middot; Clean design, orchestrated flow &middot; Vendor relationships</span>
+        </div>
+      </div>
+      <div class="planner-venues">
+        <div class="endorsed-venue">
+          <div class="endorsed-venue-header">
+            <h5>Bay Area Vendor Network</h5>
+            <span class="tracker-badge not-in-tracker">General Endorsement</span>
+          </div>
+          <p class="endorsement-reason">Behl Events is known less for specific venue picks and more for their &ldquo;truly priceless&rdquo; vendor relationships across the Bay Area. Their strength is matching venues to couples based on vendor availability and coordination quality &mdash; they screen venues primarily by how well they work with outside vendors.</p>
+        </div>
+      </div>
+      <div class="planner-note">Client testimonials consistently highlight their incredibly organized and professional coordination with vendors, venues, and families. Their approach: &ldquo;clean design, carefully orchestrated flow and keen attention to detail.&rdquo;</div>
+    </div>
+
+    <!-- Cultural Event Rentals -->
+    <div class="planner-card">
+      <div class="planner-header">
+        <div class="planner-avatar">CE</div>
+        <div class="planner-info">
+          <h4>Cultural Event Rentals</h4>
+          <span class="planner-name">Leah Bertoli</span>
+          <span class="planner-specialty">Wine Country Indian weddings &middot; 15+ years &middot; Sonoma County</span>
+        </div>
+      </div>
+      <div class="planner-venues">
+        <div class="endorsed-venue">
+          <div class="endorsed-venue-header">
+            <h5>Napa &amp; Sonoma Wine Country Venues</h5>
+            <span class="tracker-badge not-in-tracker">General Endorsement</span>
+          </div>
+          <p class="endorsement-reason">Specializes in wine country Indian weddings with custom catering, d&eacute;cor, and entertainment reflecting Indian traditions. Coordinates vendors across Bay Area and North Bay. Key advice: wine country beauty comes with hidden complexity &mdash; narrow vineyard roads challenge baraat processions and vendor load-in. Pair with an experienced wine country coordinator.</p>
+        </div>
+      </div>
+      <div class="planner-note">If planning a wine country Indian wedding, Leah recommends September&ndash;October for reliable weather but warns: this is harvest season with tighter availability and higher rates. Book 12&ndash;18 months ahead.</div>
+    </div>
+
+  </div>
+</section>
+
+<hr class="gold-divider">
+
+<!-- ===== SECTION 3: RED FLAGS & DEALBREAKERS ===== -->
+<section class="page-section fade-in-section">
+  <h2 class="section-title">Red Flags &amp; Dealbreakers</h2>
+  <p class="section-subtitle">What makes veteran planners walk away from a venue within the first 15 minutes. If you see these, proceed with extreme caution.</p>
+
+  <div class="red-flags-list">
+
+    <div class="red-flag-card">
+      <div class="red-flag-icon">&#9940;</div>
+      <div class="red-flag-body">
+        <h4>No Outside Catering Allowed</h4>
+        <p>&ldquo;In-house catering only&rdquo; venues universally produce poor Indian food. In-house chefs struggle with spice profiles, heat retention, and authentic preparation methods. Every planner we researched treats this as an automatic screen-out &mdash; no negotiation, no exceptions.</p>
+        <span class="severity-badge severe">Instant Dealbreaker</span>
+      </div>
+    </div>
+
+    <div class="red-flag-card">
+      <div class="red-flag-icon">&#9888;</div>
+      <div class="red-flag-body">
+        <h4>Coordinator Turnover (3+ Changes in 2 Years)</h4>
+        <p>High coordinator turnover indicates operational chaos. You&rsquo;ll plan for months with one person, then meet the actual day-of coordinator a week before your wedding. Check Yelp reviews for coordinator name consistency. Planners now demand contract language guaranteeing coordinator continuity.</p>
+        <span class="severity-badge severe">Severe</span>
+      </div>
+    </div>
+
+    <div class="red-flag-card">
+      <div class="red-flag-icon">&#9888;</div>
+      <div class="red-flag-body">
+        <h4>Low Ceilings / Poor HVAC</h4>
+        <p>Ceilings below 20 feet kill mandap setups and make canopy-style d&eacute;cor impossible. Poor HVAC means fire ceremony smoke won&rsquo;t dissipate &mdash; guests (especially elderly and children) struggle with respiratory comfort. Planners reject even if fire is technically permitted.</p>
+        <span class="severity-badge warning">Warning</span>
+      </div>
+    </div>
+
+    <div class="red-flag-card">
+      <div class="red-flag-icon">&#9888;</div>
+      <div class="red-flag-body">
+        <h4>No Written Baraat Route Commitment</h4>
+        <p>Verbal assurances about baraat routes evaporate on the day of. Without a written, signed agreement specifying exact route, width, parking for horse/band/guests, and timing, you&rsquo;re exposed to last-minute changes that can derail the entire entry ceremony.</p>
+        <span class="severity-badge warning">Warning</span>
+      </div>
+    </div>
+
+    <div class="red-flag-card">
+      <div class="red-flag-icon">&#9940;</div>
+      <div class="red-flag-body">
+        <h4>Exclusive Vendor Restrictions with High Fees</h4>
+        <p>Venues that force exclusive vendor relationships severely limit quality &mdash; especially for catering, DJ, and decorators. Venues charging $1,500+ &ldquo;coordinator fees&rdquo; to allow outside vendors are extracting margin, not providing value. Best venues allow outside vendors at minimal fee.</p>
+        <span class="severity-badge severe">Severe</span>
+      </div>
+    </div>
+
+    <div class="red-flag-card">
+      <div class="red-flag-icon">&#9888;</div>
+      <div class="red-flag-body">
+        <h4>Slow Response Times (7+ Days, Template Replies)</h4>
+        <p>If a venue takes a week to respond to your inquiry or sends only generic template replies without addressing your specific questions (fire ceremony, baraat, catering), expect the same communication quality during planning and on the wedding day. This is a reliable proxy for operational quality.</p>
+        <span class="severity-badge warning">Warning</span>
+      </div>
+    </div>
+
+    <div class="red-flag-card">
+      <div class="red-flag-icon">&#9888;</div>
+      <div class="red-flag-body">
+        <h4>No Weather Contingency Space (Outdoor-Only)</h4>
+        <p>California November&ndash;February rain is unpredictable. Venues without both indoor and outdoor ceremony capability force last-minute plan changes that cascade through every vendor. Retractable roofs, marquee options, or a clear Plan B workflow are non-negotiable for fall/winter weddings.</p>
+        <span class="severity-badge warning">Warning</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<hr class="gold-divider">
+
+<!-- ===== SECTION 4: INFRASTRUCTURE CHECKLIST ===== -->
+<section class="page-section fade-in-section">
+  <h2 class="section-title">The Infrastructure Checklist</h2>
+  <p class="section-subtitle">What planners actually inspect during venue visits. Bring this list on every tour. Your checkbox state is saved to your browser automatically.</p>
+
+  <ul class="infra-checklist" id="infraChecklist"></ul>
+</section>
+
+<hr class="gold-divider">
+
+<!-- ===== SECTION 5: VENUE TYPE MATCHMAKER ===== -->
+<section class="page-section fade-in-section">
+  <h2 class="section-title">Venue Type Matchmaker</h2>
+  <p class="section-subtitle">How planners think about venue categories for Indian weddings. Each type has distinct trade-offs that most couples discover too late.</p>
+
+  <div class="matchmaker-grid">
+
+    <!-- Hotels & Resorts -->
+    <div class="type-card" style="border-top: 4px solid #0c4a6e;">
+      <div class="type-icon" style="background: linear-gradient(135deg,#0c4a6e,#164e63); color: #fff;">&#127976;</div>
+      <h4>Hotels &amp; Resorts</h4>
+      <div class="type-best-for">
+        <span class="type-label">Best For</span>
+        Large guest counts (200+), elderly accessibility, multi-day convenience with on-site lodging
+      </div>
+      <div class="type-pros">
+        <h5>Planner Pros</h5>
+        <ul>
+          <li>On-site lodging eliminates shuttle logistics</li>
+          <li>ADA compliant (critical for elderly relatives)</li>
+          <li>Professional staff, weather backup built-in</li>
+          <li>Some allow outside Indian caterers (Signia SJ, Ritz HMB)</li>
+          <li>Multiple ballrooms for multi-event days</li>
+        </ul>
+      </div>
+      <div class="type-cons">
+        <h5>Planner Cons</h5>
+        <ul>
+          <li>22&ndash;25% service charges cascade on ALL F&amp;B</li>
+          <li>Cookie-cutter ballroom aesthetic</li>
+          <li>Most restrict outside catering (dealbreaker)</li>
+          <li>Fire ceremony rarely permitted indoors</li>
+          <li>High coordinator turnover at large chains</li>
+        </ul>
+      </div>
+      <div class="type-budget">
+        <span class="type-label">Budget Impact</span>
+        $50K&ndash;$100K+ all-in. Service charges add 30%+ to quoted prices. Always ask for the &ldquo;all-in&rdquo; number including tax on service charges.
+      </div>
+    </div>
+
+    <!-- Wineries -->
+    <div class="type-card" style="border-top: 4px solid #7c3aed;">
+      <div class="type-icon" style="background: linear-gradient(135deg,#7c3aed,#6d28d9); color: #fff;">&#127863;</div>
+      <h4>Wineries &amp; Vineyards</h4>
+      <div class="type-best-for">
+        <span class="type-label">Best For</span>
+        Destination wedding appeal, outdoor beauty, 50&ndash;200 guest sweet spot, photo backdrops
+      </div>
+      <div class="type-pros">
+        <h5>Planner Pros</h5>
+        <ul>
+          <li>Built-in scenery (rolling vineyards, sunset views)</li>
+          <li>Dedicated event spaces designed for celebrations</li>
+          <li>Wine service simplified (on-site production)</li>
+          <li>All-inclusive packages common at larger wineries</li>
+          <li>Generally more flexible on outside catering</li>
+        </ul>
+      </div>
+      <div class="type-cons">
+        <h5>Planner Cons</h5>
+        <ul>
+          <li>Sept&ndash;Nov harvest: busier, higher rates, limited availability</li>
+          <li>Narrow vineyard roads challenge baraat processions</li>
+          <li>Often lack dedicated commercial kitchen space</li>
+          <li>Staff less familiar with Indian ceremonies vs. Bay Area venues</li>
+          <li>Corkage policies restrict hard liquor (wine-only focus)</li>
+        </ul>
+      </div>
+      <div class="type-budget">
+        <span class="type-label">Budget Impact</span>
+        $15K&ndash;$50K site fee range. Catering, rentals, and transportation add significantly. Must factor wine country accommodation costs for guests.
+      </div>
+    </div>
+
+    <!-- Private Estates & Ranches -->
+    <div class="type-card" style="border-top: 4px solid var(--green);">
+      <div class="type-icon" style="background: linear-gradient(135deg,#166534,#15803d); color: #fff;">&#127969;</div>
+      <h4>Private Estates &amp; Ranches</h4>
+      <div class="type-best-for">
+        <span class="type-label">Best For</span>
+        Full BYOV weddings, multi-day exclusive use, intimate celebrations (&lt;100 guests), fire ceremonies
+      </div>
+      <div class="type-pros">
+        <h5>Planner Pros</h5>
+        <ul>
+          <li>Exclusive use &mdash; no other events, no noise complaints from neighbors</li>
+          <li>Full BYOV and outside vendor freedom</li>
+          <li>More flexibility for fire ceremonies (private property)</li>
+          <li>Multi-day access for haldi, mehendi, sangeet + wedding</li>
+          <li>Often have on-site lodging for wedding party</li>
+        </ul>
+      </div>
+      <div class="type-cons">
+        <h5>Planner Cons</h5>
+        <ul>
+          <li>Higher coordination burden (no built-in services)</li>
+          <li>Rental equipment needed (tables, linens, lighting, tents)</li>
+          <li>Weather contingency is entirely your responsibility</li>
+          <li>Remote locations complicate vendor load-in and guest transit</li>
+          <li>Kitchen infrastructure varies wildly (some have commercial, most don&rsquo;t)</li>
+        </ul>
+      </div>
+      <div class="type-budget">
+        <span class="type-label">Budget Impact</span>
+        $5K&ndash;$25K site fee, but total rentals and vendor logistics add $15K&ndash;$30K. The freedom comes at a coordination cost &mdash; pair with an experienced planner.
+      </div>
+    </div>
+
+    <!-- Retreats & Camps -->
+    <div class="type-card" style="border-top: 4px solid var(--research);">
+      <div class="type-icon" style="background: linear-gradient(135deg,#0891b2,#0e7490); color: #fff;">&#9978;</div>
+      <h4>Retreats &amp; Camps</h4>
+      <div class="type-best-for">
+        <span class="type-label">Best For</span>
+        Multi-day wedding weekends, large lodging needs, group bonding, BYOV flexibility
+      </div>
+      <div class="type-pros">
+        <h5>Planner Pros</h5>
+        <ul>
+          <li>Lodging for 50&ndash;300+ guests included in many packages</li>
+          <li>Full BYOV standard &mdash; bring your own caterer, no restrictions</li>
+          <li>Multiple spaces for different ceremonies across the property</li>
+          <li>Remote = zero noise issues, bonfires standard</li>
+          <li>Often have commercial/industrial kitchens (camp infrastructure)</li>
+        </ul>
+      </div>
+      <div class="type-cons">
+        <h5>Planner Cons</h5>
+        <ul>
+          <li>Very remote locations &mdash; 2&ndash;4 hours from Bay Area</li>
+          <li>&ldquo;Rustic&rdquo; aesthetic may not suit all families</li>
+          <li>Limited ADA accessibility (trails, uneven terrain)</li>
+          <li>Cell service often poor &mdash; coordination challenges day-of</li>
+          <li>Luxury vendor availability limited in remote areas</li>
+        </ul>
+      </div>
+      <div class="type-budget">
+        <span class="type-label">Budget Impact</span>
+        $5K&ndash;$25K site fee including lodging. The all-in cost is often lower than hotels because lodging is bundled and BYOV eliminates catering markups. Best value for multi-day celebrations.
+      </div>
+    </div>
+
+  </div>
+</section>
+
+</div><!-- /insights-container -->
+
+<hr class="gold-divider">
+<div class="footer">
+  <a href="index.html">&#8592; Back to DDay Venue Tracker</a>
+  <br>
+  DDay Wedding Planner &mdash; All data stored locally in your browser &mdash; Made with love
+</div>
+
+<script>
+// ===== localStorage helpers =====
+function loadJSON(key, fallback) {
+  try { return JSON.parse(localStorage.getItem(key)) || fallback; }
+  catch(e) { return fallback; }
+}
+function saveJSON(key, data) {
+  localStorage.setItem(key, JSON.stringify(data));
+}
+
+// ===== Infrastructure Checklist =====
+var infraItems = [
+  { category: 'Kitchen & Catering', items: [
+    'Kitchen distance to serving area (measure in steps)',
+    'Outlet count and amperage for chafing/heating stations',
+    'Ventilation adequate for heavy Indian cooking (spices, frying)',
+    'Water supply and drainage near serving area',
+    'Loading dock access for caterer equipment',
+    'Refrigeration capacity for multi-course Indian menu'
+  ]},
+  { category: 'Ceremony & Fire', items: [
+    'Ceiling height 20ft+ for mandap (measure or ask)',
+    'Fire marshal jurisdiction identified (city or county?)',
+    'Open flame policy confirmed in writing',
+    'Sprinkler system compatibility with fire ceremony smoke',
+    'Tent proximity rules for havan (CA Fire Code: 20ft+ from structures)',
+    'Fire safety officer availability and cost'
+  ]},
+  { category: 'Logistics & Access', items: [
+    'Baraat route: width, surface, parking for horse/band/guests',
+    'Written baraat route commitment from venue',
+    'Bathroom count vs. guest count (need 2\u20133x normal)',
+    'Generator hookup location and capacity (need 20,000W+ for outdoor)',
+    'Separate spaces available for mehndi, sangeet, and haldi',
+    'Shuttle logistics plan if multiple venue areas used'
+  ]},
+  { category: 'Sound & Environment', items: [
+    'Noise ordinance: specific city jurisdiction confirmed (not county assumption)',
+    'Hard cutoff time for music confirmed in writing',
+    'HVAC capacity for 100+ guests in enclosed ceremony space',
+    'Weather contingency space (indoor backup for outdoor ceremonies)',
+    'Haldi: floor protection plan and damage waiver terms confirmed',
+    'Turmeric cleanup clause in contract reviewed and signed'
+  ]}
+];
+
+function renderInfraChecklist() {
+  var list = document.getElementById('infraChecklist');
+  var checks = loadJSON('dday-infra-checks', {});
+  list.innerHTML = '';
+
+  infraItems.forEach(function(category) {
+    var catLi = document.createElement('li');
+    catLi.className = 'checklist-category';
+    catLi.innerHTML = '<h4>' + category.category + '</h4>';
+    list.appendChild(catLi);
+
+    category.items.forEach(function(item, i) {
+      var key = category.category.replace(/[^a-zA-Z]/g,'') + '-' + i;
+      var li = document.createElement('li');
+      li.className = 'check-item' + (checks[key] ? ' checked-item' : '');
+      li.innerHTML = '<input type="checkbox" id="ic-' + key + '" ' + (checks[key] ? 'checked' : '') +
+        ' onchange="toggleInfraCheck(\'' + key + '\')"><label for="ic-' + key + '">' + item + '</label>';
+      list.appendChild(li);
+    });
+  });
+}
+
+function toggleInfraCheck(key) {
+  var checks = loadJSON('dday-infra-checks', {});
+  var cb = document.getElementById('ic-' + key);
+  checks[key] = cb.checked;
+  if (!checks[key]) delete checks[key];
+  saveJSON('dday-infra-checks', checks);
+  var li = cb.closest('li');
+  if (checks[key]) { li.classList.add('checked-item'); }
+  else { li.classList.remove('checked-item'); }
+}
+
+// ===== Scroll Animations =====
+function initScrollAnimations() {
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-in-section').forEach(function(el) {
+    observer.observe(el);
+  });
+}
+
+// ===== Init =====
+document.addEventListener('DOMContentLoaded', function() {
+  renderInfraChecklist();
+  initScrollAnimations();
+});
+</script>
+</body>
+</html>
